@@ -22,11 +22,11 @@ type FontThemeConfig = {
 };
 
 const parsePx = (px: string): number => {
-  return Number(px.slice(0, -2));
+  return Number(px.slice(0, -3));
 };
 
 const pxToRem = (px: number): string => {
-  return `${px / 16}rem`;
+  return `${px}rem`;
 };
 
 export const responsiveTextPlugin = ({ extraFonts }: ResponsiveText) =>
