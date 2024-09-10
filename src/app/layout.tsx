@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
+import clsx from "clsx";
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -42,7 +43,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <StoreProvider>
-        <body className={inter.className}>{children}</body>
+        <body className={clsx(inter.className, "min-h-screen")}>{children}</body>
       </StoreProvider>
     </html>
   );
