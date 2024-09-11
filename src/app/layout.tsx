@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 import Head from "next/head";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import clsx from "clsx";
 const inter = Inter({ subsets: ["latin"] });
-
 
 export const metadata: Metadata = {
   title: "Finfy",
@@ -43,7 +43,10 @@ export default function RootLayout({
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <StoreProvider>
-        <body className={clsx(inter.className, "min-h-screen")}>{children}</body>
+        <body className={clsx(inter.className, "min-h-screen")}>
+          {children}
+          <Toaster />
+        </body>
       </StoreProvider>
     </html>
   );

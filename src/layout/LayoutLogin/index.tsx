@@ -7,9 +7,6 @@ import { FooterAuth } from "@/components/molecules";
 interface LayoutLoginProps extends PropsWithChildren {
   classes?: {
     wrapper?: string;
-    informationContainerLeft?: string;
-    informationContainerRight?: string;
-    backgroundImage?: string;
   };
 }
 
@@ -17,10 +14,9 @@ const LayoutLogin: FC<LayoutLoginProps> = ({ children, classes }) => {
   return (
     <RootMain className={clsx("w-full flex", classes?.wrapper)}>
       <div
-        className={clsx(
-          "relative hidden bg-white lg:flex justify-center items-center flex-[60%]",
-          classes?.informationContainerLeft
-        )}
+        className={
+          "relative hidden bg-white lg:flex justify-center items-center flex-[60%]"
+        }
       >
         <Image
           fill
@@ -53,10 +49,12 @@ const LayoutLogin: FC<LayoutLoginProps> = ({ children, classes }) => {
           src={"/images/bg-login-page.png"}
           alt="background-login-page"
           objectFit="cover"
-          className={classes?.backgroundImage}
+          className={"opacity-20"}
         />
-        <div className={clsx("h-full flex items-end", classes?.informationContainerRight)}>
-          {children}
+        <div className={"h-full flex-col flex bg-purple-15"}>
+          <div className="flex-1 flex justify-center items-center relative z-10 p-6">
+            {children}
+          </div>
           <FooterAuth />
         </div>
       </div>

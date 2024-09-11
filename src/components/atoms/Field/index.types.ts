@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
 
-import { Classes } from "@/utils/types";
+import { Classes } from "@/types";
 
 export type FieldProps = ComponentProps<"input"> & {
   classes?: Classes & {

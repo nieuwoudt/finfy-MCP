@@ -1,4 +1,3 @@
-// src/app/redux/slices/darkModeSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
 import { localStorageKeys } from "@/utils/variables";
 interface DarkModeState {
