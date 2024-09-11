@@ -109,22 +109,6 @@ const config: Config = {
       },
     },
     extend: {
-      colors: {
-        primary: "#515AD9",
-        "primary-hover": "#6870DA",
-        "primary-focus": "rgba(24, 24, 27, 1)",
-        "primary-disabled": "#18181B",
-        "deep-navy": "#252E46",
-        "slate-blue": "#272E48",
-        "cool-gray": "#A1A1AA",
-        "blue-gray": "#9CA3AF",
-        "neutral-dark": "#3F3F46",
-        outline: "#FFFFFF",
-        "light-gray": "#E4E4E7",
-        "dark-navy": "#1F263D",
-        "deep-slate": "#374061",
-      },
-
       boxShadow: {
         primary: "0px 2px 0px 0px rgba(255, 255, 255, 0.15) inset",
         "primary-hover": "0px 2px 0px 0px rgba(255, 255, 255, 0.15) inset",
@@ -148,6 +132,43 @@ const config: Config = {
           linear-gradient(0deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)),
           linear-gradient(0deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.02))
         `,
+      },
+      colors: {
+        grey: {
+          5: "#D1D5DB",
+          15: "#9CA3AF",
+        },
+        purple: {
+          5: "#6B73DF",
+          15: "#515AD9",
+        },
+        navy: {
+          5: "#374061",
+          15: "#272E48",
+          25: "#1F263D",
+        },
+      },
+      borderRadius: {
+        lg: "12px",
+        md: "8px",
+        sm: "6px",
+      },
+      fontFamily: {
+        inter: "var(--font-inter)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

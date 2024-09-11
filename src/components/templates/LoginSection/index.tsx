@@ -1,17 +1,7 @@
-import { LayoutLogin } from "@/layout";
-import { ModalLogin } from "@/components/molecules";
+import { CardLogin } from "@/components/organisms";
 
 const LoginSection = () => {
-  return (
-    <LayoutLogin
-      classes={{
-        informationContainerRight: "bg-primary",
-        backgroundImage: "opacity-40",
-      }}
-    >
-      <ModalLogin />
-    </LayoutLogin>
-  );
+  return <CardLogin />;
 };
 
 export { LoginSection };

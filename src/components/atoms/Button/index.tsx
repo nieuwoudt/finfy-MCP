@@ -9,6 +9,7 @@ import {
   variantClasses,
 } from "./index.constants";
 import type { ButtonProps } from "./index.types";
+import { cn } from "@/lib/utils";
 
 const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   (
@@ -28,7 +29,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
 
     const isIconOnly = (IconLeft || IconRight) && !children;
 
-    const commonClassName = clsx(
+    const commonClassName = cn(
       "flex justify-center items-center cursor-pointer transition-all rounded-md md:rounded-lg text-center font-semibold text-base",
       full ? "w-full" : "w-fit",
       variantClasses[variant],
@@ -40,7 +41,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
       return (
         <Link
           ref={ref as Ref<HTMLAnchorElement>}
-          className={clsx(commonClassName, {
+          className={cn(commonClassName, {
             "pointer-events-none": Boolean(disabled),
           })}
           {...rest}
@@ -55,7 +56,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
     return (
       <button
         ref={ref as Ref<HTMLButtonElement>}
-        className={clsx(commonClassName)}
+        className={cn(commonClassName)}
         {...props}
       >
         {IconLeft && IconLeft}

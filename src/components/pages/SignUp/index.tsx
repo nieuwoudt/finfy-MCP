@@ -1,5 +1,7 @@
+import { SignUpSection } from "@/components/templates";
+
 const SignUpPage = () => {
-  return <></>;
+  return <SignUpSection />;
 };
 
 export { SignUpPage };
