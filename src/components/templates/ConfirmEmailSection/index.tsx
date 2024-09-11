@@ -1,17 +1,7 @@
-import { LayoutLogin } from "@/layout";
-import { ModalConfirmEmail } from "@/components/molecules";
+import { CardConfirmEmail } from "@/components/organisms";
 
 const ConfirmEmailSection = () => {
-  return (
-    <LayoutLogin
-      classes={{
-        informationContainerRight: "bg-primary",
-        backgroundImage: "opacity-40",
-      }}
-    >
-      <ModalConfirmEmail />
-    </LayoutLogin>
-  );
+  return <CardConfirmEmail />;
 };
 
 export { ConfirmEmailSection };

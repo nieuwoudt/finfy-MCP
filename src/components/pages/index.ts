@@ -1,5 +1,6 @@
 export { HomePage } from "./Home";
 export { LoginPage } from "./Login";
 export { SignUpPage } from "./SignUp";
-export { OnboardingPage } from "./Onboarding";
+export { AuthenticationPage } from "./Authentication";
 export { ConfirmEmailPage } from "./ConfirmEmail";
+export { OnboardingPage } from "./Onboarding";

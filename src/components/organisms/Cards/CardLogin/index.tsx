@@ -1,13 +1,14 @@
 "use client";
 
-import { Modal, Button, Field } from "@/components/atoms";
+import { CardTemplate } from "@/components/molecules";
+import { Button, Field } from "@/components/atoms";
 import { loginAction } from "@/utils/actions/user";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
 
-const ModalLogin = () => {
+const CardLogin = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const handleClickLogInButton = (formData: FormData) => {
@@ -17,29 +18,19 @@ const ModalLogin = () => {
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
-        router.push("/");
+        router.push("/onboarding");
         toast.success("Successfully logged in!");
       }
     });
   };
 
   return (
-    <Modal
-      open={true}
-      classes={{
-        wrapper: "max-w-lg !absolute",
-        container: "flex flex-col gap-4",
-      }}
-      isDisabledPortal
+    <CardTemplate
+      title="Login"
+      description="To continue, please enter your password."
     >
       <form action={handleClickLogInButton}>
-        <Modal.Header>
-          <h3 className="text-white text-2xl text-start font-bold">Login</h3>
-          <p className="text-blue-gray text-sm font-medium mt-2">
-            To continue, please enter your password.
-          </p>
-        </Modal.Header>
-        <Modal.Body className="flex flex-col gap-4 mt-4">
+        <CardTemplate.Content className="flex flex-col gap-4 mt-4">
           <Field
             name="email"
             disabled={isPending}
@@ -54,25 +45,25 @@ const ModalLogin = () => {
             full
             type="password"
           />
-        </Modal.Body>
-        <Modal.Footer className="flex flex-col gap-4 mt-4">
+        </CardTemplate.Content>
+        <CardTemplate.Footer className="flex flex-col gap-4 mt-4">
           <Button disabled={isPending} size="xl" full type="submit">
             {isPending ? <Loader2 className="animate-spin" /> : "Login"}
           </Button>
           <Button
             disabled={isPending}
             size="xl"
-            variant="plain"
+            variant="ghost"
             full
             href="/sign-up"
             as="link"
           >
             Sign up
           </Button>
-        </Modal.Footer>
+        </CardTemplate.Footer>
       </form>
-    </Modal>
+    </CardTemplate>
   );
 };
 
-export { ModalLogin };
+export { CardLogin };

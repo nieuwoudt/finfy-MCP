@@ -1,0 +1,6 @@
+const OnboardingStep = () => {
+
+  
+};
+
+export { OnboardingStep };

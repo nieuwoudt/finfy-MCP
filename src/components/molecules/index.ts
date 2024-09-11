@@ -1,2 +1,2 @@
-export * from "./Modals";
 export { FooterAuth } from "./FooterAuth";
+export { CardTemplate } from "./CardTemplate";

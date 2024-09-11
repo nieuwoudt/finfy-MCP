@@ -31,5 +31,11 @@ type ButtonComponentProps = CommonProps &
 
 export type ButtonProps = ButtonComponentProps | LinkComponentProps;
 
-export type Color = "default" | "outline" | "plain";
+export type Color =
+  | "default"
+  | "outline"
+  | "destructive"
+  | "secondary"
+  | "ghost"
+  | "link";
 export type Size = "xs" | "sm" | "base" | "lg" | "xl";
