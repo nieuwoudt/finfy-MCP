@@ -6,3 +6,4 @@ export { RootMain } from "./RootMain";
 export { Label } from "./Label";
 export { Field } from "./Field";
 export { Card } from "./Card";
+export { CustomButtonIcon } from "./CustomButtonIcon";

@@ -27,7 +27,7 @@ const CardTemplateComponent: FC<CardTemplateComponentProps> = ({
       )}
     >
       {(title || description) && (
-        <Card.Header className={cn(classes?.cardHeader)}>
+        <Card.Header className={cn(classes?.cardHeader, "mb-4")}>
           {title && (
             <Card.Title
               className={cn(

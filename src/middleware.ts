@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { stepsOnboarding } from "@/utils/variables";
 
 export async function getUser(response: NextResponse, request: NextRequest) {
   const supabaseClient = createServerClient(
@@ -57,6 +58,12 @@ export async function middleware(request: NextRequest) {
     }
     if (isAuthRoute && user) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
+    }
+
+    if (path === "/onboarding") {
+      return NextResponse.redirect(
+        new URL(`/onboarding/${stepsOnboarding.at(0)}`, request.url)
+      );
     }
   }
 }

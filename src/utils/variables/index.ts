@@ -3,3 +3,20 @@
 export const localStorageKeys = {
   darkMode: "darkMode",
 };
+
+export const routesOnboarding = {
+  verifyPhoneNumber: "verify-phone-number",
+  confirmPhoneNumber: "confirm-phone-number",
+  selectPlan: "select-plan",
+  personalize: "personalize",
+  userPolicy: "user-policy",
+  finalUserPolicy: "final-user-policy",
+  selectCurrency: "select-currency",
+  connectBank: "connect-bank",
+  selectBank: "select-bank",
+  connectBankAccount: "connect-bank-account",
+  bankCredentials: "bank-credentials",
+  setupComplete: "setup-complete",
+} as const;
+
+export const stepsOnboarding = Object.values(routesOnboarding);
