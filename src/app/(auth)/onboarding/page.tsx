@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Chat",
 };
 
-const Onboarding = () => {
+const Onboarding = async () => {
   return <OnboardingPage />;
 };
 

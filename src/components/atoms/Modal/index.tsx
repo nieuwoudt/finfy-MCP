@@ -76,8 +76,6 @@ const ModalComponent: FC<ModalComponentType> = ({
       >
         <div
           onClick={handleClick}
-          // onTouchEnd={handleClick}
-          // onTouchStart={handleClick}
           className={clsx(
             "w-11/12 md:w-full max-h-11/12 p-6 relative border border-slate-blue bg-deep-navy rounded-xl overflow-auto",
             classes?.container
