@@ -34,12 +34,10 @@ const CardVerifyPhoneNumber = () => {
 
   const onSubmit = async (values: { phoneNumber: string }) => {
     startTransition(async () => {
-      const { data } = await axios("/api/get-session");
-      console.log(data);
-      const { errorMessage } = await signInWithOtp(
-        values.phoneNumber,
-        data
-      );
+      await axios.post("/api/update-user", {
+        phone: values.phoneNumber,
+      });
+      const { errorMessage } = await signInWithOtp(values.phoneNumber);
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
