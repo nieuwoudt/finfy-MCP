@@ -1,6 +1,7 @@
 "use server";
 
 import { createSupabaseClient } from "@/lib/supabase/server";
+import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "@/utils/helpers";
 
 export const createAccountAction = async (formData: FormData) => {
@@ -47,19 +48,13 @@ export const signOutAction = async () => {
   }
 };
 
-export const signInWithOtp = async (phone: string, auth: any) => {
+export const signInWithOtp = async (phone: string) => {
   try {
-    const { error: updateError } = await auth.updateUser({
+    const { auth } = supabase;
+    const { error } = await auth.signInWithOtp({
       phone,
     });
-    // const auto = await auth.getSession();
-    // if (updateError) {
-    //   throw updateError;
-    // }
-    // const { error } = await auth.signInWithOtp({
-    //   phone,
-    // });
-    // if (error) throw error;
+    if (error) throw error;
     return { errorMessage: null };
   } catch (error) {
     return {
