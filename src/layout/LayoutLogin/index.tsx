@@ -33,10 +33,10 @@ const LayoutLogin: FC<LayoutLoginProps> = ({ children, classes }) => {
           alt="view"
         />
         <div className="flex flex-col gap-6 items-start max-w-xl">
-          <h1 className="text-slate-blue text-4xl font-bold">
+          <h1 className="text-navy-15 text-4xl font-bold">
             Financially empower yourself with IMALI
           </h1>
-          <p className="text-slate-blue text-lg font-medium">
+          <p className="text-navy-15 text-lg font-medium">
             Empower Your Financial Institution with Customizable Virtual
             Financial Assistants and Conversational AI, Tailored to Speak Your
             Customers Language on Their Preferred Channels.

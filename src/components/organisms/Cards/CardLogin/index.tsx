@@ -2,7 +2,7 @@
 
 import { CardTemplate } from "@/components/molecules";
 import { Button, Field } from "@/components/atoms";
-import { loginAction } from "@/utils/actions/user";
+import { loginAction } from "@/lib/supabase/actions";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
