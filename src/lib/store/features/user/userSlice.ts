@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabase/client";
+import axios from "axios";
 
 interface User {
   id: number;
@@ -20,7 +21,12 @@ const initialState: UsersState = {
   error: null,
 };
 
-export const fetchUser = createAsyncThunk<User>(
+export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
+  const response = await axios.get("/api/get-user");
+  return response.data;
+});
+
+export const fetchUserById = createAsyncThunk<User>(
   "users/fetchUser",
   async (id) => {
     const { data, error } = await supabase

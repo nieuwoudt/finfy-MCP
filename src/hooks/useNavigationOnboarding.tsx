@@ -12,8 +12,10 @@ const useNavigationOnboarding = () => {
 
   const indexCurrentStep = stepsOnboarding.indexOf(currentStep);
 
-  const nextStep = () => {
-    route.push(`/onboarding/${stepsOnboarding?.at(indexCurrentStep + 1)}`);
+  const nextStep = (params: string = "") => {
+    route.push(
+      `/onboarding/${stepsOnboarding?.at(indexCurrentStep + 1)}` + params
+    );
   };
   const prevStep = () => {
     route.push(`/onboarding/${stepsOnboarding?.at(indexCurrentStep - 1)}`);

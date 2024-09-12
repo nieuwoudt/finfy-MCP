@@ -8,7 +8,8 @@ export type Classes = {
 export type PhoneInputFieldProps = {
   onChange: (phone: string) => void;
   value: string;
+  disabled?: boolean;
 };
 
-
-export type RouteOnboardingValues = typeof routesOnboarding[keyof typeof routesOnboarding];
+export type RouteOnboardingValues =
+  (typeof routesOnboarding)[keyof typeof routesOnboarding];

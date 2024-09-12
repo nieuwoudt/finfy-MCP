@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { Button, Field } from "@/components/atoms";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createAccountAction } from "@/utils/actions/user";
+import { createAccountAction } from "@/lib/supabase/actions";
 import { Loader2 } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { createUser } from "@/lib/store/features/user/userSlice";

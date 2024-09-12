@@ -1,7 +1,7 @@
 "use server";
 
 import { createSupabaseClient } from "@/lib/supabase/server";
-import { getErrorMessage } from "@/utils/helpers";;
+import { getErrorMessage } from "@/utils/helpers";
 
 export const createAccountAction = async (formData: FormData) => {
   try {
@@ -39,6 +39,47 @@ export const signOutAction = async () => {
     const { auth } = createSupabaseClient();
     const { error } = await auth.signOut();
     if (error) throw error;
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const signInWithOtp = async (phone: string, auth: any) => {
+  try {
+    const { error: updateError } = await auth.updateUser({
+      phone,
+    });
+    // const auto = await auth.getSession();
+    // if (updateError) {
+    //   throw updateError;
+    // }
+    // const { error } = await auth.signInWithOtp({
+    //   phone,
+    // });
+    // if (error) throw error;
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const verifyPhoneUser = async (phone: string, token: string) => {
+  try {
+    const { auth } = createSupabaseClient();
+    const { error } = await auth.verifyOtp({
+      phone,
+      token,
+      type: "sms",
+    });
+    if (error) throw error;
+    auth.updateUser({
+      phone,
+    });
     return { errorMessage: null };
   } catch (error) {
     return {

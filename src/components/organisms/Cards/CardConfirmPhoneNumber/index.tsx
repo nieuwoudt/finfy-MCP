@@ -2,21 +2,29 @@
 
 import { Button, Field } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
-import { useForm } from "react-hook-form";
 import { useNavigationOnboarding } from "@/hooks";
+import { useTransition } from "react";
+import { verifyPhoneUser } from "@/lib/supabase/actions";
+import toast from "react-hot-toast";
+import { useSearchParams } from "next/navigation";
 
 const CardConfirmPhoneNumber = () => {
+  const [isPending, startTransition] = useTransition();
+  const searchParams = useSearchParams();
   const { nextStep } = useNavigationOnboarding();
-  const {
-    setValue,
-    getValues,
-    trigger,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
 
-  const onSubmit = async () => {
-    nextStep();
+  const onSubmit = async (formData: FormData) => {
+    startTransition(async () => {
+      const phone = searchParams.get("phone") as string;
+      const code = formData.get("code") as string;
+      const { errorMessage } = await verifyPhoneUser(phone, code);
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        nextStep();
+        toast.success("Phone number has been successfully verified!");
+      }
+    });
   };
 
   return (
@@ -24,13 +32,13 @@ const CardConfirmPhoneNumber = () => {
       title="First, let's create your account"
       description="Please enter the code sent via text"
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form action={onSubmit}>
         <CardTemplate.Content>
-          <Field full />
+          <Field disabled={isPending} full name={"code"} />
         </CardTemplate.Content>
         <CardTemplate.Footer className="flex gap-4 mt-4">
           <div className="w-full">
-            <Button size="xl" full type="submit">
+            <Button disabled={isPending} size="xl" full type="submit">
               Verify & Create Account
             </Button>
             <p className="text-sm text-grey-15 mt-4">
