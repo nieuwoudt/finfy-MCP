@@ -4,12 +4,13 @@ import { PhoneInputFieldProps } from "@/types";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
-const PhoneInputField = ({ onChange, value }: PhoneInputFieldProps) => {
+const PhoneInputField = ({ onChange, value, disabled }: PhoneInputFieldProps) => {
   return (
     <div className="mt-2 w-full">
       <PhoneInput
         country={value}
         value={value}
+        disabled={disabled}
         onChange={(phone) => onChange(phone)}
         buttonStyle={{
           backgroundColor: "transparent",

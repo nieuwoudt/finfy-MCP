@@ -5,19 +5,24 @@ import { useTransition } from "react";
 import { Button, Field } from "@/components/atoms";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createAccountAction } from "@/utils/actions/user";
+import { createAccountAction } from "@/lib/supabase/actions";
 import { Loader2 } from "lucide-react";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { createUser } from "@/lib/store/features/user/userSlice";
 
 const CardSignUp = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [isPending, startTransition] = useTransition();
   const handleClickSignUpButton = (formData: FormData) => {
     startTransition(async () => {
+      const email = formData.get("email") as string;
       const { errorMessage } = await createAccountAction(formData);
 
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
+        dispatch(createUser({ email }));
         router.push("/confirm-email");
         toast.success("A verification link has been sent to your email!");
       }

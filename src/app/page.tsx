@@ -1,5 +1,5 @@
 // import { HomePage } from "@/components/pages";
-import { createSupabaseClient } from "@/auth/server";
+import { createSupabaseClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function Home() {

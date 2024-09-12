@@ -37,7 +37,7 @@ const Field: FC<FieldProps> = ({
         )}
         <div
           className={cx(
-            "rounded-lg overflow-hidden px-3 py-2 text-base font-medium bg-slate-blue border flex items-center shadow-sm border-deep-slate",
+            "rounded-lg overflow-hidden px-3 py-2 text-base font-medium bg-navy-15 border flex items-center shadow-sm border-deep-slate",
             classes?.containerInput,
             full ? "w-full" : "w-fit",
             { "border-accent-content": helperText }
