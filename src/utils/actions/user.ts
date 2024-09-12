@@ -1,6 +1,6 @@
 "use server";
 
-import { createSupabaseClient } from "@/auth/server";
+import { createSupabaseClient } from "@/lib/supabase/server";
 import { getErrorMessage } from "@/utils/helpers";;
 
 export const createAccountAction = async (formData: FormData) => {

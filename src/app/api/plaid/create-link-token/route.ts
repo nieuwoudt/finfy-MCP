@@ -1,11 +1,9 @@
 import { plaidClient } from "@/lib/plaid";
-// import { v4 as uuidv4 } from "uuid";
 import { NextResponse } from "next/server";
 import { CountryCode, Products } from "plaid";
 
 export async function GET() {
   try {
-    // const clientUserId = uuidv4();
     const tokenResponse = await plaidClient.linkTokenCreate({
       user: { client_user_id: process.env.PLAID_CLIENT_ID as string },
       client_name: "Finfy",
