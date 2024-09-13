@@ -56,7 +56,6 @@ const ResendCodeWithTimer: FC<ResendCodeWithTimerProps> = ({
     if (isClient) {
       const savedTime = getSavedTime();
       setSeconds(savedTime);
-      console.log(savedTime, "savedTime");
       setIsLoading(Boolean(savedTime));
     }
   }, [isClient]);
