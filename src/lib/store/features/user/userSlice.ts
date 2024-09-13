@@ -1,12 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabase/client";
 import axios from "axios";
+import { AppStore } from "../..";
+import { getErrorMessage } from "@/utils/helpers";
 
 interface User {
   id: number;
   name: string;
   email: string;
   created_at: string;
+  plan: string;
 }
 
 interface UsersState {
@@ -39,25 +42,26 @@ export const fetchUserById = createAsyncThunk<User>(
   }
 );
 
-export const createUser = createAsyncThunk<
-  User,
-  Omit<User, "id" | "created_at" | "name">
->("users/createUser", async (newUser) => {
-  const { data, error } = await supabase
-    .from("users")
-    .insert([newUser])
-    .single();
-  if (error) throw error;
-  return data!;
-});
-
-export const updateUser = createAsyncThunk<User, User>(
-  "users/updateUser",
-  async (updatedUser) => {
+export const createUser = createAsyncThunk<User, Pick<User, "email">>(
+  "users/createUser",
+  async (newUser) => {
     const { data, error } = await supabase
       .from("users")
-      .update({ name: updatedUser.name, email: updatedUser.email })
-      .eq("id", updatedUser.id)
+      .insert([newUser])
+      .single();
+    if (error) throw error;
+    return data!;
+  }
+);
+
+export const updateUser = createAsyncThunk<User, Partial<User>>(
+  "users/updateUser",
+  async (updatedUser) => {
+    const { email, ...dataUser } = updatedUser;
+    const { data, error } = await supabase
+      .from("users")
+      .update(dataUser)
+      .eq("email", email)
       .single();
     if (error) throw error;
     return data!;
@@ -91,25 +95,30 @@ const userSlice = createSlice({
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || null;
+        state.error = getErrorMessage(action.error) || null;
       })
       .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.user = action.payload;
       })
       .addCase(createUser.rejected, (state, action) => {
-        state.error = action.error.message || null;
+        state.error = getErrorMessage(action.error) || null;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.status = "loading";
       })
       .addCase(updateUser.fulfilled, (state, action: PayloadAction<User>) => {
+        state.status = "succeeded";
         state.user = action.payload;
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.error = action.error.message || null;
+        state.status = "failed";
+        state.error = getErrorMessage(action.error) || null;
       })
       .addCase(deleteUser.fulfilled, (state) => {
         state.user = null;
       })
       .addCase(deleteUser.rejected, (state, action) => {
-        state.error = action.error.message || null;
+        state.error = getErrorMessage(action.error) || null;
       });
   },
 });
