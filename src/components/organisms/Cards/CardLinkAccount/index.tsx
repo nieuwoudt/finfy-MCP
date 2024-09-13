@@ -2,13 +2,11 @@
 
 import { Button, Icon } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
-// import { useNavigationOnboarding } from "@/hooks";
-// import { useTransition } from "react";
 import { usePlaid } from "@/hooks";
+import { Loader2 } from "lucide-react";
 
 const CardLinkAccount = () => {
-  const { openPlaidLink, isPlaidLinkReady, transactions } = usePlaid();
-  console.log(transactions, "transactions");
+  const { openPlaidLink, isPlaidLinkReady, isLoading } = usePlaid();
   return (
     <CardTemplate
       title="Here's why you should link yours:"
@@ -40,10 +38,14 @@ const CardLinkAccount = () => {
         <div className="w-full">
           <Button
             onClick={() => openPlaidLink()}
-            disabled={!isPlaidLinkReady}
+            disabled={!isPlaidLinkReady || isLoading}
             className="my-4 w-full text-white"
           >
-            LINK YOUR OWN ACCOUNT
+            {!isPlaidLinkReady || isLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "LINK YOUR OWN ACCOUNT"
+            )}
           </Button>
           <p className="text-center text-sm font-medium text-grey-15">
             Not ready to link an account?
