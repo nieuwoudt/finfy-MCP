@@ -16,9 +16,9 @@ const ResendCodeWithTimer: FC<ResendCodeWithTimerProps> = ({
   phone,
 }) => {
   const [isPendingResend, startTransitionResend] = useTransition();
-  const reset = () => {
-    setSeconds(initialSeconds);
-  };
+  const [seconds, setSeconds] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getSavedTime = () => {
     const savedTime = localStorage.getItem("resendTimer");
@@ -28,11 +28,12 @@ const ResendCodeWithTimer: FC<ResendCodeWithTimerProps> = ({
         return Math.floor(remainingTime / 1000);
       }
     }
-    return initialSeconds;
+    return 0;
   };
-  const savedTime = getSavedTime();
-  const [seconds, setSeconds] = useState(savedTime);
-  const [isLoading, setIsLoading] = useState(Boolean(savedTime));
+
+  const reset = () => {
+    setSeconds(initialSeconds);
+  };
 
   const handleResendCode = async () => {
     startTransitionResend(async () => {
@@ -48,19 +49,33 @@ const ResendCodeWithTimer: FC<ResendCodeWithTimerProps> = ({
   };
 
   useEffect(() => {
-    if (seconds > 0) {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      const savedTime = getSavedTime();
+      setSeconds(savedTime);
+      console.log(savedTime, "savedTime");
+      setIsLoading(Boolean(savedTime));
+    }
+  }, [isClient]);
+
+  useEffect(() => {
+    if (isLoading && seconds > 0) {
       localStorage.setItem(
         "resendTimer",
         (Date.now() + seconds * 1000).toString()
       );
-    } else {
+    } else if (isClient) {
       localStorage.removeItem("resendTimer");
+      setIsLoading(false);
     }
-  }, [seconds]);
+  }, [seconds, isLoading]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
-    if (seconds > 0) {
+    if (isLoading) {
       if (!interval) {
         interval = setInterval(() => {
           setSeconds((prevSeconds) => prevSeconds - 1);
@@ -69,17 +84,14 @@ const ResendCodeWithTimer: FC<ResendCodeWithTimerProps> = ({
       return () => {
         if (interval) {
           clearInterval(interval);
-          interval = null;
         }
       };
     } else {
-      setIsLoading(false);
       if (interval) {
         clearInterval(interval);
-        interval = null;
       }
     }
-  }, [seconds, setIsLoading]);
+  }, [isLoading]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -102,7 +114,7 @@ const ResendCodeWithTimer: FC<ResendCodeWithTimerProps> = ({
         </div>
       ) : (
         <>
-          {isPendingResend ? (
+          {isPendingResend || !isClient ? (
             <Loader2 className="animate-spin text-grey-15 w-5 h-5 mt-4" />
           ) : (
             <p className="text-sm text-grey-15 mt-4">

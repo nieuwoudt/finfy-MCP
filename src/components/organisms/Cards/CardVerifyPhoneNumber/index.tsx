@@ -41,6 +41,11 @@ const CardVerifyPhoneNumber = () => {
       } else {
         const params = new URLSearchParams(searchParams.toString());
         params.set("phone", values.phoneNumber);
+        const RESEND_TIME = 60;
+        localStorage.setItem(
+          "resendTimer",
+          (Date.now() + RESEND_TIME * 1000).toString()
+        );
         nextStep(`?${params.toString()}`);
         toast.success("The confirmation code has been sent!");
       }
