@@ -2,33 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #dddddd;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #5c5c7b;
+  border-radius: 50px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #7878a3;
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* Right sidebar */
+  .right-sidebar {
+    @apply no-scrollbar h-screen bg-navy-15 text-grey-15 flex flex-col w-[256px] !important;
+  }
+
+  .text-16 {
+    @apply text-[16px] leading-[24px];
+  }
+
+  .header {
+    @apply font-semibold text-white text-4xl;
+  }
+  .suggest-box {
+    @apply border max-h-[96px] text-sm min-w-72 max-w-[335px] p-2 rounded-md border-navy-5 bg-navy-15 hover:bg-navy-5 cursor-pointer;
+  }
+  .menu-button-btn {
+    @apply border-t border-navy-5 p-4 text-white;
+  }
+
+  .input-class {
+    @apply text-16 placeholder:text-16 rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500;
+  }
+
+  .card-modal {
+    @apply min-w-[400px] min-h-[133px] z-20 bg-navy-25 border-navy-5 mx-auto;
+  }
+
+  .home-assist-btn {
+    @apply flex items-center gap-1 cursor-pointer hover:bg-purple-15 hover:text-white px-2 rounded-full;
+  }
+
+  .chat-input {
+    @apply border rounded-md h-16 text-grey-15 flex justify-between items-center border-navy-5 bg-navy-15 pr-2;
+  }
+
+  .co-pilot-btn {
+    @apply h-6 rounded-full gap-1 text-sm flex items-center border bg-navy-5 px-2 w-fit shadow-none border-navy-5 hover:border-purple-5;
+  }
+
+  .error {
+    @apply text-xs text-red-500;
+  }
+  .menu-list-btn {
+    @apply whitespace-nowrap overflow-hidden text-ellipsis my-1 cursor-pointer hover:text-white text-grey-5;
+  }
+}
+
+/* CurrencySelector styles */
+@layer components {
+  .CurrencySelector {
+    @apply border-none bg-navy-25;
+  }
+  .CurrencySelector .CurrencySelector__control {
+    @apply border border-grey-15  bg-navy-25 text-white;
+
+    &:hover {
+      @apply outline-none;
+    }
+    &:focus-within {
+      @apply outline outline-1 outline-grey-15;
+    }
+  }
+
+  .CurrencySelector .CurrencySelector__menu {
+    @apply border border-grey-15 bg-navy-25 text-white;
+  }
+
+  .CurrencySelector .CurrencySelector__single-value {
+    @apply text-white;
   }
 }
 

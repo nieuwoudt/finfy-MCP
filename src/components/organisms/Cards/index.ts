@@ -9,3 +9,4 @@ export { CardPersonalize } from "./CardPersonalize";
 export { CardUserPolicy } from "./CardUserPolicy";
 export { CardFinalUserPolicy } from "./CardFinalUserPolicy";
 export { CardLinkAccount } from "./CardLinkAccount";
+export { CardSelectCurrency } from "./CardSelectCurrency";
