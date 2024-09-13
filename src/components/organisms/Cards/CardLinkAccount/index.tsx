@@ -16,19 +16,19 @@ const CardLinkAccount = () => {
     >
       <CardTemplate.Content>
         <div className="space-y-3 text-grey-15">
-          <div className="flex">
+          <div className="flex gap-2 items-center">
             <Icon type={"CheckIcon"} />
             <p className="text-sm font-medium">
               It&apos;s bank-level secure, private and insured.
             </p>
           </div>
-          <div className="flex">
+          <div className="flex gap-2 items-center">
             <Icon type={"CheckIcon"} />
             <p className="text-sm font-medium">
               Balances and transactions are updated automatically.
             </p>
           </div>
-          <div className="flex">
+          <div className="flex gap-2 items-center">
             <Icon type={"CheckIcon"} />
             <p className="text-sm font-medium">
               So there&apos;s no need to import statements manually.
