@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Field } from "@/components/atoms";
-import { CardTemplate } from "@/components/molecules";
+import { CardTemplate, ResendCodeWithTimer } from "@/components/molecules";
 import { useNavigationOnboarding } from "@/hooks";
 import { useTransition } from "react";
 import { verifyPhoneUser } from "@/lib/supabase/actions";
@@ -46,9 +46,7 @@ const CardConfirmPhoneNumber = () => {
                 "Verify & Create Account"
               )}
             </Button>
-            <p className="text-sm text-grey-15 mt-4">
-              Not seeing the code? Try again
-            </p>
+            <ResendCodeWithTimer initialSeconds={60} phone={phone} />
           </div>
         </CardTemplate.Footer>
       </form>

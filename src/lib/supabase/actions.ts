@@ -72,9 +72,22 @@ export const verifyPhoneUser = async (phone: string, token: string) => {
       type: "sms",
     });
     if (error) throw error;
-    auth.updateUser({
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const resendCodeOTP = async (phone: string) => {
+  try {
+    const { auth } = createSupabaseClient();
+    const { error } = await auth.resend({
       phone,
+      type: "sms",
     });
+    if (error) throw error;
     return { errorMessage: null };
   } catch (error) {
     return {
