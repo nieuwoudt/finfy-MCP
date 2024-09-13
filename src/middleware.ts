@@ -60,7 +60,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/onboarding", request.url));
     }
 
-    if (path === "/onboarding") {
+    if (isProtectedRoute) {
       return NextResponse.redirect(
         new URL(`/onboarding/${stepsOnboarding.at(0)}`, request.url)
       );
