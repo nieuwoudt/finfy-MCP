@@ -3,14 +3,7 @@ import { supabase } from "@/lib/supabase/client";
 import axios from "axios";
 import { AppStore } from "../..";
 import { getErrorMessage } from "@/utils/helpers";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  created_at: string;
-  plan: string;
-}
+import { User } from "@/types";
 
 interface UsersState {
   user: User | null;
@@ -29,7 +22,7 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   return response.data;
 });
 
-export const fetchUserById = createAsyncThunk<User>(
+export const fetchUserById = createAsyncThunk<User, number>(
   "users/fetchUser",
   async (id) => {
     const { data, error } = await supabase

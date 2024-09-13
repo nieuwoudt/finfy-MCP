@@ -13,3 +13,11 @@ export type PhoneInputFieldProps = {
 
 export type RouteOnboardingValues =
   (typeof routesOnboarding)[keyof typeof routesOnboarding];
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  created_at: string;
+  plan: string;
+}
