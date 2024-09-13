@@ -12,11 +12,11 @@ import { Loader2 } from "lucide-react";
 const CardConfirmPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
+  const phone = searchParams.get("phone") as string;
   const { nextStep } = useNavigationOnboarding();
 
   const onSubmit = async (formData: FormData) => {
     startTransition(async () => {
-      const phone = searchParams.get("phone") as string;
       const code = formData.get("code") as string;
       const { errorMessage } = await verifyPhoneUser(phone, code);
       if (errorMessage) {
@@ -31,7 +31,7 @@ const CardConfirmPhoneNumber = () => {
   return (
     <CardTemplate
       title="First, let's create your account"
-      description="Please enter the code sent via text"
+      description={`Please enter the code sent via text to: ${phone}`}
     >
       <form action={onSubmit}>
         <CardTemplate.Content>
