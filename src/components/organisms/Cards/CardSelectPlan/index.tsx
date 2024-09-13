@@ -19,7 +19,7 @@ const buttonData = [
       "Get higher usage limits and early access to collaborative features.",
   },
   {
-    icon: <Icon type={"DollarBankIcon"} className="h-10 w-20 text-grey-15" />,
+    icon: <Icon type={"DollarBankIcon"} className="h-10 w-10 text-grey-15" />,
     title: "For my business",
     case: "business",
     description: "Refine ideas, analyze data, summarize documents, and more.",
@@ -38,10 +38,11 @@ const CardSelectPlan = () => {
       title="How are you planning to use Imali?"
       classes={{
         cardTitle: "text-center",
+        card: "max-w-xl",
       }}
     >
       <CardTemplate.Content>
-        <div className="flex space-x-5 pb-5">
+        <div className="flex flex-col md:flex-row gap-2">
           {buttonData.map((button, index) => (
             <CustomButtonIcon
               key={index}

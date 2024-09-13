@@ -7,6 +7,7 @@ import { useTransition } from "react";
 import { verifyPhoneUser } from "@/lib/supabase/actions";
 import toast from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const CardConfirmPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
@@ -39,7 +40,11 @@ const CardConfirmPhoneNumber = () => {
         <CardTemplate.Footer className="flex gap-4 mt-4">
           <div className="w-full">
             <Button disabled={isPending} size="xl" full type="submit">
-              Verify & Create Account
+              {isPending ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                "Verify & Create Account"
+              )}
             </Button>
             <p className="text-sm text-grey-15 mt-4">
               Not seeing the code? Try again

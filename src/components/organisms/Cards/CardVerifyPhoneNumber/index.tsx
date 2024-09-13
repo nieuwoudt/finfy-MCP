@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 const CardVerifyPhoneNumber = () => {
   const user = useSelector((state: RootState) => state.user.user);
@@ -69,7 +70,7 @@ const CardVerifyPhoneNumber = () => {
         <CardTemplate.Footer className="flex gap-4 mt-4">
           <div className="w-full">
             <Button disabled={isPending} size="xl" full type="submit">
-              Register
+              {isPending ? <Loader2 className="animate-spin" /> : "Register"}
             </Button>
             <p className="text-sm text-grey-15 mt-4">
               We verify a phone number on account creation to ensure account

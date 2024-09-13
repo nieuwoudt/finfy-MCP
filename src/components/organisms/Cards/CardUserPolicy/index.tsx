@@ -8,9 +8,6 @@ import { useNavigationOnboarding } from "@/hooks";
 const CardUserPolicy = () => {
   const { nextStep } = useNavigationOnboarding();
   const {
-    setValue,
-    getValues,
-    trigger,
     formState: { errors },
     handleSubmit,
   } = useForm();
@@ -23,31 +20,34 @@ const CardUserPolicy = () => {
     <CardTemplate
       title="Lovely to meet you, Nieuwoudt."
       description="A few things to know before we start working together: Helper text"
+      classes={{
+        card: "max-w-xl",
+      }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardTemplate.Content>
           <div className="my-3 text-sm space-y-3 rounded-xl border border-navy-5 p-3 text-grey-15">
-            <div className="flex">
+            <div className="flex gap-2">
               <div className="flex w-20 items-center">
-                <Icon type="HandIcon" className="h-8" />
+                <Icon type="HandIcon" />
               </div>
               <p>
                 Imali&apos;s Acceptable Use Policy prohibits using Claude for
                 harm, like producing violent, abusive, or deceptive content.
               </p>
             </div>
-            <div className="flex">
+            <div className="flex gap-2">
               <div className="flex w-20 items-center">
-                <Icon type="ShieldIcon" className="h-8" />
+                <Icon type="ShieldIcon" />
               </div>
               <p>
                 Imali&apos;s regularly reviews conversations flagged by our
                 automated abuse detection, and may use them to improve our.
               </p>
             </div>
-            <div className="flex">
+            <div className="flex gap-2">
               <div className="flex w-28 items-center">
-                <Icon type="GradHatIcon" className="h-8" />
+                <Icon type="GradHatIcon" />
               </div>
               <p>
                 Imali is not intended to give advice, including legal,
