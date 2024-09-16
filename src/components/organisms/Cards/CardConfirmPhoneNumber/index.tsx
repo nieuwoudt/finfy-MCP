@@ -18,13 +18,13 @@ const CardConfirmPhoneNumber = () => {
   const onSubmit = async (formData: FormData) => {
     startTransition(async () => {
       const code = formData.get("code") as string;
-      const { errorMessage } = await verifyPhoneUser(phone, code);
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
+      // const { errorMessage } = await verifyPhoneUser(phone, code);
+      // if (errorMessage) {
+      //   toast.error(errorMessage);
+      // } else {
         nextStep();
         toast.success("Phone number has been successfully verified!");
-      }
+      // }
     });
   };
 

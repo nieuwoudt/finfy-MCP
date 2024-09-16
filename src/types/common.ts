@@ -1,4 +1,5 @@
 import { routesOnboarding } from "@/utils/variables";
+import { ReactNode } from "react";
 
 export type Classes = {
   wrapper?: string;
@@ -20,6 +21,7 @@ export interface User {
   email: string;
   created_at: string;
   plan: string;
+  selected_currency: string;
 }
 
 export interface Transaction {
@@ -66,3 +68,8 @@ export interface Account {
   status: string;
   type: string;
 }
+
+export type OptionsType = {
+  label: string | ReactNode;
+  value: string;
+};

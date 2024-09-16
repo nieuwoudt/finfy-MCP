@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import Select, { SingleValue } from "react-select";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import CurrencyFlag from "react-currency-flags";
 import axios from "axios";
+import { Autocomplete } from "../Autocomplete";
+import { OptionsType } from "@/types";
 
 interface CurrencyData {
   [key: string]: {
@@ -11,17 +12,12 @@ interface CurrencyData {
   };
 }
 
-interface CurrencyOption {
-  value: string;
-  label: JSX.Element;
-}
-
 interface CurrencySelectorProps {
-  onChange: (selectedOption: SingleValue<CurrencyOption>) => void;
+  onChange?: (options: OptionsType) => void;
 }
 
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
-  const [currencies, setCurrencies] = useState<CurrencyOption[]>([]);
+  const [currencies, setCurrencies] = useState<OptionsType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -35,7 +31,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
           value: code,
           label: (
             <div style={{ display: "flex", alignItems: "center" }}>
-              <CurrencyFlag currency={code} size="lg" />
+              <CurrencyFlag currency={code} size="sm" />
               <span style={{ marginLeft: 8 }}>
                 {currencyData[code].name} ({code})
               </span>
@@ -53,25 +49,13 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
     fetchCurrencies();
   }, []);
 
-  if (loading) {
-    return <p>Loading currencies...</p>;
-  }
-
   return (
-    <Select
-      className="CurrencySelector"
-      defaultValue={currencies.find((cur) => cur.value === "ZAR")}
+    <Autocomplete
+      isLoading={loading}
       options={currencies}
+      handleOptionClick={onChange}
+      full
       placeholder="Choose your currency"
-      classNames={{
-        control: () => "CurrencySelector__control",
-        menu: () => "CurrencySelector__menu",
-        singleValue: () => "CurrencySelector__single-value",
-      }}
-      components={{
-        IndicatorSeparator: () => null,
-      }}
-      onChange={onChange}
     />
   );
 };

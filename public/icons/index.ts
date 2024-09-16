@@ -10,6 +10,8 @@ import MicroChipIcon from "./chip.svg";
 import SwitchArrowsIcon from "./switch-horizontal.svg";
 import CheckIcon from "./check.svg";
 import ShieldCompleteIcon from "./shield.svg";
+import ChevronUpDownIcon from "./chevron-up-down.svg";
+import CheckSelectedIcon from "./check-selected.svg";
 
 export default {
   CloseIcon,
@@ -24,4 +26,6 @@ export default {
   SwitchArrowsIcon,
   CheckIcon,
   ShieldCompleteIcon,
+  ChevronUpDownIcon,
+  CheckSelectedIcon,
 };
