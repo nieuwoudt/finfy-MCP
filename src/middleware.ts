@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { stepsOnboarding } from "@/utils/variables";
+import { supabase } from "./lib/supabase/client";
 
 export async function getUser(response: NextResponse, request: NextRequest) {
   const supabaseClient = createServerClient(
@@ -69,6 +70,30 @@ export async function middleware(request: NextRequest) {
     const user = await getUser(response, request);
     if (!user && !isAuthRoute) {
       return NextResponse.redirect(new URL("/authentication", request.url));
+    }
+    const { data } = await supabase
+      .from("users")
+      .select()
+      .eq("email", user?.email)
+      .single();
+
+    if (!data.plan) {
+      return NextResponse.redirect(
+        new URL("/onboarding/select-plan", request.url)
+      );
+    }
+
+    if (!data.name) {
+      new URL("/onboarding/personalize", request.url);
+    }
+
+    if (!data.selected_currency) {
+      return NextResponse.redirect(
+        new URL("/onboarding/select-currency", request.url)
+      );
+    }
+    if (path !== "/dashboard") {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }
 }

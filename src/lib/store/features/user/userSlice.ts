@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabase/client";
 import axios from "axios";
-import { AppStore } from "../..";
 import { getErrorMessage } from "@/utils/helpers";
 import { User } from "@/types";
 
