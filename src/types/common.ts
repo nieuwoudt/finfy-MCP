@@ -1,5 +1,5 @@
 import { routesOnboarding } from "@/utils/variables";
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 export type Classes = {
   wrapper?: string;
@@ -72,4 +72,20 @@ export interface Account {
 export type OptionsType = {
   label: string | ReactNode;
   value: string;
+};
+
+
+export type MenuItem = {
+  value: string;
+  icon: FC<{ className?: string }>;
+  title: string;
+  link: string;
+  contents:
+    | {
+        title: string;
+        date: string;
+        chatId: string;
+        category: "assistant" | "goals" | "payments" | "advisor";
+      }[]
+    | [];
 };

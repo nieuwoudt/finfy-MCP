@@ -12,6 +12,18 @@ import CheckIcon from "./check.svg";
 import ShieldCompleteIcon from "./shield.svg";
 import ChevronUpDownIcon from "./chevron-up-down.svg";
 import CheckSelectedIcon from "./check-selected.svg";
+import LogOutIcon from "./log-out.svg";
+import LoginIcon from "./log-in.svg";
+import PlusSolidIcon from "./plus-solid.svg";
+import GearIcon from "./gear.svg";
+import ExtLinkIcon from "./external-link.svg";
+import SparkleIcon from "./sparkles.svg";
+import BsStarsIcon from "./bs-stars.svg";
+import ArrowRightIcon from "./arrow-right.svg";
+import LightningBolt from "./lightning-bolt.svg";
+import SearchIcon from "./search.svg";
+import UserSolidIcon from "./user-solid.svg";
+import PaperClipIcon from "./paper-clip.svg";
 
 export default {
   CloseIcon,
@@ -28,4 +40,16 @@ export default {
   ShieldCompleteIcon,
   ChevronUpDownIcon,
   CheckSelectedIcon,
+  LogOutIcon,
+  PlusSolidIcon,
+  GearIcon,
+  ExtLinkIcon,
+  SparkleIcon,
+  LoginIcon,
+  BsStarsIcon,
+  ArrowRightIcon,
+  LightningBolt,
+  UserSolidIcon,
+  SearchIcon,
+  PaperClipIcon,
 };

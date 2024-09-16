@@ -67,7 +67,6 @@ export async function middleware(request: NextRequest) {
     }
   } else {
     const user = await getUser(response, request);
-    console.log(user, "user");
     if (!user && !isAuthRoute) {
       return NextResponse.redirect(new URL("/authentication", request.url));
     }

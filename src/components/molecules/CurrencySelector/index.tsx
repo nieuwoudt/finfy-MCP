@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect, ChangeEvent } from "react";
+
+import React, { useState, useEffect } from "react";
 import CurrencyFlag from "react-currency-flags";
 import axios from "axios";
 import { Autocomplete } from "../Autocomplete";
