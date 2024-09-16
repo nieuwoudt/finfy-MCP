@@ -30,7 +30,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     value: "goals",
-    icon: () => <Icon type="ChartIcon" />,
+    // icon: () => <Icon type="ChartIcon" />,
+    icon: () => <></>,
     title: "Goals",
     link: "/goals",
     contents: [
@@ -56,7 +57,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     value: "payments",
-    icon: () => <Icon type="CreditCardIcon" />,
+    // icon: () => <Icon type="CreditCardIcon" />,
+    icon: () => <></>,
     title: "Payments",
     link: "/payments",
     contents: [],
@@ -89,7 +91,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     value: "advisor",
-    icon: () => <Icon type="UsersIcon" />,
+    icon: () => <></>,
+    // icon: () => <Icon type="UsersIcon" />,
     title: "Advisors",
     link: "/advisors",
     contents: [
