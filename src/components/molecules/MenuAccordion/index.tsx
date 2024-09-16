@@ -67,7 +67,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
             href={item.link}
             className="menu-list-btn flex gap-1 ml-1 items-center"
           >
-            <Icon type="ChatBubbleIcon" />
+            {/* <Icon type="ChatBubbleIcon" /> */}
             Start a new thread...
           </Link>
         </Accordion.Content>
