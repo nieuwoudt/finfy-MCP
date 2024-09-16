@@ -8,13 +8,10 @@ import { signInWithOtp } from "@/lib/supabase/actions";
 import toast from "react-hot-toast";
 import { useTransition } from "react";
 import { useSearchParams } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 
 const CardVerifyPhoneNumber = () => {
-  const user = useSelector((state: RootState) => state.user.user);
   const [isPending, startTransition] = useTransition();
   const { nextStep } = useNavigationOnboarding();
   const searchParams = useSearchParams();
@@ -44,6 +41,11 @@ const CardVerifyPhoneNumber = () => {
       } else {
         const params = new URLSearchParams(searchParams.toString());
         params.set("phone", values.phoneNumber);
+        const RESEND_TIME = 60;
+        localStorage.setItem(
+          "resendTimer",
+          (Date.now() + RESEND_TIME * 1000).toString()
+        );
         nextStep(`?${params.toString()}`);
         toast.success("The confirmation code has been sent!");
       }

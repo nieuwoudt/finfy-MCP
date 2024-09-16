@@ -13,9 +13,9 @@ export const routesOnboarding = {
   finalUserPolicy: "final-user-policy",
   connectBank: "connect-bank",
   selectCurrency: "select-currency",
-  selectBank: "select-bank",
-  connectBankAccount: "connect-bank-account",
-  bankCredentials: "bank-credentials",
+  // selectBank: "select-bank",
+  // connectBankAccount: "connect-bank-account",
+  // bankCredentials: "bank-credentials",
   setupComplete: "setup-complete",
 } as const;
 

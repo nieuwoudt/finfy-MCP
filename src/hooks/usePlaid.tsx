@@ -1,9 +1,13 @@
 "use client";
 
+import { saveTransactionsAndAccounts } from "@/lib/supabase/actions";
+import { getErrorMessage } from "@/utils/helpers";
 import { useEffect, useState, useCallback } from "react";
+import toast from "react-hot-toast";
 import { usePlaidLink } from "react-plaid-link";
 
 const usePlaid = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -33,7 +37,7 @@ const usePlaid = () => {
       setAccessToken(access_token);
       return access_token;
     } catch (error) {
-      console.error("Error exchanging public token", error);
+      toast.error(`Error exchanging public token: ${getErrorMessage(error)}`);
     }
   };
 
@@ -45,28 +49,32 @@ const usePlaid = () => {
         body: JSON.stringify({ access_token: token }),
       });
       const { transactions } = await response.json();
+      await saveTransactionsAndAccounts(transactions);
       setTransactions(transactions);
     } catch (error) {
-      console.error("Error fetching transactions", error);
+      toast.error(`Error fetching transactions: ${getErrorMessage(error)}`);
     }
   };
 
   const onSuccess = useCallback(async (publicToken: string) => {
+    setIsLoading(true);
     const token = await exchangePublicToken(publicToken);
     if (token) {
-      fetchTransactions(token);
+      await fetchTransactions(token);
     }
+    setIsLoading(false);
   }, []);
 
   const { open, ready } = usePlaidLink({
     token: linkToken,
     onSuccess,
   });
-  console.log(linkToken, ready);
+
   return {
     openPlaidLink: open,
     isPlaidLinkReady: ready,
     transactions,
+    isLoading,
   };
 };
 

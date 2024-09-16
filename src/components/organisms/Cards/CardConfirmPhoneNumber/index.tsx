@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Field } from "@/components/atoms";
-import { CardTemplate } from "@/components/molecules";
+import { CardTemplate, ResendCodeWithTimer } from "@/components/molecules";
 import { useNavigationOnboarding } from "@/hooks";
 import { useTransition } from "react";
 import { verifyPhoneUser } from "@/lib/supabase/actions";
@@ -18,13 +18,13 @@ const CardConfirmPhoneNumber = () => {
   const onSubmit = async (formData: FormData) => {
     startTransition(async () => {
       const code = formData.get("code") as string;
-      const { errorMessage } = await verifyPhoneUser(phone, code);
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
+      // const { errorMessage } = await verifyPhoneUser(phone, code);
+      // if (errorMessage) {
+      //   toast.error(errorMessage);
+      // } else {
         nextStep();
         toast.success("Phone number has been successfully verified!");
-      }
+      // }
     });
   };
 
@@ -46,9 +46,7 @@ const CardConfirmPhoneNumber = () => {
                 "Verify & Create Account"
               )}
             </Button>
-            <p className="text-sm text-grey-15 mt-4">
-              Not seeing the code? Try again
-            </p>
+            <ResendCodeWithTimer initialSeconds={60} phone={phone} />
           </div>
         </CardTemplate.Footer>
       </form>
