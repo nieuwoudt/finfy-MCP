@@ -2,11 +2,11 @@ import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 import {
-  fetchUser,
   fetchUserById,
   createUser,
   updateUser,
   deleteUser,
+  fetchUserByEmail,
 } from "@/lib/store/features/user/userSlice";
 import { User } from "@/types";
 
@@ -16,7 +16,7 @@ export const useUser = () => {
   const userState = useSelector((state: RootState) => state.user);
 
   const fetchCurrentUser = useCallback(() => {
-    dispatch(fetchUser());
+    dispatch(fetchUserByEmail());
   }, [dispatch]);
 
   const fetchUserByIdCallback = useCallback(
@@ -51,6 +51,7 @@ export const useUser = () => {
     user: userState.user,
     status: userState.status,
     error: userState.error,
+    statusUpdate: userState.statusUpdate,
     fetchCurrentUser,
     fetchUserById: fetchUserByIdCallback,
     createUser: createUserCallback,

@@ -32,23 +32,23 @@ const buttonData = [
 ];
 
 const CardSelectPlan = () => {
-  const user = useGetUser();
   const { nextStep } = useNavigationOnboarding();
+  const userCurrent = useSelector((state: RootState) => state.user.user);
   const error = useSelector((state: RootState) => state.user.error);
-  const status = useSelector((state: RootState) => state.user.status);
+  const status = useSelector((state: RootState) => state.user.statusUpdate);
   const dispatch = useAppDispatch();
 
   const handleCodeChange = async (plan: string) => {
-    if (user.email) {
-      await dispatch(updateUser({ plan, email: user.email }));
+    if (userCurrent?.id) {
+      await dispatch(updateUser({ plan, id: userCurrent.id }));
     }
   };
 
   useEffect(() => {
-    if (status === "succeeded") {
+    if (status === "succeeded" && userCurrent?.plan) {
       nextStep();
     }
-  }, [status]);
+  }, [status, userCurrent?.plan]);
 
   useEffect(() => {
     if (error) {

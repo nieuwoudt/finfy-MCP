@@ -3,13 +3,12 @@
 import { Button, Field } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
 import { useForm } from "react-hook-form";
-import { useGetUser, useNavigationOnboarding, useUser } from "@/hooks";
+import { useNavigationOnboarding, useUser } from "@/hooks";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 const CardPersonalize = () => {
-  const user = useGetUser();
-  const { updateUser, status, error } = useUser();
+  const { updateUser, statusUpdate, error, user } = useUser();
   const { nextStep } = useNavigationOnboarding();
   const { handleSubmit, register } = useForm({
     defaultValues: {
@@ -18,15 +17,17 @@ const CardPersonalize = () => {
   });
 
   const onSubmit = async (values: { name: string }) => {
-    await updateUser({ name: values.name, email: user.email });
+    if (user?.id) {
+      await updateUser({ name: values.name, id: user?.id });
+    }
   };
 
   useEffect(() => {
-    if (status === "succeeded") {
+    if (statusUpdate === "succeeded" && user?.name) {
       toast.success("The name was successfully saved!");
       nextStep();
     }
-  }, [status]);
+  }, [statusUpdate, user?.name]);
 
   useEffect(() => {
     if (error) {
@@ -45,11 +46,16 @@ const CardPersonalize = () => {
             full
             placeholder="Enter your full name"
             {...register("name")}
-            disabled={status === "loading"}
+            disabled={statusUpdate === "loading"}
           />
         </CardTemplate.Content>
         <CardTemplate.Footer className="flex gap-4 mt-4">
-          <Button disabled={status === "loading"} size="xl" full type="submit">
+          <Button
+            disabled={statusUpdate === "loading"}
+            size="xl"
+            full
+            type="submit"
+          >
             Send
           </Button>
         </CardTemplate.Footer>

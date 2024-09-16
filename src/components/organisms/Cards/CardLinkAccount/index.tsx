@@ -1,12 +1,24 @@
 "use client";
+import { useNavigationOnboarding } from "@/hooks";
 
 import { Button, Icon } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
 import { usePlaid } from "@/hooks";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const CardLinkAccount = () => {
-  const { openPlaidLink, isPlaidLinkReady, isLoading } = usePlaid();
+  const { nextStep } = useNavigationOnboarding();
+  const { openPlaidLink, isPlaidLinkReady, isLoading, transactions } =
+    usePlaid();
+
+  useEffect(() => {
+    if (transactions?.length) {
+      toast.success("The bank connection was successful");
+      nextStep();
+    }
+  }, [transactions?.length]);
   return (
     <CardTemplate
       title="Here's why you should link yours:"

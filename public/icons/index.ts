@@ -9,6 +9,7 @@ import GradHatIcon from "./academic-cap.svg";
 import MicroChipIcon from "./chip.svg";
 import SwitchArrowsIcon from "./switch-horizontal.svg";
 import CheckIcon from "./check.svg";
+import ShieldCompleteIcon from "./shield.svg";
 
 export default {
   CloseIcon,
@@ -22,4 +23,5 @@ export default {
   MicroChipIcon,
   SwitchArrowsIcon,
   CheckIcon,
+  ShieldCompleteIcon,
 };

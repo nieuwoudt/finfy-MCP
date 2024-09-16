@@ -7,6 +7,7 @@ import {
   CardFinalUserPolicy,
   CardLinkAccount,
   CardSelectCurrency,
+  CardSetupComplete,
 } from "@/components/organisms";
 import { RouteOnboardingValues } from "@/types";
 import { routesOnboarding } from "@/utils/variables";
@@ -27,6 +28,7 @@ const stepComponents: {
   [routesOnboarding.finalUserPolicy]: CardFinalUserPolicy,
   [routesOnboarding.connectBank]: CardLinkAccount,
   [routesOnboarding.selectCurrency]: CardSelectCurrency,
+  [routesOnboarding.setupComplete]: CardSetupComplete,
 };
 
 const OnboardingStep: FC<OnboardingStepPops> = ({ step }) => {

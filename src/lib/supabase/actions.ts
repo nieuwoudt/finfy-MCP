@@ -160,7 +160,6 @@ export const saveTransactionsAndAccounts = async (
       transaction_type: transaction.transaction_type,
       unofficial_currency_code: transaction.unofficial_currency_code,
       website: transaction.website,
-      user_id: 10,
     }));
 
     const { error: transactionError } = await supabase

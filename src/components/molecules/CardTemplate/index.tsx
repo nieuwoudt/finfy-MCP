@@ -1,9 +1,9 @@
 import { Card } from "@/components/atoms";
 import { cn } from "@/lib/utils";
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, ReactNode } from "react";
 
 interface CardTemplateComponentProps extends PropsWithChildren {
-  title?: string;
+  title?: ReactNode;
   description?: string;
   classes?: {
     card?: string;
@@ -28,7 +28,7 @@ const CardTemplateComponent: FC<CardTemplateComponentProps> = ({
     >
       {(title || description) && (
         <Card.Header className={cn(classes?.cardHeader, "mb-4")}>
-          {title && (
+          {title && typeof title === "string" ? (
             <Card.Title
               className={cn(
                 "text-white text-2xl text-start font-bold",
@@ -37,6 +37,8 @@ const CardTemplateComponent: FC<CardTemplateComponentProps> = ({
             >
               {title}
             </Card.Title>
+          ) : (
+            title
           )}
           {description && (
             <Card.Description

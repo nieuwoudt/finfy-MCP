@@ -5,22 +5,35 @@ import { AppStore } from "../..";
 import { getErrorMessage } from "@/utils/helpers";
 import { User } from "@/types";
 
+type Status = "idle" | "loading" | "succeeded" | "failed";
 interface UsersState {
   user: User | null;
-  status: "idle" | "loading" | "succeeded" | "failed";
+  status: Status;
+  statusUpdate: Status;
   error: string | null;
 }
 
 const initialState: UsersState = {
   user: null,
   status: "idle",
+  statusUpdate: "idle",
   error: null,
 };
 
-export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
-  const response = await axios.get("/api/get-user");
-  return response.data;
-});
+export const fetchUserByEmail = createAsyncThunk<User>(
+  "users/fetchUserByEmail",
+  async () => {
+    const response = await axios.get("/api/get-user");
+    const email = response.data.email;
+    const { data, error } = await supabase
+      .from("users")
+      .select()
+      .eq("email", email)
+      .single();
+    if (error) throw error;
+    return data!;
+  }
+);
 
 export const fetchUserById = createAsyncThunk<User, number>(
   "users/fetchUser",
@@ -50,14 +63,14 @@ export const createUser = createAsyncThunk<User, Pick<User, "email">>(
 export const updateUser = createAsyncThunk<User, Partial<User>>(
   "users/updateUser",
   async (updatedUser) => {
-    const { email, ...dataUser } = updatedUser;
-    const { data, error } = await supabase
+    const { id, ...dataUser } = updatedUser;
+    const { error } = await supabase
       .from("users")
       .update(dataUser)
-      .eq("email", email)
+      .eq("id", id)
       .single();
     if (error) throw error;
-    return data!;
+    return dataUser as User;
   }
 );
 
@@ -79,15 +92,14 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUser.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
-        state.status = "succeeded";
-        state.user = action.payload;
-      })
-      .addCase(fetchUser.rejected, (state, action) => {
-        state.status = "failed";
+      .addCase(fetchUserByEmail.pending, (state) => {})
+      .addCase(
+        fetchUserByEmail.fulfilled,
+        (state, action: PayloadAction<User>) => {
+          state.user = action.payload;
+        }
+      )
+      .addCase(fetchUserByEmail.rejected, (state, action) => {
         state.error = getErrorMessage(action.error) || null;
       })
       .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
@@ -97,14 +109,14 @@ const userSlice = createSlice({
         state.error = getErrorMessage(action.error) || null;
       })
       .addCase(updateUser.pending, (state) => {
-        state.status = "loading";
+        state.statusUpdate = "loading";
       })
       .addCase(updateUser.fulfilled, (state, action: PayloadAction<User>) => {
-        state.status = "succeeded";
-        state.user = action.payload;
+        state.statusUpdate = "succeeded";
+        state.user = { ...state.user, ...action.payload };
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.status = "failed";
+        state.statusUpdate = "failed";
         state.error = getErrorMessage(action.error) || null;
       })
       .addCase(deleteUser.fulfilled, (state) => {
