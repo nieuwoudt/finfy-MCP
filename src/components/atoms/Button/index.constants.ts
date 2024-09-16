@@ -2,7 +2,7 @@ import type { Color, Size } from "./index.types";
 
 const variantClasses: Record<Color, string> = {
   default: "bg-purple-15 text-white shadow hover:bg-purple-5",
-  destructive: "bg-destructive text-white shadow-sm hover:bg-destructive/90",
+  destructive: "text-purple-15 bg-purple-15 bg-opacity-10 hover:bg-opacity-30",
   outline:
     "border border-input bg-background shadow-sm hover:bg-navy-15 hover:text-navy-15-foreground",
   secondary: "bg-secondary text-white shadow-sm hover:bg-secondary/80",

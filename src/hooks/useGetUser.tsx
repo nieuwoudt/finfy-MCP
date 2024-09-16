@@ -12,18 +12,18 @@ const useGetUser = () => {
 
   const auth = getAuth();
 
-  auth.onAuthStateChange(async (event, session) => {
-    const sessionUser = session?.user;
-    const shouldUpdate = sessionUser?.updated_at !== user?.updated_at;
-    if (shouldUpdate) {
-      if (sessionUser) {
-        const user = await fetch("/api/get-user").then((res) => res.json());
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    }
-  });
+  // auth.onAuthStateChange(async (event, session) => {
+  //   const sessionUser = session?.user;
+  //   const shouldUpdate = sessionUser?.updated_at !== user?.updated_at;
+  //   if (shouldUpdate) {
+  //     if (sessionUser) {
+  //       const user = await fetch("/api/get-user").then((res) => res.json());
+  //       setUser(user);
+  //     } else {
+  //       setUser(null);
+  //     }
+  //   }
+  // });
 
   return user;
 };

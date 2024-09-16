@@ -2,8 +2,13 @@
 
 import { CustomButtonIcon, Icon } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
-import { useNavigationOnboarding } from "@/hooks";
-
+import { useGetUser, useNavigationOnboarding } from "@/hooks";
+import { RootState } from "@/lib/store";
+import { updateUser } from "@/lib/store/features/user/userSlice";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 const buttonData = [
   {
     icon: <Icon type="UserIcon" className="h-8 text-grey-15" />,
@@ -28,10 +33,28 @@ const buttonData = [
 
 const CardSelectPlan = () => {
   const { nextStep } = useNavigationOnboarding();
+  const userCurrent = useSelector((state: RootState) => state.user.user);
+  const error = useSelector((state: RootState) => state.user.error);
+  const status = useSelector((state: RootState) => state.user.statusUpdate);
+  const dispatch = useAppDispatch();
 
-  const handleCodeChange = async (code: string) => {
-    nextStep();
+  const handleCodeChange = async (plan: string) => {
+    if (userCurrent?.id) {
+      await dispatch(updateUser({ plan, id: userCurrent.id }));
+    }
   };
+
+  useEffect(() => {
+    if (status === "succeeded" && userCurrent?.plan) {
+      nextStep();
+    }
+  }, [status, userCurrent?.plan]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <CardTemplate
@@ -48,6 +71,7 @@ const CardSelectPlan = () => {
               key={index}
               icon={button.icon}
               title={button.title}
+              disabled={status === "loading"}
               description={button.description}
               onClick={() => handleCodeChange(button.case)}
             />
