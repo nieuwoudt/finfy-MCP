@@ -65,6 +65,12 @@ export async function middleware(request: NextRequest) {
         new URL(`/onboarding/${stepsOnboarding.at(0)}`, request.url)
       );
     }
+  } else {
+    const user = await getUser(response, request);
+    console.log(user, "user");
+    if (!user && !isAuthRoute) {
+      return NextResponse.redirect(new URL("/authentication", request.url));
+    }
   }
 }
 

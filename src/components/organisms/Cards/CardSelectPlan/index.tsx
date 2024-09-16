@@ -39,7 +39,9 @@ const CardSelectPlan = () => {
   const dispatch = useAppDispatch();
 
   const handleCodeChange = async (plan: string) => {
-    await dispatch(updateUser({ plan, email: user.email }));
+    if (user.email) {
+      await dispatch(updateUser({ plan, email: user.email }));
+    }
   };
 
   useEffect(() => {
