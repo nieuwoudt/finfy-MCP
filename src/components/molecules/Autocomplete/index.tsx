@@ -8,6 +8,7 @@ import { OptionsType } from "@/types";
 
 import { AutocompleteProps } from "./index.types";
 import { Loader2 } from "lucide-react";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 const Autocomplete: FC<AutocompleteProps> = ({
   classes,
@@ -29,9 +30,13 @@ const Autocomplete: FC<AutocompleteProps> = ({
   const [currentOptions, setCurrentOptions] = useState<OptionsType[] | null>(
     options || null
   );
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [isRenderTop, setIsRenderTop] = useState(false);
   const [value, setValue] = useState("");
+  const selectedCurrency = searchParams.get("currency");
   const [selectOption, setSelectOption] = useState<OptionsType | null>(
     defaultValue || null
   );
@@ -59,6 +64,9 @@ const Autocomplete: FC<AutocompleteProps> = ({
       handleOptionClick(option);
     }
     setValue("");
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("currency", option.value);
+    router.push(`${pathname}?${params.toString()}`, undefined);
     setSelectOption(option);
     handleCloseList();
   };
@@ -116,6 +124,17 @@ const Autocomplete: FC<AutocompleteProps> = ({
   useEffect(() => {
     if (options.length) {
       setCurrentOptions(options);
+    }
+  }, [options]);
+
+  useEffect(() => {
+    if (selectedCurrency) {
+      const selectedOption = options.find(
+        (option) => option.value === selectedCurrency
+      );
+      if (selectedOption) {
+        setSelectOption(selectedOption);
+      }
     }
   }, [options]);
 
