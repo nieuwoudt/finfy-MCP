@@ -71,30 +71,30 @@ export async function middleware(request: NextRequest) {
     if (!user && !isAuthRoute) {
       return NextResponse.redirect(new URL("/authentication", request.url));
     }
-    const { data } = await supabase
-      .from("users")
-      .select()
-      .eq("email", user?.email)
-      .single();
+    // const { data } = await supabase
+    //   .from("users")
+    //   .select()
+    //   .eq("email", user?.email)
+    //   .single();
 
-    if (!data.plan) {
-      return NextResponse.redirect(
-        new URL("/onboarding/select-plan", request.url)
-      );
-    }
+    // if (!data?.plan) {
+    //   return NextResponse.redirect(
+    //     new URL("/onboarding/select-plan", request.url)
+    //   );
+    // }
 
-    if (!data.name) {
-      new URL("/onboarding/personalize", request.url);
-    }
+    // if (!data?.name) {
+    //   new URL("/onboarding/personalize", request.url);
+    // }
 
-    if (!data.selected_currency) {
-      return NextResponse.redirect(
-        new URL("/onboarding/select-currency", request.url)
-      );
-    }
-    if (path !== "/dashboard") {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
+    // if (!data?.selected_currency) {
+    //   return NextResponse.redirect(
+    //     new URL("/onboarding/select-currency", request.url)
+    //   );
+    // }
+    // if (path !== "/dashboard") {
+    //   return NextResponse.redirect(new URL("/dashboard", request.url));
+    // }
   }
 }
 
