@@ -1,8 +1,8 @@
 import { Label } from "@/components/atoms";
-import cx from "clsx";
 import { FC, forwardRef } from "react";
 
 import { FieldProps } from "./index.types";
+import { cn } from "@/lib/utils";
 
 const Field: FC<FieldProps> = forwardRef(
   ({
@@ -17,9 +17,9 @@ const Field: FC<FieldProps> = forwardRef(
   }, ref) => {
     const { left, right } = sideElements;
     return (
-      <div className={cx(classes?.wrapper, full ? "w-full" : "w-fit")}>
+      <div className={cn(classes?.wrapper, full ? "w-full" : "w-fit")}>
         <div
-          className={cx(
+          className={cn(
             "flex flex-col w-auto gap-2 relative",
             full ? "w-full" : "w-fit",
             classes?.container
@@ -28,7 +28,7 @@ const Field: FC<FieldProps> = forwardRef(
           {label && (
             <Label
               isRequired={isRequired}
-              className={cx(classes?.label, {
+              className={cn(classes?.label, {
                 "!text-accent-content": Boolean(helperText),
               })}
               htmlFor={id}
@@ -37,7 +37,7 @@ const Field: FC<FieldProps> = forwardRef(
             </Label>
           )}
           <div
-            className={cx(
+            className={cn(
               "rounded-lg overflow-hidden px-3 py-2 text-base font-medium bg-navy-15 border flex items-center shadow-sm border-deep-slate",
               classes?.containerInput,
               full ? "w-full" : "w-fit",
@@ -49,7 +49,7 @@ const Field: FC<FieldProps> = forwardRef(
               id={id}
               {...props}
               ref={ref}
-              className={cx(
+              className={cn(
                 "text-white outline-none bg-transparent h-full w-full placeholder:text-base placeholder:font-light",
                 props?.className
               )}
@@ -58,7 +58,7 @@ const Field: FC<FieldProps> = forwardRef(
           </div>
           {helperText && (
             <span
-              className={cx(
+              className={cn(
                 "text-accent-content text-xs font-light absolute top-full",
                 classes?.helperText
               )}
