@@ -8,7 +8,7 @@ const PersonalizePop = () => {
       <Dialog.Content className="text-white bg-navy-25 rounded-none border-none">
         <Dialog.Header>
           <div className="flex items-center">
-            <Icon type="SparkleIcon" className="size-6 mr-1" />
+            <Icon type="SparkleIcon" className="size-6 mr-1 h-5 w-5 fill-grey-15" />
             <Dialog.Title className="font-semibold text-2xl">
               Personalization
             </Dialog.Title>
