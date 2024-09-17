@@ -58,6 +58,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
     if (handleOptionClick) {
       handleOptionClick(option);
     }
+    setValue("");
     setSelectOption(option);
     handleCloseList();
   };
