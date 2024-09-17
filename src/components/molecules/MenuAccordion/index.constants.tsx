@@ -4,13 +4,18 @@ import { Icon } from "@/components/atoms";
 export const menuItems: MenuItem[] = [
   {
     value: "assistant",
-    icon: () => <Icon type="SparkleIcon" />,
+    icon: () => (
+      <Icon
+        type="SparkleIcon"
+        className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
+      />
+    ),
     title: "Assistant",
     link: "/",
     contents: [
       {
         title: "🗂️ Manage, track, and review accounts.",
-        date: "2024-12-27", // Corrected date format
+        date: "2024-12-27",
         chatId: "12345",
         category: "assistant",
       },
@@ -30,8 +35,12 @@ export const menuItems: MenuItem[] = [
   },
   {
     value: "goals",
-    // icon: () => <Icon type="ChartIcon" />,
-    icon: () => <></>,
+    icon: () => (
+      <Icon
+        type="GoalsIcon"
+        className="w-6 h-6 stroke-grey-15 group-hover:stroke-white fill-grey-15 group-hover:fill-white"
+      />
+    ),
     title: "Goals",
     link: "/goals",
     contents: [
@@ -57,15 +66,24 @@ export const menuItems: MenuItem[] = [
   },
   {
     value: "payments",
-    // icon: () => <Icon type="CreditCardIcon" />,
-    icon: () => <></>,
+    icon: () => (
+      <Icon
+        type="CreditCardIcon"
+        className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
+      />
+    ),
     title: "Payments",
     link: "/payments",
     contents: [],
   },
   {
     value: "discover",
-    icon: () => <Icon type="SearchIcon" />,
+    icon: () => (
+      <Icon
+        type="SearchIcon"
+        className="w-5 h-5 fill-grey-15 group-hover:fill-white"
+      />
+    ),
     title: "Discover",
     link: "/discover",
     contents: [
@@ -91,8 +109,12 @@ export const menuItems: MenuItem[] = [
   },
   {
     value: "advisor",
-    icon: () => <></>,
-    // icon: () => <Icon type="UsersIcon" />,
+    icon: () => (
+      <Icon
+        type="UsersIcon"
+        className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
+      />
+    ),
     title: "Advisors",
     link: "/advisors",
     contents: [

@@ -36,15 +36,18 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
     pathname === item.link || pathname.startsWith(`${item.link}/`);
 
   return (
-    <Accordion.Item value={item.value}>
+    <Accordion.Item className="flex flex-col gap-0.5" value={item.value}>
       <Accordion.Trigger
-        className={cn("py-2 rounded-sm p-1 mb-2 hover:bg-navy-5", {
-          "bg-navy-25": isActive,
-        })}
+        className={cn(
+          "p-2 rounded-sm group hover:text-white hover:bg-navy-5",
+          {
+            "bg-navy-25": isActive,
+          }
+        )}
       >
-        <div className="flex mx-1 my-2 items-center">
-          <Icon className="size-5" />
-          <span className="ml-1">{item.title}</span>
+        <div className="flex gap-3 items-center">
+          <Icon />
+          <span>{item.title}</span>
         </div>
       </Accordion.Trigger>
       {Object.keys(groupedContents).length ? (
@@ -67,7 +70,6 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
             href={item.link}
             className="menu-list-btn flex gap-1 ml-1 items-center"
           >
-            {/* <Icon type="ChatBubbleIcon" /> */}
             Start a new thread...
           </Link>
         </Accordion.Content>
@@ -78,7 +80,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
 
 const MenuAccordion: FC = () => {
   return (
-    <Accordion type="single" collapsible className="w-[236px]">
+    <Accordion type="single" collapsible className="flex flex-col gap-0.5">
       {menuItems.map((item) => (
         <MenuAccordionItem key={item.value} item={item} />
       ))}

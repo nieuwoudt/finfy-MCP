@@ -2,6 +2,7 @@
 
 export const localStorageKeys = {
   darkMode: "darkMode",
+  sidebar: "sidebar"
 };
 
 export const routesOnboarding = {

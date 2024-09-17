@@ -6,8 +6,8 @@ export interface ButtonProps {
 }
 
 const HomeAssistButton: React.FC<ButtonProps> = ({ Icon, text }) => (
-  <div className="home-assist-btn group">
-    <div className="text-purple-15 group-hover:text-white size-5">{Icon}</div>
+  <div className="home-assist-btn group items-center flex">
+    {Icon}
     {text}
   </div>
 );
@@ -17,7 +17,7 @@ const buttonsData: ButtonProps[] = [
     Icon: (
       <Icon
         type="SearchIcon"
-        className="text-purple-15 group-hover:text-white size-5"
+        className="fill-purple-15 group-hover:fill-white h-3.5 w-5"
       />
     ),
     text: "Focus",
@@ -26,7 +26,7 @@ const buttonsData: ButtonProps[] = [
     Icon: (
       <Icon
         type="UserSolidIcon"
-        className="text-purple-15 group-hover:text-white size-5"
+        className="fill-purple-15 group-hover:fill-white h-3.5 w-5"
       />
     ),
     text: "Link Accounts",
@@ -35,7 +35,7 @@ const buttonsData: ButtonProps[] = [
     Icon: (
       <Icon
         type="PaperClipIcon"
-        className="text-purple-15 group-hover:text-white size-5"
+        className="fill-purple-15 group-hover:fill-white h-3.5 w-5"
       />
     ),
     text: "Attach",

@@ -6,7 +6,7 @@ const variantClasses: Record<Color, string> = {
   outline:
     "border border-input bg-background shadow-sm hover:bg-navy-15 hover:text-navy-15-foreground",
   secondary: "bg-secondary text-white shadow-sm hover:bg-secondary/80",
-  ghost: "hover:bg-navy-5 text-white",
+  ghost: "hover:bg-navy-5 text-grey-15 hover:text-white",
   link: "text-white underline-offset-4 hover:underline",
 };
 

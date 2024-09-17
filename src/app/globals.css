@@ -46,7 +46,7 @@
 @layer utilities {
   /* Right sidebar */
   .right-sidebar {
-    @apply no-scrollbar h-screen bg-navy-15 text-grey-15 flex flex-col w-[256px] !important;
+    @apply no-scrollbar h-screen bg-navy-15 text-grey-15 flex flex-col !important;
   }
 
   .text-16 {
