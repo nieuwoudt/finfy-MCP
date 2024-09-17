@@ -87,7 +87,7 @@ const HeaderText = () => {
   }
 
   return (
-    <div className="flex lg:flex-1 flex-col w-full items-center justify-center pb-5 lg:pb-10">
+    <div className="flex flex-col w-full items-center justify-center pb-5 lg:pb-10">
       {content && (
         <>
           <h1 className="header text-center">{content.title}</h1>

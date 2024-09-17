@@ -20,7 +20,7 @@ const UserSettings = () => {
           <ButtonTemplates />
           <p className="text-grey-15 text-xs my-2">Quick settings</p>
           <div className="flex items-center cursor-pointer hover:text-grey-5 mb-1">
-            <Icon type="SparkleIcon" className="size-4 text-grey-15 mr-1" />
+            <Icon type="SparkleIcon" className="w-4 h-4 fill-grey-15 mr-1" />
             <PersonalizePop />
           </div>
           <Link
@@ -31,7 +31,7 @@ const UserSettings = () => {
             All settings
           </Link>
           <button className="flex items-center cursor-pointer hover:text-grey-5">
-            <Icon type="LoginIcon" className="size-4 text-grey-15 mr-1" />
+            <Icon type="LoginIcon" className="size-4 stroke-grey-15 mr-1" />
             Log Out
           </button>
         </Accordion.Content>

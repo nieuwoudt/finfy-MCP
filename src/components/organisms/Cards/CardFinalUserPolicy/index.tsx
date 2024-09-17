@@ -53,7 +53,7 @@ const CardFinalUserPolicy = () => {
             </div>
             <div className="flex gap-2">
               <div className="flex w-24 items-center">
-                <Icon type="MicroChipIcon" />
+                <Icon type="MicroChipIcon" className="w-10 h-10 stroke-grey-15" />
               </div>
               <p>
                 Imali may change usage limits, functionality, or policies as we
