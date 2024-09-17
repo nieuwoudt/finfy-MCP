@@ -19,15 +19,16 @@ const initialState: UsersState = {
   error: null,
 };
 
-export const fetchUserByEmail = createAsyncThunk<User>(
-  "users/fetchUserByEmail",
+export const fetchUserByEmailOrPhone = createAsyncThunk<User>(
+  "users/fetchUserByEmailOrPhone",
   async () => {
     const response = await axios.get("/api/get-user");
     const email = response.data.email;
+    const phone = response.data.phone;
     const { data, error } = await supabase
       .from("users")
       .select()
-      .eq("email", email)
+      .eq(phone ? "phone" : "email", phone || email)
       .single();
     if (error) throw error;
     return data!;
@@ -91,14 +92,14 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserByEmail.pending, (state) => {})
+      .addCase(fetchUserByEmailOrPhone.pending, (state) => {})
       .addCase(
-        fetchUserByEmail.fulfilled,
+        fetchUserByEmailOrPhone.fulfilled,
         (state, action: PayloadAction<User>) => {
           state.user = action.payload;
         }
       )
-      .addCase(fetchUserByEmail.rejected, (state, action) => {
+      .addCase(fetchUserByEmailOrPhone.rejected, (state, action) => {
         state.error = getErrorMessage(action.error) || null;
       })
       .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {

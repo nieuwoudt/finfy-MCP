@@ -8,17 +8,22 @@ import { signInWithOtp } from "@/lib/supabase/actions";
 import toast from "react-hot-toast";
 import { useTransition } from "react";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { updateUser } from "@/lib/store/features/user/userSlice";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 const CardVerifyPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
   const { nextStep } = useNavigationOnboarding();
+  const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
+  const user = useSelector((state: RootState) => state.user.user);
+
   const {
     setValue,
     getValues,
-    trigger,
     formState: { errors },
     handleSubmit,
   } = useForm({
@@ -32,15 +37,21 @@ const CardVerifyPhoneNumber = () => {
 
   const onSubmit = async (values: { phoneNumber: string }) => {
     startTransition(async () => {
-      await axios.post("/api/update-user", {
-        phone: values.phoneNumber,
-      });
       const { errorMessage } = await signInWithOtp(values.phoneNumber);
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
         const params = new URLSearchParams(searchParams.toString());
         params.set("phone", values.phoneNumber);
+        if (user?.id) {
+          await dispatch(
+            updateUser({
+              phone: values.phoneNumber,
+              id: user.id,
+            })
+          );
+        }
+
         const RESEND_TIME = 60;
         localStorage.setItem(
           "resendTimer",

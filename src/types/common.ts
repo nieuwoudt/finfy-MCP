@@ -22,6 +22,7 @@ export interface User {
   created_at: string;
   plan: string;
   selected_currency: string;
+  phone: string;
 }
 
 export interface Transaction {

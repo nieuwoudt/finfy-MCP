@@ -6,7 +6,7 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  fetchUserByEmail,
+  fetchUserByEmailOrPhone,
 } from "@/lib/store/features/user/userSlice";
 import { User } from "@/types";
 
@@ -16,7 +16,7 @@ export const useUser = () => {
   const userState = useSelector((state: RootState) => state.user);
 
   const fetchCurrentUser = useCallback(() => {
-    dispatch(fetchUserByEmail());
+    dispatch(fetchUserByEmailOrPhone());
   }, [dispatch]);
 
   const fetchUserByIdCallback = useCallback(
