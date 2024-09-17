@@ -17,3 +17,4 @@ export { MenuAccordion } from "./MenuAccordion";
 export { HeaderText } from "./HeaderText";
 export { HomeSuggestBoxes } from "./HomeSuggestBoxes";
 export { HomeAssistButtons } from "./HomeAssistButtons";
+export { Header } from "./Header";

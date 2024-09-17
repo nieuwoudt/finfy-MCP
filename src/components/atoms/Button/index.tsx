@@ -30,7 +30,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
     const isIconOnly = (IconLeft || IconRight) && !children;
 
     const commonClassName = cn(
-      "flex justify-center items-center cursor-pointer transition-all rounded-md md:rounded-lg text-center font-semibold text-base",
+      "flex justify-center group items-center cursor-pointer transition-all rounded-md md:rounded-lg text-center font-semibold text-base",
       full ? "w-full" : "w-fit",
       variantClasses[variant],
       isIconOnly ? sizeClassesWithIconOnly[size] : sizeClassesWithText[size],

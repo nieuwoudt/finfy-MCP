@@ -24,8 +24,24 @@ import LightningBolt from "./lightning-bolt.svg";
 import SearchIcon from "./search.svg";
 import UserSolidIcon from "./user-solid.svg";
 import PaperClipIcon from "./paper-clip.svg";
+import SunIcon from "./sun.svg";
+import MoonIcon from "./moon.svg";
+
+import ShareIcon from "./share.svg";
+import PenIcon from "./pencil.svg";
+import InboxIcon from "./inbox-in.svg";
+import DeleteIcon from "./trash.svg";
+import CreditCardIcon from "./credit-card.svg";
+import GoalsIcon from "./goals.svg";
+import UsersIcon from "./users.svg";
+import DownloadIcon from "./Download.svg";
+import DotsIcon from "./dots.svg";
 
 export default {
+  DownloadIcon,
+  GoalsIcon,
+  UsersIcon,
+  CreditCardIcon,
   CloseIcon,
   ImaliLogo,
   DollarBankIcon,
@@ -52,4 +68,11 @@ export default {
   UserSolidIcon,
   SearchIcon,
   PaperClipIcon,
+  SunIcon,
+  MoonIcon,
+  ShareIcon,
+  PenIcon,
+  InboxIcon,
+  DeleteIcon,
+  DotsIcon,
 };
