@@ -34,7 +34,7 @@ import DeleteIcon from "./trash.svg";
 import CreditCardIcon from "./credit-card.svg";
 import GoalsIcon from "./goals.svg";
 import UsersIcon from "./users.svg";
-import DownloadIcon from "./Download.svg";
+import DownloadIcon from "./download.svg";
 import DotsIcon from "./dots.svg";
 
 export default {
