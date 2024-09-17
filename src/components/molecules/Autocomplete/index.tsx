@@ -134,6 +134,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
       );
       if (selectedOption) {
         setSelectOption(selectedOption);
+        handleOptionClick && handleOptionClick(selectedOption);
       }
     }
   }, [options]);
