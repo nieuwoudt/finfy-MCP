@@ -53,7 +53,7 @@ export const signInWithOtp = async (phone: string) => {
   try {
     const { auth } = supabase;
     const { error } = await auth.signInWithOtp({
-      phone,
+      phone: `+${phone}`,
     });
     if (error) throw error;
     return { errorMessage: null };
