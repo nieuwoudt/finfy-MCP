@@ -21,3 +21,5 @@ export const routesOnboarding = {
 } as const;
 
 export const stepsOnboarding = Object.values(routesOnboarding);
+
+export const THEMES = { light: "", dark: ".dark" } as const;

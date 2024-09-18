@@ -5,3 +5,7 @@ export { AuthenticationPage } from "./Authentication";
 export { ConfirmEmailPage } from "./ConfirmEmail";
 export { OnboardingPage } from "./Onboarding";
 export { DashboardPage } from "./Dashboard";
+export { SettingsPage } from "./Settings";
+export { DiscoverPage } from "./Discover";
+export { GoalsPage } from "./Goals";
+export { AdvisorsPage } from "./Advisors";

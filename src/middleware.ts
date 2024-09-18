@@ -71,7 +71,7 @@ export async function middleware(request: NextRequest) {
     if (!user && !isAuthRoute) {
       return NextResponse.redirect(new URL("/authentication", request.url));
     }
-    if (path !== "/dashboard") {
+    if (!path.includes("/dashboard")) {
       const { data } = await supabase
         .from("users")
         .select()

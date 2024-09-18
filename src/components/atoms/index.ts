@@ -15,3 +15,7 @@ export { Textarea } from "./Textarea";
 export { Switch } from "./Switch";
 export { DropdownMenu } from "./DropdownMenu";
 export { SuggestedBox } from "./SuggestedBox";
+export { SeparatorLine } from "./SeparatorLine";
+export { Tab } from "./Tab";
+export { Select } from "./Select";
+export { Chart } from "./Chart";

@@ -75,10 +75,6 @@
     @apply flex items-center gap-1 cursor-pointer hover:bg-purple-15 hover:text-white px-2 rounded-full;
   }
 
-  .chat-input {
-    @apply border rounded-md h-16 text-grey-15 flex justify-between items-center border-navy-5 bg-navy-15 pr-2;
-  }
-
   .co-pilot-btn {
     @apply h-6 rounded-full gap-1 text-sm flex items-center border bg-navy-5 px-2 w-fit shadow-none border-navy-5 hover:border-purple-5;
   }

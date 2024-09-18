@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <main className="flex w-full h-screen font-inter">
       <Sidebar />
-      <div className="flex-grow flex">{children}</div>
+      <div className="flex-grow flex bg-navy-25">{children}</div>
     </main>
   );
 }

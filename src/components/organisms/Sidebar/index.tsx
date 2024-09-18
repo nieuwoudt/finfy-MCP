@@ -32,8 +32,8 @@ const Sidebar = () => {
           </Link>
           <Button onClick={handleClose} variant="ghost">
             <Icon
-              className="cursor-pointer hover:text-grey-5"
-              type="LogOutIcon"
+              className="cursor-pointer stroke-2 w-6 h-6 stroke-grey-15 hover:stroke-grey-5"
+              type="CloseIcon"
             />
           </Button>
         </div>
@@ -91,10 +91,7 @@ const Sidebar = () => {
         >
           Business Profile
         </Button>
-        <div className="menu-button-btn flex space-x-2 items-center">
-          <UserSettings />
-          <Icon type="GearIcon" />
-        </div>
+        <UserSettings />
         <div className="menu-button-btn">
           <Button full className="!rounded-sm gap-1.5 h-7">
             <Icon type="ExtLinkIcon" className="size-4 text-grey-15" />

@@ -18,3 +18,7 @@ export { HeaderText } from "./HeaderText";
 export { HomeSuggestBoxes } from "./HomeSuggestBoxes";
 export { HomeAssistButtons } from "./HomeAssistButtons";
 export { Header } from "./Header";
+export { ThemeSelector } from "./ThemeSelector";
+export { ThemeButtons } from "./ThemeButtons";
+export { ChatMessageInput } from "./ChatMessageInput";
+export * from "./Charts";
