@@ -5,22 +5,31 @@ import {
   PersonalizePop,
   ButtonTemplates,
 } from "@/components/molecules";
+import { useSidebar } from "@/hooks";
 import { signOutAction } from "@/lib/supabase/actions";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
 
 const UserSettings = () => {
+  const { open: openSidebar } = useSidebar();
   const [open, setOpen] = useState(false);
   return (
-    <div className="menu-button-btn flex space-x-2 items-center">
+    <div
+      className={cn("menu-button-btn flex space-x-2 items-center", {
+        "lg:!px-1 lg:!py-2 lg:justify-center": !openSidebar,
+      })}
+    >
       <Accordion
         onValueChange={(value) => setOpen(Boolean(value))}
         type="single"
         collapsible
-        className="w-full "
+        className={cn("w-full", {
+          "block lg:hidden": !openSidebar,
+        })}
       >
         <Accordion.Item value="item-1">
-          <Accordion.Trigger>
+          <Accordion.Trigger className="text-nowrap">
             <UserAvatar className="rounded-sm" />
             Niewoudt Gresse
           </Accordion.Trigger>
@@ -58,7 +67,14 @@ const UserSettings = () => {
           </Accordion.Content>
         </Accordion.Item>
       </Accordion>
-      {!open && <Icon type="GearIcon" className="min-w-4 h-4  fill-white" />}
+      <UserAvatar
+        className={cn("rounded-sm hidden", {
+          "lg:block": !openSidebar,
+        })}
+      />
+      {!open && openSidebar && (
+        <Icon type="GearIcon" className="min-w-4 h-4 fill-white" />
+      )}
     </div>
   );
 };

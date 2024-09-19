@@ -39,8 +39,10 @@ import QuestionMarkCircle from "./question-mark-circle.svg";
 import DocumentIcon from "./document.svg";
 import DollarIcon from "./dollar.svg";
 import SupportIcon from "./support.svg";
+import LogoIcon from "./logo.svg";
 
 export default {
+  LogoIcon,
   DownloadIcon,
   GoalsIcon,
   UsersIcon,

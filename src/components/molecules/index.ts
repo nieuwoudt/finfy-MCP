@@ -21,4 +21,5 @@ export { Header } from "./Header";
 export { ThemeSelector } from "./ThemeSelector";
 export { ThemeButtons } from "./ThemeButtons";
 export { ChatMessageInput } from "./ChatMessageInput";
+export { BurgerButton } from "./BurgerButton";
 export * from "./Charts";

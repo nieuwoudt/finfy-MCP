@@ -14,11 +14,9 @@ export const sidebarSlice = createSlice({
   reducers: {
     toggleSidebar: (state) => {
       state.open = !state.open;
-      // localStorage.setItem(localStorageKeys.sidebar, state.open.toString());
     },
     setSidebar: (state, action) => {
       state.open = action.payload;
-      // localStorage.setItem(localStorageKeys.sidebar, state.open.toString());
     },
   },
 });
