@@ -125,7 +125,7 @@ export const saveTransactionsAndAccounts = async (
 
     const { error: accountError } = await supabase
       .from("accounts")
-      .upsert(uniqueAccounts);
+      .insert(uniqueAccounts);
 
     if (accountError) {
       throw accountError;
