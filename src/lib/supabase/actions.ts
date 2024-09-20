@@ -98,7 +98,8 @@ export const resendCodeOTP = async (phone: string) => {
 };
 
 export const saveTransactionsAndAccounts = async (
-  transactions: Transaction[]
+  transactions: Transaction[],
+  userId: number
 ) => {
   try {
     const uniqueAccounts = transactions.reduce(
@@ -113,6 +114,7 @@ export const saveTransactionsAndAccounts = async (
             balance: 0,
             status: "active",
             type: "default",
+            user_id: `${userId}`,
           };
           acc.push(account);
         }
@@ -160,6 +162,7 @@ export const saveTransactionsAndAccounts = async (
       transaction_type: transaction.transaction_type,
       unofficial_currency_code: transaction.unofficial_currency_code,
       website: transaction.website,
+      user_id: `${userId}`,
     }));
 
     const { error: transactionError } = await supabase

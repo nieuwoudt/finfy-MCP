@@ -55,6 +55,7 @@ export interface Transaction {
   transaction_type: string;
   unofficial_currency_code: string | null;
   website: string;
+  user_id: string;
 }
 
 export interface Account {

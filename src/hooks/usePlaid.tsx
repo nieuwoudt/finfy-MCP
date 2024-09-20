@@ -5,8 +5,10 @@ import { getErrorMessage } from "@/utils/helpers";
 import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import { usePlaidLink } from "react-plaid-link";
+import { useUser } from "./useUser";
 
 const usePlaid = () => {
+  const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -49,7 +51,9 @@ const usePlaid = () => {
         body: JSON.stringify({ access_token: token }),
       });
       const { transactions } = await response.json();
-      await saveTransactionsAndAccounts(transactions);
+      if (user?.id) {
+        await saveTransactionsAndAccounts(transactions, user.id);
+      }
       setTransactions(transactions);
     } catch (error) {
       toast.error(`Error fetching transactions: ${getErrorMessage(error)}`);
