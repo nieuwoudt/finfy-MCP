@@ -29,7 +29,7 @@ export const fetchUserByEmailOrPhone = createAsyncThunk<User>(
       const { data, error } = await supabase
         .from("users")
         .select()
-        .eq(phone ? "phone" : "email", phone || email)
+        .eq(email ? "email" : "phone", email || `+${phone}`)
         .single();
       if (error) throw error;
       return data!;
