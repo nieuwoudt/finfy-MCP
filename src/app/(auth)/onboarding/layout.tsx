@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <main className="bg-purple-15 min-h-screen flex flex-col w-full">
       <div className="flex-1 flex justify-center items-center p-6">{children}</div>
-      <FooterAuth />
+      <FooterAuth  />
     </main>
   );
 }

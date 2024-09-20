@@ -1,12 +1,46 @@
 "use client";
 
 import { Button, Icon, Textarea } from "@/components/atoms";
-import { useAutoResizeTextArea } from "@/hooks";
+import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
+import { useState } from "react";
 
 const ChatMessageInput = () => {
+  const { user } = useUser();
+  const [isLoading, setIsLoading] = useState(false);
+  const { createChat, sendChatQuery, createMessage, chatId, history } =
+    useChat();
   const textareaRef = useAutoResizeTextArea();
 
-  const onSubmit = (formData: FormData) => {};
+  const onSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+    const value = formData.get("message") as string;
+    const userId = user?.id;
+    if (value && userId) {
+      let currentChatId = chatId;
+      if (!currentChatId) {
+        const chat = await createChat(userId);
+        currentChatId = chat.payload.id;
+      }
+      console.log(currentChatId, "currentChatId");
+      if (currentChatId) {
+        createMessage({
+          chat_id: currentChatId,
+          user_id: userId,
+          content: value,
+          message_type: "user",
+          is_processed: true,
+        });
+        const data = await sendChatQuery(
+          `${userId}`,
+          currentChatId,
+          history,
+          value
+        );
+        console.log(data, "data");
+      }
+    }
+    setIsLoading(false);
+  };
 
   const setTextareaRef = (element: HTMLTextAreaElement) => {
     if (element) {

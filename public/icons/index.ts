@@ -41,8 +41,10 @@ import DollarIcon from "./dollar.svg";
 import SupportIcon from "./support.svg";
 import LogoIcon from "./logo.svg";
 import PlusIcon from "./plus.svg";
+import FullLogoIcon from "./full-logo.svg";
 
 export default {
+  FullLogoIcon,
   PlusIcon,
   LogoIcon,
   DownloadIcon,
