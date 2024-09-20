@@ -9,7 +9,6 @@ const useAutoResizeTextArea = (dependencies = []) => {
     if (textAreaRef.current) {
       textAreaRef.current.style.height = "24px";
       textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-      console.log(textAreaRef.current, "textAreaRef.current");
     }
   }, [textAreaRef, ...dependencies]);
 

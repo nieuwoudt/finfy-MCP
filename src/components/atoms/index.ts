@@ -19,3 +19,4 @@ export { SeparatorLine } from "./SeparatorLine";
 export { Tab } from "./Tab";
 export { Select } from "./Select";
 export { Chart } from "./Chart";
+export { Popover } from "./Popover";

@@ -46,7 +46,7 @@ const UserSettings = () => {
               <PersonalizePop />
             </div>
             <Link
-              href="settings"
+              href="/dashboard/settings"
               className="flex items-center  text-sm cursor-pointer group hover:text-grey-5 mb-1"
             >
               <Icon
@@ -56,7 +56,8 @@ const UserSettings = () => {
               All settings
             </Link>
             <button
-              onClick={signOutAction}
+              onClick={() => signOutAction()}
+              type="button"
               className="flex items-center text-sm cursor-pointer group hover:text-grey-5"
             >
               <Icon

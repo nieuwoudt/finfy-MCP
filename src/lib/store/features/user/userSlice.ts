@@ -23,15 +23,18 @@ export const fetchUserByEmailOrPhone = createAsyncThunk<User>(
   "users/fetchUserByEmailOrPhone",
   async () => {
     const response = await axios.get("/api/get-user");
-    const email = response.data.email;
-    const phone = response.data.phone;
-    const { data, error } = await supabase
-      .from("users")
-      .select()
-      .eq(phone ? "phone" : "email", phone || email)
-      .single();
-    if (error) throw error;
-    return data!;
+    const email = response?.data?.email;
+    const phone = response?.data?.phone;
+    if (email || phone) {
+      const { data, error } = await supabase
+        .from("users")
+        .select()
+        .eq(phone ? "phone" : "email", phone || email)
+        .single();
+      if (error) throw error;
+      return data!;
+    }
+    return null;
   }
 );
 
