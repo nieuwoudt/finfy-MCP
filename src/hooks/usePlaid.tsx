@@ -60,14 +60,17 @@ const usePlaid = () => {
     }
   };
 
-  const onSuccess = useCallback(async (publicToken: string) => {
-    setIsLoading(true);
-    const token = await exchangePublicToken(publicToken);
-    if (token) {
-      await fetchTransactions(token);
-    }
-    setIsLoading(false);
-  }, []);
+  const onSuccess = useCallback(
+    async (publicToken: string) => {
+      setIsLoading(true);
+      const token = await exchangePublicToken(publicToken);
+      if (token) {
+        await fetchTransactions(token);
+      }
+      setIsLoading(false);
+    },
+    [user?.id]
+  );
 
   const { open, ready } = usePlaidLink({
     token: linkToken,
