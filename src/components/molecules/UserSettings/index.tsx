@@ -3,40 +3,84 @@ import { Accordion, Icon } from "@/components/atoms";
 import {
   UserAvatar,
   PersonalizePop,
-  ButtonTemplates,
+  ThemeButtons,
 } from "@/components/molecules";
+import { useSidebar, useUser } from "@/hooks";
+import { signOutAction } from "@/lib/supabase/actions";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useState } from "react";
 
 const UserSettings = () => {
+  const { user } = useUser();
+  const { open: openSidebar } = useSidebar();
+  const [open, setOpen] = useState(false);
   return (
-    <Accordion type="single" collapsible className="w-full ">
-      <Accordion.Item value="item-1">
-        <Accordion.Trigger>
-          <UserAvatar className="rounded-sm" />
-          Niewoudt Gresse
-        </Accordion.Trigger>
-        <Accordion.Content className="mt-5 justify-start">
-          <p className="text-grey-15 text-xs">Appearance</p>
-          <ButtonTemplates />
-          <p className="text-grey-15 text-xs my-2">Quick settings</p>
-          <div className="flex items-center cursor-pointer hover:text-grey-5 mb-1">
-            <Icon type="SparkleIcon" className="w-4 h-4 fill-grey-15 mr-1" />
-            <PersonalizePop />
-          </div>
-          <Link
-            href="/settings"
-            className="flex items-center cursor-pointer hover:text-grey-5 mb-1"
-          >
-            <Icon type="GearIcon" className="size-4 text-grey-15 mr-1" />
-            All settings
-          </Link>
-          <button className="flex items-center cursor-pointer hover:text-grey-5">
-            <Icon type="LoginIcon" className="size-4 stroke-grey-15 mr-1" />
-            Log Out
-          </button>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Accordion>
+    <div
+      className={cn("menu-button-btn flex space-x-2 items-center", {
+        "lg:!px-1 lg:!py-2 lg:justify-center": !openSidebar,
+      })}
+    >
+      <Accordion
+        onValueChange={(value) => setOpen(Boolean(value))}
+        type="single"
+        collapsible
+        className={cn("w-full", {
+          "block lg:hidden": !openSidebar,
+        })}
+      >
+        <Accordion.Item value="item-1">
+          <Accordion.Trigger className="text-nowrap">
+            <UserAvatar className="!border-none !ml-0 !w-auto !h-auto" />
+            {user?.name}
+          </Accordion.Trigger>
+          <Accordion.Content className="mt-5 justify-start">
+            <p className="text-grey-15 text-xs mb-2">Appearance</p>
+            <ThemeButtons />
+            <p className="text-grey-15 text-xs my-2">Quick settings</p>
+            <div className="flex items-center cursor-pointer group hover:text-grey-5 mb-1">
+              <Icon
+                type="SparkleIcon"
+                className="w-4 h-4 stroke-white group-hover:stroke-grey-5 mr-1"
+              />
+              <PersonalizePop />
+            </div>
+            <Link
+              href="/dashboard/settings"
+              className="flex items-center  text-sm cursor-pointer group hover:text-grey-5 mb-1"
+            >
+              <Icon
+                type="GearIcon"
+                className="fill-white min-w-4 h-4 group-hover:fill-grey-5 mr-1"
+              />
+              All settings
+            </Link>
+            <button
+              onClick={() => signOutAction()}
+              type="button"
+              className="flex items-center text-sm cursor-pointer group hover:text-grey-5"
+            >
+              <Icon
+                type="LoginIcon"
+                className="w-4 h-4 stroke-white group-hover:stroke-grey-5 mr-1"
+              />
+              Log Out
+            </button>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+      <UserAvatar
+        className={cn(
+          "rounded-sm hidden !ml-0 !border-none !w-auto !h-auto justify-center items-center",
+          {
+            "lg:flex": !openSidebar,
+          }
+        )}
+      />
+      {!open && openSidebar && (
+        <Icon type="GearIcon" className="min-w-4 h-4 fill-white" />
+      )}
+    </div>
   );
 };
 

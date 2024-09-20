@@ -46,7 +46,7 @@ const CardVerifyPhoneNumber = () => {
         if (user?.id) {
           await dispatch(
             updateUser({
-              phone: values.phoneNumber,
+              phone: `+${values.phoneNumber}`,
               id: user.id,
             })
           );

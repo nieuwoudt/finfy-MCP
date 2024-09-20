@@ -4,48 +4,60 @@ import { Button, Icon } from "@/components/atoms";
 import { UserSettings, MenuAccordion } from "@/components/molecules";
 import Image from "next/image";
 import Link from "next/link";
-import { ScrollableArea } from "@/components/molecules";
+import { ScrollableArea, BurgerButton } from "@/components/molecules";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks";
 
 const Sidebar = () => {
-  const { open, handleClose } = useSidebar();
+  const { open, handleOpen, handleClose } = useSidebar();
+  const handleMouseEnter = () => handleOpen();
+  const handleMouseLeave = () => handleClose();
   return (
     <aside
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cn(
         "right-sidebar transition-all flex flex-col gap-5 fixed inset-0 z-50 w-full lg:static lg:max-w-64",
-        {
-          "-translate-x-full lg:translate-x-0": !open,
-        }
+        open
+          ? "translate-x-0"
+          : "-translate-x-full lg:translate-x-0 lg:max-w-14"
       )}
     >
       <div className="px-2 flex flex-col">
-        <div className="my-5 flex justify-between items-center">
+        <div
+          className={cn("my-5 flex justify-between items-center", {
+            "lg:flex-col-reverse lg:gap-2": !open,
+          })}
+        >
           <Link href="/dashboard">
-            <Image
-              src="/icons/logo.svg"
-              height={100}
-              width={100}
-              alt="logo"
-              className="cursor-pointer"
-            />
+            {open ? (
+              <Image
+                src="/icons/full-logo.svg"
+                height={100}
+                width={100}
+                alt="logo"
+                className="cursor-pointer"
+              />
+            ) : (
+              <Icon type="LogoIcon" />
+            )}
           </Link>
-          <Button onClick={handleClose} variant="ghost">
-            <Icon
-              className="cursor-pointer hover:text-grey-5"
-              type="LogOutIcon"
-            />
-          </Button>
+          <BurgerButton />
         </div>
         <Button
           variant="ghost"
-          className="flex gap-2 bg-navy-25 group border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
+          className="flex gap-2 bg-navy-25 group text-nowrap border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
         >
           <Icon
             type="PlusSolidIcon"
             className="fill-grey-15 group-hover:fill-white w-5 h-5"
           />
-          <span className="text-base text-grey-15 group-hover:text-white">
+
+          <span
+            className={cn("text-base text-grey-15 group-hover:text-white", {
+              "lg:hidden": !open,
+            })}
+          >
             New Thread
           </span>
         </Button>
@@ -64,10 +76,15 @@ const Sidebar = () => {
               />
             ),
           }}
-          className="justify-start items-center gap-3 p-2 !rounded-none font-normal"
+          className={cn(
+            "justify-start items-center gap-3 p-2 !rounded-none font-normal",
+            {
+              "lg:justify-center": !open,
+            }
+          )}
           variant="ghost"
         >
-          Download
+          <span className={cn({ "lg:hidden": !open })}>Download</span>
         </Button>
         <Button
           full
@@ -79,26 +96,37 @@ const Sidebar = () => {
               />
             ),
           }}
-          className="justify-start items-center gap-3 p-2 !rounded-none font-normal"
+          className={cn(
+            "justify-start items-center gap-3 p-2 !rounded-none font-normal",
+            {
+              "lg:justify-center": !open,
+            }
+          )}
           variant="ghost"
         >
-          More
+          <span className={cn({ "lg:hidden": !open })}>More</span>
         </Button>
         <Button
           full
-          className="justify-start items-center text-xs font-semibold border-t border-t-navy-5 text-white p-6 !rounded-none"
+          className={cn(
+            "justify-start items-center text-xs font-semibold border-t border-t-navy-5 text-white p-6 !rounded-none",
+            {
+              "lg:hidden": !open,
+            }
+          )}
           variant="ghost"
         >
           Business Profile
         </Button>
-        <div className="menu-button-btn flex space-x-2 items-center">
-          <UserSettings />
-          <Icon type="GearIcon" />
-        </div>
-        <div className="menu-button-btn">
-          <Button full className="!rounded-sm gap-1.5 h-7">
+        <UserSettings />
+        <div
+          className={cn("menu-button-btn", {
+            "lg:!p-2": !open,
+          })}
+        >
+          <Button full className="!rounded-sm gap-1.5 h-7 p-0 text-nowrap">
             <Icon type="ExtLinkIcon" className="size-4 text-grey-15" />
-            Try pro
+            <span className={cn({ "lg:hidden": !open })}>Try pro</span>
           </Button>
         </div>
       </div>

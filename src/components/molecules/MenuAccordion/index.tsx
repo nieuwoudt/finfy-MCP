@@ -8,12 +8,14 @@ import { categorizeDate, cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { MenuItem } from "@/types";
 import { menuItems } from "./index.constants";
+import { useSidebar } from "@/hooks";
 
 interface MenuAccordionItemProps {
   item: MenuItem;
 }
 
 const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
+  const { open } = useSidebar();
   const pathname = usePathname();
   const Icon = item.icon;
 
@@ -38,41 +40,42 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
   return (
     <Accordion.Item className="flex flex-col gap-0.5" value={item.value}>
       <Accordion.Trigger
-        className={cn(
-          "p-2 rounded-sm group hover:text-white hover:bg-navy-5",
-          {
-            "bg-navy-25": isActive,
-          }
-        )}
+        className={cn("p-2 rounded-sm group hover:text-white hover:bg-navy-5", {
+          "bg-navy-25": isActive,
+        })}
       >
         <div className="flex gap-3 items-center">
           <Icon />
           <span>{item.title}</span>
         </div>
       </Accordion.Trigger>
-      {Object.keys(groupedContents).length ? (
-        Object.entries(groupedContents).map(([group, contents]) => (
-          <Accordion.Content key={group}>
-            <p className="text-xs my-1">{group}</p>
-            {contents.map((content, index) => (
-              <div key={index} className="flex justify-between">
-                <Link href={item.link} className="flex flex-col w-[210px]">
-                  <p className="menu-list-btn pl-2">{content.title}</p>
-                </Link>
-                <DropDownModal />
-              </div>
-            ))}
-          </Accordion.Content>
-        ))
-      ) : (
-        <Accordion.Content className="flex justify-between">
-          <Link
-            href={item.link}
-            className="menu-list-btn flex gap-1 ml-1 items-center"
-          >
-            Start a new thread...
-          </Link>
-        </Accordion.Content>
+      {open && (
+        <>
+          {Object.keys(groupedContents).length ? (
+            Object.entries(groupedContents).map(([group, contents]) => (
+              <Accordion.Content key={group}>
+                <p className="text-xs my-1">{group}</p>
+                {contents.map((content, index) => (
+                  <div key={index} className="flex justify-between">
+                    <Link href={item.link} className="flex flex-col w-[210px]">
+                      <p className="menu-list-btn pl-2">{content.title}</p>
+                    </Link>
+                    <DropDownModal />
+                  </div>
+                ))}
+              </Accordion.Content>
+            ))
+          ) : (
+            <Accordion.Content className="flex justify-between">
+              <Link
+                href={item.link}
+                className="menu-list-btn flex gap-1 ml-1 items-center"
+              >
+                Start a new thread...
+              </Link>
+            </Accordion.Content>
+          )}
+        </>
       )}
     </Accordion.Item>
   );

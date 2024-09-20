@@ -1,4 +1,5 @@
 "use client";
+
 import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
@@ -9,7 +10,6 @@ import {
 
 export const useSidebar = () => {
   const dispatch: AppDispatch = useDispatch();
-
   const open = useSelector((state: RootState) => state.sidebar.open);
 
   const handleClose = useCallback(() => {

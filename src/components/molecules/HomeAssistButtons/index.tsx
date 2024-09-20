@@ -6,10 +6,10 @@ export interface ButtonProps {
 }
 
 const HomeAssistButton: React.FC<ButtonProps> = ({ Icon, text }) => (
-  <div className="home-assist-btn group items-center flex">
+  <button className="home-assist-btn group gap-1 items-center flex text-sm text-normal py-0.5 px-1.5">
     {Icon}
     {text}
-  </div>
+  </button>
 );
 
 const buttonsData: ButtonProps[] = [
@@ -43,7 +43,7 @@ const buttonsData: ButtonProps[] = [
 ];
 
 const HomeAssistButtons: React.FC = () => (
-  <div className="flex text-grey-15 space-x-5 mb-2">
+  <div className="flex text-grey-15 gap-2 mb-2">
     {buttonsData.map((button, index) => (
       <HomeAssistButton key={index} Icon={button.Icon} text={button.text} />
     ))}

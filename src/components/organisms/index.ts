@@ -1,3 +1,5 @@
 export * from "./Cards";
 export { Sidebar } from "./Sidebar";
-export { Chat } from "./Chat";
+export { AssistInput } from "./AssistInput";
+export * from "./Tabs";
+export { UserAvatarWithUpload } from "./UserAvatarWithUpload";

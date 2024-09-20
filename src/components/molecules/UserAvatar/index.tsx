@@ -1,10 +1,24 @@
-import { Avatar } from "@/components/atoms";
+import { Avatar, Icon } from "@/components/atoms";
+import { cn } from "@/lib/utils";
+import { FC } from "react";
 
-const UserAvatar = ({ className }: { className: string }) => {
+interface UserAvatarProps {
+  className?: string;
+  src?: string;
+  initials?: string;
+}
+
+const UserAvatar: FC<UserAvatarProps> = ({ className, src, initials }) => {
   return (
-    <Avatar className={className}>
-      <Avatar.Image src="https://github.com/shadcn.png" />
-      <Avatar.Fallback>CN</Avatar.Fallback>
+    <Avatar className={cn("border-navy-5 border w-16 h-16", className)}>
+      <Avatar.Image src={src} />
+      <Avatar.Fallback>
+        {initials ? (
+          initials
+        ) : (
+          <Icon type="UserIcon" className="w-8 h-8 stroke-grey-15" />
+        )}
+      </Avatar.Fallback>
     </Avatar>
   );
 };

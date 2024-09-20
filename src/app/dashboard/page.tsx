@@ -1,4 +1,5 @@
 import { DashboardPage } from "@/components/pages";
+import { LayoutDashboard } from "@/layout";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,7 +8,11 @@ export const metadata: Metadata = {
 };
 
 const Dashboard = async () => {
-  return <DashboardPage />;
+  return (
+    <LayoutDashboard>
+      <DashboardPage />
+    </LayoutDashboard>
+  );
 };
 
 export default Dashboard;

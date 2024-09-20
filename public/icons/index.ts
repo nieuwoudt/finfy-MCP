@@ -26,7 +26,6 @@ import UserSolidIcon from "./user-solid.svg";
 import PaperClipIcon from "./paper-clip.svg";
 import SunIcon from "./sun.svg";
 import MoonIcon from "./moon.svg";
-
 import ShareIcon from "./share.svg";
 import PenIcon from "./pencil.svg";
 import InboxIcon from "./inbox-in.svg";
@@ -36,8 +35,16 @@ import GoalsIcon from "./goals.svg";
 import UsersIcon from "./users.svg";
 import DownloadIcon from "./download.svg";
 import DotsIcon from "./dots.svg";
+import QuestionMarkCircle from "./question-mark-circle.svg";
+import DocumentIcon from "./document.svg";
+import DollarIcon from "./dollar.svg";
+import SupportIcon from "./support.svg";
+import LogoIcon from "./logo.svg";
+import PlusIcon from "./plus.svg";
 
 export default {
+  PlusIcon,
+  LogoIcon,
   DownloadIcon,
   GoalsIcon,
   UsersIcon,
@@ -46,7 +53,10 @@ export default {
   ImaliLogo,
   DollarBankIcon,
   UserGroupIcon,
+  DocumentIcon,
+  DollarIcon,
   UserIcon,
+  SupportIcon,
   HandIcon,
   ShieldIcon,
   GradHatIcon,
@@ -75,4 +85,5 @@ export default {
   InboxIcon,
   DeleteIcon,
   DotsIcon,
+  QuestionMarkCircle,
 };

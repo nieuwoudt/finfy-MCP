@@ -1,4 +1,4 @@
-import { routesOnboarding } from "@/utils/variables";
+import { routesOnboarding, THEMES } from "@/utils/variables";
 import { FC, ReactNode } from "react";
 
 export type Classes = {
@@ -89,4 +89,23 @@ export type MenuItem = {
         category: "assistant" | "goals" | "payments" | "advisor";
       }[]
     | [];
+};
+
+
+export type ChartConfig = {
+  [k in string]: {
+    label?: React.ReactNode;
+    icon?: React.ComponentType;
+  } & (
+    | { color?: string; theme?: never }
+    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+  );
+};
+
+export type FileType = {
+  id: number;
+  file?: File;
+  url?: string;
+  type?: string;
+  name?: string;
 };
