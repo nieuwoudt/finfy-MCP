@@ -25,3 +25,4 @@ export { ActionButton } from "./ActionButton";
 export { FocusAssistantOption } from "./FocusAssistantOption";
 export * from "./Charts";
 export * from "./Popovers";
+export { DropzoneComponent } from "./DropzoneComponent";
