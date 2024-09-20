@@ -1,17 +1,24 @@
-import { Icon, SeparatorLine } from "@/components/atoms";
-import { ThemeSelector, SwitchTemplate, ThemeButtons, UserAvatar } from "@/components/molecules";
+import { Button, Icon, SeparatorLine } from "@/components/atoms";
+import {
+  ThemeSelector,
+  SwitchTemplate,
+  ThemeButtons,
+} from "@/components/molecules";
+import { UserAvatarWithUpload } from "@/components/organisms";
+import { useUser } from "@/hooks";
 
 const ManageProfileTab = () => {
+  const { user } = useUser();
   return (
     <>
-      <p className="my-2">General</p>
+      <p className="my-4">General</p>
       <div className="p-3 border rounded-md bg-navy-15 border-navy-5">
         <div className="flex items-center justify-between">
           <div className="">
             <p className="text-white mb-2">Appearance</p>
             <p className="text-xs">Set your preferred theme for Perplexity</p>
           </div>
-          <div className="w-[300px] text-white">
+          <div className="text-white">
             <ThemeButtons />
           </div>
         </div>
@@ -28,25 +35,27 @@ const ManageProfileTab = () => {
           </div>
         </div>
       </div>
-      <div>
-        <p className="my-2">Account</p>
+      <div className="mt-8">
+        <p className="my-4">Account</p>
         <div className="p-3 border rounded-md bg-navy-15 border-navy-5 text-white">
           <div className="w-full flex items-center justify-between">
             <p>Avatar</p>
-            <UserAvatar className="rounded-full" />
+            <UserAvatarWithUpload />
           </div>
           <SeparatorLine />
           <div className="w-full flex justify-between">
             <p>Username</p>
             <div className="flex items-center gap-2 text-grey-5">
-              nieuwoudt
-              <Icon type="PenIcon" className="size-4" />
+              {user?.name}
+              <Button variant="ghost">
+                <Icon type="PenIcon" className="h-4 w-4 fill-grey-15" />
+              </Button>
             </div>
           </div>
           <SeparatorLine />
           <div className="w-full flex justify-between">
             <p>Email</p>
-            <p className="text-grey-5">nieuwoudt@nexilient.com</p>
+            <p className="text-grey-5"> {user?.email}</p>
           </div>
           <SeparatorLine />
           <div className="flex">

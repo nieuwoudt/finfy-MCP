@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 const buttonData = [
   {
-    icon: <Icon type="UserIcon" className="h-8 text-grey-15" />,
+    icon: <Icon type="UserIcon" className="h-8 w-8 stroke-grey-15" />,
     title: "For personal use",
     case: "personal",
     description: "Refine ideas, analyze data, summarize documents, and more.",

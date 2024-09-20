@@ -9,26 +9,29 @@ import { PersonalizeTab } from "./PersonalizeTab";
 
 const SettingsTab = () => {
   return (
-    <Tab defaultValue="manage">
-      <Tab.List>
-        <Tab.Trigger value="manage" className="gap-1 items-center">
-          <Icon type="UserIcon" />
+    <Tab defaultValue="manage" className="px-4">
+      <Tab.List className="mb-12 flex-wrap">
+        <Tab.Trigger value="manage" className="gap-1 items-center group">
+          <Icon
+            type="UserIcon"
+            className="w-6 h-6 stroke-inherit group-hover:stroke-white"
+          />
           Manage Profile
         </Tab.Trigger>
-        <Tab.Trigger value="subscriptions" className="gap-1 items-center">
-          <Icon type="DollarIcon" />
+        <Tab.Trigger value="subscriptions" className="gap-1 items-center group">
+          <Icon type="DollarIcon" className="w-6 h-6 stroke-transparent fill-inherit group-hover:fill-white" />
           Subscriptions
         </Tab.Trigger>
-        <Tab.Trigger value="support" className="gap-1 items-center">
-          <Icon type="SupportIcon" />
+        <Tab.Trigger value="support" className="gap-1 items-center group">
+          <Icon type="SupportIcon" className="w-6 h-6 stroke-transparent fill-inherit group-hover:fill-white" />
           Support
         </Tab.Trigger>
-        <Tab.Trigger value="personalization" className="gap-1 items-center">
-          <Icon type="SparkleIcon" className="w-6 h-6 stroke-white" />
+        <Tab.Trigger value="personalization" className="gap-1 items-center group">
+          <Icon type="SparkleIcon" className="w-6 h-6 stroke-inherit group-hover:stroke-white" />
           Personalization
         </Tab.Trigger>
-        <Tab.Trigger value="upload" className="gap-1 items-center">
-          <Icon type="DocumentIcon" />
+        <Tab.Trigger value="upload" className="gap-1 items-center group">
+          <Icon type="DocumentIcon" className="w-6 h-6 stroke-inherit group-hover:stroke-white" />
           Document Upload
         </Tab.Trigger>
       </Tab.List>

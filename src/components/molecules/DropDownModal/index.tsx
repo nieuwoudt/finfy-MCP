@@ -16,7 +16,7 @@ const DropDownModal = () => {
             <p>Share</p>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="flex hover:bg-navy-5 items-center w-full gap-4">
-            <Icon type="PenIcon" className="size-4 text-grey-15" />
+            <Icon type="PenIcon" className="size-4 fill-grey-15" />
             <p>Rename</p>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="flex hover:bg-navy-5 items-center w-full gap-4">

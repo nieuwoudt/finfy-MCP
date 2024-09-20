@@ -3,15 +3,16 @@ import { Accordion, Icon } from "@/components/atoms";
 import {
   UserAvatar,
   PersonalizePop,
-  ButtonTemplates,
+  ThemeButtons,
 } from "@/components/molecules";
-import { useSidebar } from "@/hooks";
+import { useSidebar, useUser } from "@/hooks";
 import { signOutAction } from "@/lib/supabase/actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
 
 const UserSettings = () => {
+  const { user } = useUser();
   const { open: openSidebar } = useSidebar();
   const [open, setOpen] = useState(false);
   return (
@@ -30,12 +31,12 @@ const UserSettings = () => {
       >
         <Accordion.Item value="item-1">
           <Accordion.Trigger className="text-nowrap">
-            <UserAvatar className="rounded-sm" />
-            Niewoudt Gresse
+            <UserAvatar className="!border-none !ml-0 !w-auto !h-auto" />
+            {user?.name}
           </Accordion.Trigger>
           <Accordion.Content className="mt-5 justify-start">
             <p className="text-grey-15 text-xs mb-2">Appearance</p>
-            <ButtonTemplates />
+            <ThemeButtons />
             <p className="text-grey-15 text-xs my-2">Quick settings</p>
             <div className="flex items-center cursor-pointer group hover:text-grey-5 mb-1">
               <Icon
@@ -68,9 +69,12 @@ const UserSettings = () => {
         </Accordion.Item>
       </Accordion>
       <UserAvatar
-        className={cn("rounded-sm hidden", {
-          "lg:block": !openSidebar,
-        })}
+        className={cn(
+          "rounded-sm hidden !ml-0 !border-none !w-auto !h-auto justify-center items-center",
+          {
+            "lg:flex": !openSidebar,
+          }
+        )}
       />
       {!open && openSidebar && (
         <Icon type="GearIcon" className="min-w-4 h-4 fill-white" />

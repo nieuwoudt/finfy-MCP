@@ -11,7 +11,7 @@ const SettingsSection = () => {
         <SeparatorLine />
       </div>
       <div className="flex items-center justify-center w-full h-full text-grey-15 text-sm">
-        <div className="min-w-[545px] justify-between h-[474px] flex flex-col">
+        <div className=" justify-between flex flex-col">
           <SettingsTab />
         </div>
       </div>

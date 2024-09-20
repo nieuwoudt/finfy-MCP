@@ -101,3 +101,11 @@ export type ChartConfig = {
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
   );
 };
+
+export type FileType = {
+  id: number;
+  file?: File;
+  url?: string;
+  type?: string;
+  name?: string;
+};
