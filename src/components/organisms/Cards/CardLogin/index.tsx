@@ -7,18 +7,22 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { fetchUserByEmailOrPhone } from "@/lib/store/features/user/userSlice";
 
 const CardLogin = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const dispatch = useAppDispatch();
+
   const handleClickLogInButton = (formData: FormData) => {
     startTransition(async () => {
       const { errorMessage } = await loginAction(formData);
-
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
         router.push("/onboarding");
+        dispatch(fetchUserByEmailOrPhone());
         toast.success("Successfully logged in!");
       }
     });
