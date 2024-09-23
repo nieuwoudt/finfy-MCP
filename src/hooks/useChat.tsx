@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
@@ -9,6 +11,8 @@ import {
   deleteChat,
   fetchMessagesForChat,
   createMessage,
+  resetChat,
+  setIsLoading as setIsLoadingSendMessage,
 } from "@/lib/store/features/chat/chatSlice";
 
 export const useChat = () => {
@@ -19,6 +23,13 @@ export const useChat = () => {
   const fetchChatsCallback = useCallback(
     (user_id: string) => {
       dispatch(fetchChatsByUserId(user_id));
+    },
+    [dispatch]
+  );
+
+  const setIsLoading = useCallback(
+    (loading: boolean) => {
+      dispatch(setIsLoadingSendMessage(loading));
     },
     [dispatch]
   );
@@ -60,7 +71,7 @@ export const useChat = () => {
       history: string[],
       user_query: string
     ) => {
-      await dispatch(
+      const data = await dispatch(
         sendChatQuery({
           user_id,
           chat_id,
@@ -68,6 +79,7 @@ export const useChat = () => {
           user_query,
         })
       );
+      return data;
     },
     [dispatch]
   );
@@ -95,6 +107,7 @@ export const useChat = () => {
   );
 
   return {
+    isLoading: chatState.loadingSendMessage,
     chats: chatState.chats,
     messages: chatState.messages,
     loading: chatState.loading,
@@ -108,5 +121,6 @@ export const useChat = () => {
     updateChat: updateChatCallback,
     deleteChat: deleteChatCallback,
     createMessage: fetchCreateMessage,
+    setIsLoading,
   };
 };

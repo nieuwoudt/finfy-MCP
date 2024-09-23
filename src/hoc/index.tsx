@@ -1,0 +1,1 @@
+export { PaginationScroll } from "./PaginationScroll";

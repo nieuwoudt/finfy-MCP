@@ -9,12 +9,18 @@ import { useSidebar, useUser } from "@/hooks";
 import { signOutAction } from "@/lib/supabase/actions";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const UserSettings = () => {
+  const route = useRouter();
   const { user } = useUser();
   const { open: openSidebar } = useSidebar();
   const [open, setOpen] = useState(false);
+  const handleClickLogOut = async () => {
+    await signOutAction();
+    route.push("/authentication");
+  };
   return (
     <div
       className={cn("menu-button-btn flex space-x-2 items-center", {
@@ -56,7 +62,7 @@ const UserSettings = () => {
               All settings
             </Link>
             <button
-              onClick={() => signOutAction()}
+              onClick={handleClickLogOut}
               type="button"
               className="flex items-center text-sm cursor-pointer group hover:text-grey-5"
             >

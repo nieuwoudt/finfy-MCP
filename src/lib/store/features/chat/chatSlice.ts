@@ -10,6 +10,7 @@ interface ChatState {
   history: string[];
   user_query: string;
   loading: boolean;
+  loadingSendMessage: boolean;
   error: string | null;
   output: string | null;
   calculations: any | null;
@@ -23,6 +24,7 @@ const initialState: ChatState = {
   history: [],
   user_query: "",
   loading: false,
+  loadingSendMessage: false,
   error: null,
   output: null,
   calculations: null,
@@ -58,7 +60,7 @@ export const createMessage = createAsyncThunk(
     content,
     message_type,
     is_processed = true,
-    response_time = null, 
+    response_time = null,
   }: {
     chat_id: string;
     user_id: number;
@@ -69,18 +71,19 @@ export const createMessage = createAsyncThunk(
   }) => {
     const { data, error } = await supabase
       .from("messages")
-      .insert([{
-        chat_id,
-        user_id,
-        content,
-        message_type,
-        is_processed,
-        response_time
-      }])
+      .insert([
+        {
+          chat_id,
+          user_id,
+          content,
+          message_type,
+          is_processed,
+          response_time,
+        },
+      ])
       .select();
 
     if (error) throw error;
-
     return data[0];
   }
 );
@@ -174,6 +177,9 @@ const chatSlice = createSlice({
       state.output = null;
       state.calculations = null;
     },
+    setIsLoading(state, action: PayloadAction<boolean>) {
+      state.loadingSendMessage = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -201,13 +207,12 @@ const chatSlice = createSlice({
       .addCase(createChat.fulfilled, (state, action) => {
         state.loading = false;
         state.chats.push(action.payload);
-        state.chat_id = action.payload.id
+        state.chat_id = action.payload.id;
       })
       .addCase(createChat.rejected, (state, action) => {
         state.loading = false;
         state.error = getErrorMessage(action.error) || null;
       })
-
       .addCase(fetchChatsByUserId.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -269,9 +274,13 @@ const chatSlice = createSlice({
       .addCase(fetchMessagesForChat.rejected, (state, action) => {
         state.loading = false;
         state.error = getErrorMessage(action.error) || null;
+      })
+      .addCase(createMessage.fulfilled, (state, action: PayloadAction<any>) => {
+        state.history.push(action.payload.content);
+        state.messages.push(action.payload);
       });
   },
 });
 
-export const { setUserQuery, addToHistory, resetChat } = chatSlice.actions;
+export const { setUserQuery, addToHistory, resetChat, setIsLoading } = chatSlice.actions;
 export default chatSlice.reducer;
