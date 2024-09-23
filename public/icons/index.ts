@@ -42,8 +42,10 @@ import SupportIcon from "./support.svg";
 import LogoIcon from "./logo.svg";
 import PlusIcon from "./plus.svg";
 import FullLogoIcon from "./full-logo.svg";
+import FullLogoWhiteIcon from "./full-logo-white.svg";
 
 export default {
+  FullLogoWhiteIcon,
   FullLogoIcon,
   PlusIcon,
   LogoIcon,
