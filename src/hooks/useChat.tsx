@@ -27,6 +27,10 @@ export const useChat = () => {
     [dispatch]
   );
 
+  const handleResetChat = useCallback(() => {
+    dispatch(resetChat());
+  }, [dispatch]);
+
   const setIsLoading = useCallback(
     (loading: boolean) => {
       dispatch(setIsLoadingSendMessage(loading));
@@ -85,8 +89,8 @@ export const useChat = () => {
   );
 
   const createChatCallback = useCallback(
-    async (userId: string) => {
-      const data = await dispatch(createChat(userId));
+    async (userId: string, title: string) => {
+      const data = await dispatch(createChat({ userId, title }));
       return data;
     },
     [dispatch]
@@ -122,5 +126,6 @@ export const useChat = () => {
     deleteChat: deleteChatCallback,
     createMessage: fetchCreateMessage,
     setIsLoading,
+    handleResetChat,
   };
 };

@@ -3,9 +3,8 @@
 import { Button, Icon, Textarea } from "@/components/atoms";
 import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
 
 const ChatMessageInput = () => {
   const { user } = useUser();
@@ -18,7 +17,6 @@ const ChatMessageInput = () => {
     history,
     isLoading,
     setIsLoading,
-    chats
   } = useChat();
 
   const [message, setMessage] = useState("");
@@ -33,9 +31,9 @@ const ChatMessageInput = () => {
       if (value && userId) {
         let currentChatId = chatId;
         if (!currentChatId) {
-          const chat = await createChat(userId);
+          const chat = await createChat(userId, value);
           currentChatId = chat.payload.id;
-          router.push(`dashboard/chat/${currentChatId}`, undefined);
+          router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
         if (currentChatId) {
           createMessage({
@@ -62,6 +60,11 @@ const ChatMessageInput = () => {
       }
       setIsLoading(false);
     }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
+    setMessage(value);
   };
 
   const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -92,7 +95,7 @@ const ChatMessageInput = () => {
       <Textarea
         ref={setTextareaRef}
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={handleChange}
         className="bg-navy-15 pl-4 h-16 focus:outline-none text-base border-none resize-none text-white py-5 pr-24 lg:pr-48"
         placeholder="Ask anything..."
         name="message"

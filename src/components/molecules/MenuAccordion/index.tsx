@@ -8,25 +8,29 @@ import { categorizeDate, cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { MenuItem } from "@/types";
 import { menuItems } from "./index.constants";
-import { useSidebar } from "@/hooks";
-
+import { useChat, useSidebar } from "@/hooks";
+import { extractDate } from "@/utils/helpers";
 interface MenuAccordionItemProps {
   item: MenuItem;
+  contents: any;
 }
 
-const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
+const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item, contents }) => {
   const { open } = useSidebar();
   const pathname = usePathname();
   const Icon = item.icon;
-
   // Sort contents by date in descending order
-  const sortedContents = [...item.contents].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  const sortedContents = [...contents].sort(
+    (a, b) =>
+      new Date(b.created_at || b.date).getTime() -
+      new Date(a.created_at || b.date).getTime()
   );
 
   // Function to categorize and group contents by date
   const groupedContents = sortedContents.reduce((groups, content) => {
-    const category = categorizeDate(content.date); // Categorize the date
+    const category = categorizeDate(
+      content.created_at ? extractDate(content.created_at) : content.date
+    );
     if (!groups[category]) {
       groups[category] = [];
     }
@@ -52,12 +56,17 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
       {open && (
         <>
           {Object.keys(groupedContents).length ? (
-            Object.entries(groupedContents).map(([group, contents]) => (
+            Object.entries(groupedContents).map(([group, contents]: any) => (
               <Accordion.Content key={group}>
                 <p className="text-xs my-1">{group}</p>
-                {contents.map((content, index) => (
+                {contents.map((content: any, index: number) => (
                   <div key={index} className="flex justify-between">
-                    <Link href={item.link} className="flex flex-col w-[210px]">
+                    <Link
+                      href={
+                        content.id ? `${item.link}/${content.id}` : item.link
+                      }
+                      className="flex flex-col w-[210px]"
+                    >
                       <p className="menu-list-btn pl-2">{content.title}</p>
                     </Link>
                     <DropDownModal />
@@ -82,10 +91,16 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item }) => {
 };
 
 const MenuAccordion: FC = () => {
+  const { chats } = useChat();
+
   return (
     <Accordion type="single" collapsible className="flex flex-col gap-0.5">
       {menuItems.map((item) => (
-        <MenuAccordionItem key={item.value} item={item} />
+        <MenuAccordionItem
+          key={item.value}
+          item={item}
+          contents={item.value === "assistant" ? chats : item.contents}
+        />
       ))}
     </Accordion>
   );

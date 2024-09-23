@@ -45,6 +45,9 @@ export const sendChatQuery = createAsyncThunk(
         history: history || [],
         user_query: user_query || "",
       });
+      if (response.data.error) {
+        return rejectWithValue(response.data.error || "Something went wrong");
+      }
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Something went wrong");
@@ -90,10 +93,10 @@ export const createMessage = createAsyncThunk(
 
 export const createChat = createAsyncThunk(
   "chat/createChat",
-  async (userId: string) => {
+  async ({ userId, title }: any) => {
     const { data, error } = await supabase
       .from("chats")
-      .insert([{ user_id: userId }])
+      .insert([{ user_id: userId, title }])
       .select();
     if (error) throw error;
     return data.at(0);
@@ -282,5 +285,6 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setUserQuery, addToHistory, resetChat, setIsLoading } = chatSlice.actions;
+export const { setUserQuery, addToHistory, resetChat, setIsLoading } =
+  chatSlice.actions;
 export default chatSlice.reducer;

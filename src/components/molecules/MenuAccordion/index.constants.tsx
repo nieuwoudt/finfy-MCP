@@ -11,27 +11,8 @@ export const menuItems: MenuItem[] = [
       />
     ),
     title: "Assistant",
-    link: "/",
-    contents: [
-      {
-        title: "🗂️ Manage, track, and review accounts.",
-        date: "2024-12-27",
-        chatId: "12345",
-        category: "assistant",
-      },
-      {
-        title: "🧑‍ Expert guidance on financial strategies.",
-        date: "2024-09-20",
-        chatId: "54321",
-        category: "assistant",
-      },
-      {
-        title: "🛒 Explore and compare financial offerings.",
-        date: "2024-05-21",
-        chatId: "96732",
-        category: "assistant",
-      },
-    ],
+    link: "/dashboard/chat",
+    contents: [],
   },
   {
     value: "goals",
