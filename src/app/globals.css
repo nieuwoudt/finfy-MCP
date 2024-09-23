@@ -85,6 +85,13 @@
   .menu-list-btn {
     @apply whitespace-nowrap overflow-hidden text-ellipsis my-1 cursor-pointer hover:text-white text-grey-5;
   }
+
+  .drop-zone-border {
+    background-image: repeating-linear-gradient(90deg, #374061, #374061 8px, transparent 8px, transparent 16px), repeating-linear-gradient(180deg, #374061, #374061 8px, transparent 8px, transparent 16px), repeating-linear-gradient(90deg, #374061, #374061 8px, transparent 8px, transparent 16px), repeating-linear-gradient(180deg, #374061, #374061 8px, transparent 8px, transparent 16px);
+    background-position: left top, right top, left bottom, left top;
+    background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+    background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
+  }
 }
 
 /* CurrencySelector styles */
@@ -121,4 +128,14 @@ input:-webkit-autofill:active{
     transition: background-color 5000s ease-in-out 0s;
     box-shadow: inset 0 0 20px 20px #23232329;
     
+}
+
+.react-scroll-to-bottom--css-uzqrz-79elbk {
+  position: relative;
+}
+
+.react-scroll-to-bottom--css-ikyem-1n7m0yu {
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
 }

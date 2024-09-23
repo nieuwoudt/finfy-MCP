@@ -1,6 +1,9 @@
 "use client";
 
-import { saveTransactionsAndAccounts } from "@/lib/supabase/actions";
+import {
+  saveTransactionsAndAccounts,
+  saveBalances,
+} from "@/lib/supabase/actions";
 import { getErrorMessage } from "@/utils/helpers";
 import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
@@ -12,13 +15,16 @@ const usePlaid = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+
   const [transactions, setTransactions] = useState<any[]>([]);
+  const [assets, setAssets] = useState<any[]>([]);
+  const [balances, setBalances] = useState<any[]>([]);
+  const [income, setIncome] = useState<any[]>([]);
 
   useEffect(() => {
     const createLinkToken = async () => {
       try {
         const response = await fetch("/api/plaid/create-link-token");
-
         const data = await response.json();
         setLinkToken(data.link_token);
       } catch (error) {
@@ -60,12 +66,70 @@ const usePlaid = () => {
     }
   };
 
+  const fetchAssets = async (token: string) => {
+    try {
+      const response = await fetch("/api/plaid/assets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_token: token }),
+      });
+      const { assets } = await response.json();
+      console.log(assets, "assets");
+      // if (user?.id) {
+      //   await saveAssets(assets, user.id);
+      // }
+      setAssets(assets);
+    } catch (error) {
+      toast.error(`Error fetching assets: ${getErrorMessage(error)}`);
+    }
+  };
+
+  const fetchBalances = async (token: string) => {
+    try {
+      const response = await fetch("/api/plaid/balance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_token: token }),
+      });
+      const { balances } = await response.json();
+      console.log(balances, "balances");
+      if (user?.id) {
+        await saveBalances(balances, user?.id);
+      }
+      setBalances(balances);
+    } catch (error) {
+      toast.error(`Error fetching balances: ${getErrorMessage(error)}`);
+    }
+  };
+
+  const fetchIncome = async (token: string) => {
+    try {
+      const response = await fetch("/api/plaid/income", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_token: token }),
+      });
+      const { income } = await response.json();
+      console.log(income, "income");
+
+      // if (user?.id) {
+      //   await saveIncome(income, user.id);
+      // }
+      setIncome(income);
+    } catch (error) {
+      toast.error(`Error fetching income: ${getErrorMessage(error)}`);
+    }
+  };
+
   const onSuccess = useCallback(
     async (publicToken: string) => {
       setIsLoading(true);
       const token = await exchangePublicToken(publicToken);
       if (token) {
         await fetchTransactions(token);
+        // await fetchAssets(token);
+        await fetchBalances(token);
+        // await fetchIncome(token);
       }
       setIsLoading(false);
     },
@@ -81,6 +145,9 @@ const usePlaid = () => {
     openPlaidLink: open,
     isPlaidLinkReady: ready,
     transactions,
+    assets,
+    balances,
+    income,
     isLoading,
   };
 };

@@ -1,12 +1,84 @@
 "use client";
 
 import { Button, Icon, Textarea } from "@/components/atoms";
-import { useAutoResizeTextArea } from "@/hooks";
+import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
+import { Loader2 } from "lucide-react";
+import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const ChatMessageInput = () => {
+  const { user } = useUser();
+  const router = useRouter();
+  const {
+    createChat,
+    sendChatQuery,
+    createMessage,
+    chatId,
+    history,
+    isLoading,
+    setIsLoading,
+  } = useChat();
+
+  const [message, setMessage] = useState("");
   const textareaRef = useAutoResizeTextArea();
 
-  const onSubmit = (formData: FormData) => {};
+  const onSubmit = async (formData: FormData) => {
+    if (!isLoading) {
+      setIsLoading(true);
+      const value = formData.get("message") as string;
+      setMessage("");
+      const userId = user?.id;
+      if (value && userId) {
+        let currentChatId = chatId;
+        if (!currentChatId) {
+          const chat = await createChat(userId, value);
+          currentChatId = chat.payload.id;
+          router.push(`/dashboard/chat/${currentChatId}`, undefined);
+        }
+        if (currentChatId) {
+          createMessage({
+            chat_id: currentChatId,
+            user_id: userId,
+            content: value,
+            message_type: "user",
+            is_processed: true,
+          });
+          const data = await sendChatQuery(
+            `${userId}`,
+            currentChatId,
+            history,
+            value
+          );
+          createMessage({
+            chat_id: currentChatId,
+            user_id: userId,
+            content: data.payload.output.text,
+            message_type: "bot",
+            is_processed: true,
+          });
+        }
+      }
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
+    setMessage(value);
+  };
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (window.innerWidth > 768) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        const form = e.currentTarget.closest("form");
+        if (form) {
+          const formData = new FormData(form);
+          onSubmit(formData);
+        }
+      }
+    }
+  };
 
   const setTextareaRef = (element: HTMLTextAreaElement) => {
     if (element) {
@@ -18,13 +90,16 @@ const ChatMessageInput = () => {
   return (
     <form
       action={onSubmit}
-      className="rounded-md flex justify-between items-center border-navy-5 bg-navy-15 relative"
+      className="md:rounded-md flex justify-between items-center bg-navy-15 relative shadow md:shadow-none shadow-grey-15"
     >
       <Textarea
         ref={setTextareaRef}
+        value={message}
+        onChange={handleChange}
         className="bg-navy-15 pl-4 h-16 focus:outline-none text-base border-none resize-none text-white py-5 pr-24 lg:pr-48"
         placeholder="Ask anything..."
         name="message"
+        onKeyDown={handleEnter}
       />
       <div className="flex items-center gap-3 py-3 absolute right-4 top-1/2 -translate-y-1/2">
         <Button
@@ -40,7 +115,11 @@ const ChatMessageInput = () => {
         </Button>
 
         <Button size="xl" type="submit" className="w-10 h-10 p-3">
-          <Icon type="ArrowRightIcon" className="size-4 text-white" />
+          {isLoading ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <Icon type="ArrowRightIcon" className="size-4 text-white" />
+          )}
         </Button>
       </div>
     </form>

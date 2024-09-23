@@ -9,7 +9,10 @@ export async function GET() {
       client_name: "Finfy",
       language: "en",
       country_codes: [CountryCode.Us],
-      products: [Products.Auth, Products.Transactions],
+      products: [
+        Products.Auth,
+        Products.Transactions,
+      ],
     });
 
     return NextResponse.json({ link_token: tokenResponse.data.link_token });

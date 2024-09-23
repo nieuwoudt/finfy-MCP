@@ -6,12 +6,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { ScrollableArea, BurgerButton } from "@/components/molecules";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/hooks";
+import { useChat, useSidebar } from "@/hooks";
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
+  const router = useRouter();
+  const { handleResetChat } = useChat();
   const { open, handleOpen, handleClose } = useSidebar();
   const handleMouseEnter = () => handleOpen();
   const handleMouseLeave = () => handleClose();
+
+  const handleClick = () => {
+    handleResetChat();
+    router.push("/dashboard", undefined);
+  };
+
   return (
     <aside
       onMouseEnter={handleMouseEnter}
@@ -47,6 +56,7 @@ const Sidebar = () => {
         <Button
           variant="ghost"
           className="flex gap-2 bg-navy-25 group text-nowrap border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
+          onClick={handleClick}
         >
           <Icon
             type="PlusSolidIcon"

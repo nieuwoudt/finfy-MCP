@@ -99,7 +99,7 @@ export const resendCodeOTP = async (phone: string) => {
 
 export const saveTransactionsAndAccounts = async (
   transactions: Transaction[],
-  userId: number
+  userId: string
 ) => {
   try {
     const uniqueAccounts = transactions.reduce(
@@ -125,7 +125,7 @@ export const saveTransactionsAndAccounts = async (
 
     const { error: accountError } = await supabase
       .from("accounts")
-      .upsert(uniqueAccounts);
+      .insert(uniqueAccounts);
 
     if (accountError) {
       throw accountError;
@@ -171,6 +171,38 @@ export const saveTransactionsAndAccounts = async (
 
     if (transactionError) {
       throw transactionError;
+    }
+
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const saveBalances = async (accountData: any, userId: string) => {
+  try {
+    const { error } = await supabase.from("balances").insert(
+      accountData.map((account: any) => ({
+        account_id: account.account_id,
+        persistent_account_id: account.persistent_account_id,
+        name: account.name,
+        official_name: account.official_name,
+        mask: account.mask,
+        subtype: account.subtype,
+        type: account.type,
+        available_balance: account.balances.available,
+        current_balance: account.balances.current,
+        iso_currency_code: account.balances.iso_currency_code,
+        unofficial_currency_code: account.balances.unofficial_currency_code,
+        created_at: new Date().toISOString(),
+        user_id: userId,
+      }))
+    );
+
+    if (error) {
+      throw error;
     }
 
     return { errorMessage: null };

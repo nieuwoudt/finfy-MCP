@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import darkModeReducer from "./features/darkMode/darkModeSlice";
 import userReducer from "./features/user/userSlice";
 import sidebarReducer from "./features/sidebar/sidebarSlice";
+import chatReducer from "./features/chat/chatSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       darkMode: darkModeReducer,
       user: userReducer,
       sidebar: sidebarReducer,
+      chat: chatReducer,
     },
   });
 };
