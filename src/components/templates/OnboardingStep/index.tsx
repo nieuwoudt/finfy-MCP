@@ -20,8 +20,8 @@ interface OnboardingStepPops {
 const stepComponents: {
   [key: string]: () => JSX.Element;
 } = {
-  [routesOnboarding.verifyPhoneNumber]: CardVerifyPhoneNumber,
-  [routesOnboarding.confirmPhoneNumber]: CardConfirmPhoneNumber,
+  // [routesOnboarding.verifyPhoneNumber]: CardVerifyPhoneNumber,
+  // [routesOnboarding.confirmPhoneNumber]: CardConfirmPhoneNumber,
   [routesOnboarding.selectPlan]: CardSelectPlan,
   [routesOnboarding.personalize]: CardPersonalize,
   [routesOnboarding.userPolicy]: CardUserPolicy,

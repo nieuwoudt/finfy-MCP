@@ -77,7 +77,7 @@ export async function middleware(request: NextRequest) {
         .select()
         .eq("email", user?.email)
         .single();
-      if (data?.phone && data?.plan && data?.selected_currency && data?.name) {
+      if (data?.plan && data?.selected_currency && data?.name) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }
     }else if(user){
