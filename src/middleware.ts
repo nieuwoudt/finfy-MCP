@@ -80,6 +80,9 @@ export async function middleware(request: NextRequest) {
       if (data?.phone && data?.plan && data?.selected_currency && data?.name) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }
+    }else if(user){
+      return NextResponse.redirect(new URL("/onboarding", request.url));
+
     }
   }
 }
