@@ -185,6 +185,9 @@ const chatSlice = createSlice({
       state.calculations = null;
       state.messages = [];
     },
+    setChatId(state, action: PayloadAction<string>) {
+      state.chat_id = action.payload;
+    },
     setIsLoadingSendMessage(state, action: PayloadAction<boolean>) {
       state.loadingSendMessage = action.payload;
     },
@@ -267,6 +270,7 @@ const chatSlice = createSlice({
         (state, action: PayloadAction<any[]>) => {
           state.loading = false;
           state.messages = action.payload;
+          state.history = action.payload.map((message) => message.content);
         }
       )
       .addCase(fetchMessagesForChat.rejected, (state, action) => {
@@ -286,5 +290,6 @@ export const {
   resetChat,
   setIsLoadingSendMessage,
   setIsLoading,
+  setChatId,
 } = chatSlice.actions;
 export default chatSlice.reducer;

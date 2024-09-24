@@ -7,6 +7,7 @@ import {
   fetchChatsByUserId,
   fetchMessagesForChat,
   setIsLoading,
+  setChatId,
   resetChat,
 } from "@/lib/store/features/chat/chatSlice";
 import { useParams } from "next/navigation";
@@ -30,6 +31,7 @@ const Initializer: FC<InitializerProps> = () => {
     (async () => {
       if (params.id) {
         dispatch(fetchMessagesForChat(params.id as string));
+        dispatch(setChatId(params.id as string));
       } else {
         dispatch(setIsLoading(false));
         dispatch(resetChat());
