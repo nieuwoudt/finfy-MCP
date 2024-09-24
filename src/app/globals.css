@@ -139,3 +139,43 @@ input:-webkit-autofill:active{
   overflow-y: auto;
   width: 100%;
 }
+
+
+.loader {
+  width: 4.8px;
+  height: 10px;
+  display: inline-block;
+  margin-top: 18px;
+  position: relative;
+  border-radius: 4px;
+  color: #515ada;
+  background: currentColor;
+  box-sizing: border-box;
+  animation: animloader 0.5s 0.9s linear infinite alternate;
+}
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 4.8px;
+  height: 10px;
+  border-radius: 4px;
+  background: currentColor;
+  position: absolute;
+  left: 0;
+  top: 13px;
+  animation: animloader 0.5s 0.8s linear infinite alternate;
+}
+.loader::after {
+  top: -13px;
+  animation-delay: 0s;
+}
+
+@keyframes animloader {
+  0% {
+    width: 4.8px;
+  }
+  100% {
+    width: 48px;
+  }
+}

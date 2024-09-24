@@ -17,12 +17,17 @@ interface ChatState {
   messages: any[];
 }
 
+interface ChatResponse {
+  data: any;
+  error?: string;
+}
+
 const initialState: ChatState = {
   user_id: "",
   chat_id: "",
   history: [],
   user_query: "",
-  loading: false,
+  loading: true,
   loadingSendMessage: false,
   error: null,
   output: null,
@@ -31,12 +36,12 @@ const initialState: ChatState = {
   messages: [],
 };
 
-export const sendChatQuery = createAsyncThunk(
+export const sendChatQuery = createAsyncThunk<
+  ChatResponse | any,
+  Partial<ChatState>
+>(
   "chat/sendChatQuery",
-  async (
-    { user_id, chat_id, history, user_query }: Partial<ChatState>,
-    { rejectWithValue }
-  ) => {
+  async ({ user_id, chat_id, history, user_query }, { rejectWithValue }) => {
     try {
       const response = await axiosExternal.post(`/chat` as string, {
         user_id: user_id || "",
@@ -179,64 +184,58 @@ const chatSlice = createSlice({
       state.output = null;
       state.calculations = null;
     },
-    setIsLoading(state, action: PayloadAction<boolean>) {
+    setIsLoadingSendMessage(state, action: PayloadAction<boolean>) {
       state.loadingSendMessage = action.payload;
+    },
+    setIsLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(sendChatQuery.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(sendChatQuery.fulfilled, (state, action) => {
-        state.loading = false;
-        state.output = action.payload.output.text;
-        state.calculations = action.payload.calculations;
-        if (state.user_query) {
-          state.history.push(state.user_query);
+        if (action.payload.output) {
+          state.output = action.payload.output.text;
+          state.calculations = action.payload.calculations;
+          if (state.user_query) {
+            state.history.push(state.user_query);
+          }
         }
       })
       .addCase(sendChatQuery.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.payload as string;
       })
 
       .addCase(createChat.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(createChat.fulfilled, (state, action) => {
-        state.loading = false;
         state.chats.push(action.payload);
         state.chat_id = action.payload.id;
       })
       .addCase(createChat.rejected, (state, action) => {
-        state.loading = false;
         state.error = getErrorMessage(action.error) || null;
       })
       .addCase(fetchChatsByUserId.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(
         fetchChatsByUserId.fulfilled,
         (state, action: PayloadAction<any[]>) => {
-          state.loading = false;
           state.chats = action.payload;
         }
       )
       .addCase(fetchChatsByUserId.rejected, (state, action) => {
-        state.loading = false;
         state.error = getErrorMessage(action.error) || null;
       })
 
       .addCase(updateChat.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(updateChat.fulfilled, (state, action) => {
-        state.loading = false;
         const index = state.chats.findIndex(
           (chat) => chat.id === action.payload.id
         );
@@ -245,20 +244,16 @@ const chatSlice = createSlice({
         }
       })
       .addCase(updateChat.rejected, (state, action) => {
-        state.loading = false;
         state.error = getErrorMessage(action.error) || null;
       })
 
       .addCase(deleteChat.pending, (state) => {
-        state.loading = true;
         state.error = null;
       })
       .addCase(deleteChat.fulfilled, (state, action: PayloadAction<string>) => {
-        state.loading = false;
         state.chats = state.chats.filter((chat) => chat.id !== action.payload);
       })
       .addCase(deleteChat.rejected, (state, action) => {
-        state.loading = false;
         state.error = getErrorMessage(action.error) || null;
       })
 
@@ -284,6 +279,11 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setUserQuery, addToHistory, resetChat, setIsLoading } =
-  chatSlice.actions;
+export const {
+  setUserQuery,
+  addToHistory,
+  resetChat,
+  setIsLoadingSendMessage,
+  setIsLoading,
+} = chatSlice.actions;
 export default chatSlice.reducer;

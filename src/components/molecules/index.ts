@@ -27,3 +27,4 @@ export * from "./Charts";
 export * from "./Popovers";
 export { DropzoneComponent } from "./DropzoneComponent";
 export { ContentMessage } from "./ContentMessage";
+export { FullScreenLoader } from "./FullScreenLoader";
