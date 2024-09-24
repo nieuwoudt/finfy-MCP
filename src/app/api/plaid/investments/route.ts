@@ -5,12 +5,21 @@ export async function POST(req: NextRequest) {
   try {
     const { access_token } = await req.json();
 
-    const liabilities = await plaidClient.liabilitiesGet({
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+    const formattedStartDate = startDate.toISOString().split("T")[0];
+
+    const endDate = new Date();
+    const formattedEndDate = endDate.toISOString().split("T")[0];
+
+    const investments = await plaidClient.investmentsTransactionsGet({
       access_token: access_token,
+      start_date: formattedStartDate,
+      end_date: formattedEndDate,
     });
 
     return NextResponse.json({
-      liabilities: liabilities.data.liabilities,
+      investments: investments.data.investment_transactions,
     });
   } catch (error) {
     console.error(error);

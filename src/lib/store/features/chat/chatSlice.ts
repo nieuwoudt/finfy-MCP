@@ -183,6 +183,7 @@ const chatSlice = createSlice({
       state.chat_id = "";
       state.output = null;
       state.calculations = null;
+      state.messages = [];
     },
     setIsLoadingSendMessage(state, action: PayloadAction<boolean>) {
       state.loadingSendMessage = action.payload;
