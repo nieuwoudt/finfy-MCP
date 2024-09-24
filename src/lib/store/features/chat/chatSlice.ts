@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { config } from "@/config/env";
+import { axiosExternal } from "@/utils/axios";
 import { getErrorMessage } from "@/utils/helpers";
 import { supabase } from "@/lib/supabase/client";
 
@@ -39,7 +38,7 @@ export const sendChatQuery = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post(config.CHAT_API as string, {
+      const response = await axiosExternal.post(`/chat` as string, {
         user_id: user_id || "",
         chat_id: chat_id || "",
         history: history || [],

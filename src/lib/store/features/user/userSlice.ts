@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabase/client";
-import axios from "axios";
+import { axiosInternal, axiosExternal } from "@/utils/axios";
 import { getErrorMessage } from "@/utils/helpers";
 import { User } from "@/types";
 
@@ -12,6 +12,10 @@ interface UsersState {
   error: string | null;
 }
 
+type InsertDataUser = {
+  message: string;
+};
+
 const initialState: UsersState = {
   user: null,
   status: "idle",
@@ -19,10 +23,27 @@ const initialState: UsersState = {
   error: null,
 };
 
+export const setDataUser = createAsyncThunk<InsertDataUser, string>(
+  "insert_data/setDataUser",
+  async (user_id, { rejectWithValue }) => {
+    try {
+      const response = await axiosExternal.post("/insert_data", {
+        user_id: user_id || "",
+      });
+      if (response.data.error) {
+        return rejectWithValue(response.data.error || "Something went wrong");
+      }
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+
 export const fetchUserByEmailOrPhone = createAsyncThunk<User>(
   "users/fetchUserByEmailOrPhone",
   async () => {
-    const response = await axios.get("/api/get-user");
+    const response = await axiosInternal.get("/api/get-user");
     const email = response?.data?.email;
     const phone = response?.data?.phone;
     if (email || phone) {
