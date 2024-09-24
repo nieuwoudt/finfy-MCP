@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import clsx from "clsx";
-import { Initializer } from "@/components/molecules";
+import { FullScreenLoader, Initializer } from "@/components/molecules";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -45,6 +45,7 @@ export default function RootLayout({
       </Head>
       <StoreProvider>
         <body className={clsx(inter.className, "min-h-screen")}>
+          <FullScreenLoader />
           {children}
           <Toaster />
           <Initializer />

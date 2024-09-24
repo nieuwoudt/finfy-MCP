@@ -6,6 +6,7 @@ import { fetchUserByEmailOrPhone } from "@/lib/store/features/user/userSlice";
 import {
   fetchChatsByUserId,
   fetchMessagesForChat,
+  setIsLoading,
 } from "@/lib/store/features/chat/chatSlice";
 import { useParams } from "next/navigation";
 
@@ -20,6 +21,8 @@ const Initializer: FC<InitializerProps> = () => {
       const data: any = await dispatch(fetchUserByEmailOrPhone());
       if (params.id && data.payload?.id) {
         dispatch(fetchMessagesForChat(params.id as string));
+      } else {
+        dispatch(setIsLoading(false));
       }
 
       if (data.payload?.id) {

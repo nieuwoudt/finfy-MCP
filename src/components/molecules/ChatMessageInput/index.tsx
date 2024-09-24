@@ -5,6 +5,7 @@ import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
 import { Loader2 } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const ChatMessageInput = () => {
   const { user } = useUser();
@@ -16,7 +17,7 @@ const ChatMessageInput = () => {
     chatId,
     history,
     isLoading,
-    setIsLoading,
+    setIsLoadingSendQuery,
   } = useChat();
 
   const [message, setMessage] = useState("");
@@ -24,7 +25,7 @@ const ChatMessageInput = () => {
 
   const onSubmit = async (formData: FormData) => {
     if (!isLoading) {
-      setIsLoading(true);
+      setIsLoadingSendQuery(true);
       const value = formData.get("message") as string;
       setMessage("");
       const userId = user?.id;
@@ -43,22 +44,27 @@ const ChatMessageInput = () => {
             message_type: "user",
             is_processed: true,
           });
-          const data = await sendChatQuery(
+          const data: any = await sendChatQuery(
             `${userId}`,
             currentChatId,
             history,
             value
           );
-          createMessage({
-            chat_id: currentChatId,
-            user_id: userId,
-            content: data.payload.output.text,
-            message_type: "bot",
-            is_processed: true,
-          });
+
+          if (data?.error) {
+            toast.error(data.error.message);
+          } else {
+            createMessage({
+              chat_id: currentChatId,
+              user_id: userId,
+              content: data.payload.output.text,
+              message_type: "bot",
+              is_processed: true,
+            });
+          }
         }
       }
-      setIsLoading(false);
+      setIsLoadingSendQuery(false);
     }
   };
 

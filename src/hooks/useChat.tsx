@@ -12,7 +12,7 @@ import {
   fetchMessagesForChat,
   createMessage,
   resetChat,
-  setIsLoading as setIsLoadingSendMessage,
+  setIsLoadingSendMessage,
 } from "@/lib/store/features/chat/chatSlice";
 
 export const useChat = () => {
@@ -31,7 +31,7 @@ export const useChat = () => {
     dispatch(resetChat());
   }, [dispatch]);
 
-  const setIsLoading = useCallback(
+  const setIsLoadingSendQuery = useCallback(
     (loading: boolean) => {
       dispatch(setIsLoadingSendMessage(loading));
     },
@@ -125,7 +125,7 @@ export const useChat = () => {
     updateChat: updateChatCallback,
     deleteChat: deleteChatCallback,
     createMessage: fetchCreateMessage,
-    setIsLoading,
+    setIsLoadingSendQuery,
     handleResetChat,
   };
 };
