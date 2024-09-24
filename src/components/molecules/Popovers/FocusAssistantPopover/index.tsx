@@ -3,31 +3,14 @@
 import { Popover } from "@/components/atoms";
 import { FC, PropsWithChildren } from "react";
 import { FocusAssistantOption } from "@/components/molecules";
+import { useAppSelector } from "@/lib/store/hooks";
 
 interface FocusAssistantPopoverProps extends PropsWithChildren {}
-
-const mockData = [
-  {
-    title: "💼 Financial Coaching",
-    text: "Personalized financial advice for better planning.",
-  },
-  {
-    title: "🛒 Product Recommendation",
-    text: "Tailored product saggestions to fit your needs.",
-  },
-  {
-    title: "👥 Connect with a Human Advisor",
-    text: "Instantly connect with a financial expert.",
-  },
-  {
-    title: "📝 Enquire About Claims",
-    text: "Get help with filing and tracking claims.",
-  },
-];
 
 const FocusAssistantPopover: FC<FocusAssistantPopoverProps> = ({
   children,
 }) => {
+  const focusData = useAppSelector((state) => state.suggest.focusSuggests);
   return (
     <Popover>
       <Popover.Trigger>{children}</Popover.Trigger>
@@ -36,12 +19,13 @@ const FocusAssistantPopover: FC<FocusAssistantPopoverProps> = ({
           <span>Focus Assistant</span>
         </Popover.Header>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {mockData.map((item, index) => {
+          {focusData.map((item: any, index: number) => {
             return (
               <FocusAssistantOption
                 title={item.title}
                 text={item.text}
                 key={index}
+                suggest={item.suggest}
               />
             );
           })}

@@ -4,16 +4,20 @@ import { Message } from "@/components/organisms";
 import { PaginationScroll } from "@/hoc";
 import { useChat } from "@/hooks";
 import { Loader2 } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const Conversation = () => {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { messages, isLoading } = useChat();
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView();
+    }
+  }, [messages]);
   return (
     <div className={"flex-1 overflow-hidden relative"}>
       <div className="react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0 pb-28">
         <div
-          ref={scrollRef}
           className={
             "react-scroll-to-bottom--css-ikyem-1n7m0yu custom-scrollbar flex flex-col items-center gap-2.5 md:gap-5 overflow-x-hidden pr-2"
           }
@@ -40,6 +44,7 @@ const Conversation = () => {
                 isUser={false}
               />
             )}
+            <div ref={scrollRef} />
           </PaginationScroll>
         </div>
       </div>
