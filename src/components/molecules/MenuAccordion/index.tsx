@@ -19,9 +19,14 @@ import { useAppDispatch } from "@/lib/store/hooks";
 interface MenuAccordionItemProps {
   item: MenuItem;
   contents: any;
+  handleOpen?: any;
 }
 
-const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item, contents }) => {
+const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
+  item,
+  contents,
+  handleOpen,
+}) => {
   const { open } = useSidebar();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -60,6 +65,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item, contents }) => {
   return (
     <Accordion.Item className="flex flex-col gap-0.5" value={item.value}>
       <Accordion.Trigger
+        onClick={() => handleOpen()}
         className={cn("p-2 rounded-sm group hover:text-white hover:bg-navy-5", {
           "bg-navy-25": isActive,
         })}
@@ -111,6 +117,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item, contents }) => {
 
 const MenuAccordion: FC = () => {
   const { chats } = useChat();
+  const { handleOpen } = useSidebar();
 
   return (
     <Accordion type="single" collapsible className="flex flex-col gap-0.5">
@@ -119,6 +126,7 @@ const MenuAccordion: FC = () => {
           key={item.value}
           item={item}
           contents={item.value === "assistant" ? chats : item.contents}
+          handleOpen={handleOpen}
         />
       ))}
     </Accordion>

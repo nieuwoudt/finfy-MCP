@@ -1,5 +1,12 @@
 import { FooterAuth } from "@/components/molecules";
 import { ReactNode } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Chat | Finfy",
+  description: "Chat",
+};
+
 
 export default function RootLayout({
   children,
