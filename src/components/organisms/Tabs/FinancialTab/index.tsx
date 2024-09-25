@@ -138,22 +138,7 @@ const FinancialTab = () => {
           Planner
         </Tab.Trigger>
       </Tab.List>
-      <Tab.Content value="spending">
-        <h3>Spending by Primary Category</h3>
-        <BarChartPrimaryCategory
-          data={spendingData.spending_by_primary_category}
-        />
-
-        <h3>Spending by Primary and Secondary Category</h3>
-        <BarChartPrimarySecondary
-          data={spendingData.spending_by_primary_secondary}
-        />
-
-        <h3>Spending by Date</h3>
-        <LineChartByDate data={spendingData.spending_by_date} />
-
-        <h3>Spending by Transaction Type</h3>
-      </Tab.Content>
+      <Tab.Content value="spending"></Tab.Content>
       <Tab.Content value="transactions">
         <TransactionChart />
       </Tab.Content>
