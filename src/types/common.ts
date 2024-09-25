@@ -23,6 +23,7 @@ export interface User {
   plan: string;
   selected_currency: string;
   phone: string;
+  finished_onboarding: boolean;
 }
 
 export interface Transaction {
@@ -76,7 +77,6 @@ export type OptionsType = {
   value: string;
 };
 
-
 export type MenuItem = {
   value: string;
   icon: FC<{ className?: string }>;
@@ -91,7 +91,6 @@ export type MenuItem = {
       }[]
     | [];
 };
-
 
 export type ChartConfig = {
   [k in string]: {
