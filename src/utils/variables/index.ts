@@ -13,8 +13,8 @@ export const cookiesKeys = {
 
 
 export const routesOnboarding = {
-  // verifyPhoneNumber: "verify-phone-number",
-  // confirmPhoneNumber: "confirm-phone-number",
+  verifyPhoneNumber: "verify-phone-number",
+  confirmPhoneNumber: "confirm-phone-number",
   selectPlan: "select-plan",
   personalize: "personalize",
   userPolicy: "user-policy",

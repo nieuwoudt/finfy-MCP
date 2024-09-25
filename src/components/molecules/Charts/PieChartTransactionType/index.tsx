@@ -8,7 +8,7 @@ const PieChartTransactionType = () => {
     labels: ["Bank Fees", "Entertainment", "General Services", "Income"],
     datasets: [
       {
-        data: [420, 280, 375, 300], // Corresponding values
+        data: [420, 280, 375, 300],
         backgroundColor: ["#36A2EB", "#FF6384", "#FFCE56", "#4BC0C0"],
       },
     ],
