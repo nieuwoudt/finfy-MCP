@@ -59,9 +59,14 @@ const CardLinkAccount = () => {
               "LINK YOUR OWN ACCOUNT"
             )}
           </Button>
-          <p className="text-center text-sm font-medium text-grey-15">
+          <Button
+            onClick={() => nextStep()}
+            full
+            variant="ghost"
+            className="text-center text-sm font-medium text-grey-15"
+          >
             Not ready to link an account?
-          </p>
+          </Button>
         </div>
       </CardTemplate.Footer>
     </CardTemplate>

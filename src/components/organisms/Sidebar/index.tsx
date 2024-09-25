@@ -8,23 +8,29 @@ import { ScrollableArea, BurgerButton } from "@/components/molecules";
 import { cn } from "@/lib/utils";
 import { useChat, useSidebar } from "@/hooks";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
   const router = useRouter();
   const { handleResetChat } = useChat();
-  const { open, handleOpen, handleClose } = useSidebar();
-  const handleMouseEnter = () => handleOpen();
-  const handleMouseLeave = () => handleClose();
+  const { open } = useSidebar();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleClick = () => {
     handleResetChat();
     router.push("/dashboard", undefined);
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <aside
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       className={cn(
         "right-sidebar transition-all flex flex-col gap-5 fixed inset-0 z-50 w-full lg:static lg:max-w-64",
         open

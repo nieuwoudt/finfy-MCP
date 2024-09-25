@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { localStorageKeys } from "@/utils/variables";
+import { cookiesKeys } from "@/utils/variables";
+import { setCookie, getCookie } from "cookies-next";
 interface SidebarState {
   open: boolean;
 }
 
 const initialState: SidebarState = {
-  open: false,
+  open: (getCookie(cookiesKeys.sidebar) as any) === "true",
 };
 
 export const sidebarSlice = createSlice({
@@ -14,9 +15,11 @@ export const sidebarSlice = createSlice({
   reducers: {
     toggleSidebar: (state) => {
       state.open = !state.open;
+      setCookie(cookiesKeys.sidebar, state.open);
     },
     setSidebar: (state, action) => {
       state.open = action.payload;
+      setCookie(cookiesKeys.sidebar, state.open);
     },
   },
 });

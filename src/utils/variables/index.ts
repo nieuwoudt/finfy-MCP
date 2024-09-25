@@ -2,8 +2,15 @@
 
 export const localStorageKeys = {
   darkMode: "darkMode",
+};
+
+
+// Cookie Keys
+
+export const cookiesKeys = {
   sidebar: "sidebar"
 };
+
 
 export const routesOnboarding = {
   // verifyPhoneNumber: "verify-phone-number",
