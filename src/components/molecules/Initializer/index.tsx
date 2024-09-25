@@ -37,7 +37,7 @@ const Initializer: FC<InitializerProps> = () => {
         dispatch(resetChat());
       }
     })();
-  }, [params.id, dispatch]);
+  }, [dispatch]);
 
   return (
     <ProgressBar

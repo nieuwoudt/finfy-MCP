@@ -3,7 +3,7 @@
 import { Button, Icon } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
 import { useUser } from "@/hooks";
-import { setDataUser } from "@/lib/store/features/user/userSlice";
+import { setDataUser, updateUser } from "@/lib/store/features/user/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,14 @@ const CardSetupComplete = () => {
     startTransition(async () => {
       if (user?.id) {
         await dispatch(setDataUser(user?.id));
+        if (user?.id) {
+          await dispatch(
+            updateUser({
+              finished_onboarding: true,
+              id: user.id,
+            })
+          );
+        }
         router.push("/dashboard");
       } else {
         toast.error("Something Wrong!");

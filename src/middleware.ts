@@ -77,12 +77,11 @@ export async function middleware(request: NextRequest) {
         .select()
         .eq("email", user?.email)
         .single();
-      if (data?.plan && data?.selected_currency && data?.name) {
+      if (data?.finished_onboarding) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
+      } else if (!path.includes("/onboarding")) {
+        return NextResponse.redirect(new URL("/onboarding", request.url));
       }
-    }else if(user){
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-
     }
   }
 }

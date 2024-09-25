@@ -10,6 +10,12 @@ import { MenuItem } from "@/types";
 import { menuItems } from "./index.constants";
 import { useChat, useSidebar } from "@/hooks";
 import { extractDate } from "@/utils/helpers";
+import { useRouter } from "next/navigation";
+import {
+  fetchMessagesForChat,
+  setChatId,
+} from "@/lib/store/features/chat/chatSlice";
+import { useAppDispatch } from "@/lib/store/hooks";
 interface MenuAccordionItemProps {
   item: MenuItem;
   contents: any;
@@ -17,6 +23,8 @@ interface MenuAccordionItemProps {
 
 const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item, contents }) => {
   const { open } = useSidebar();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
   const Icon = item.icon;
   // Sort contents by date in descending order
@@ -37,6 +45,14 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item, contents }) => {
     groups[category].push(content);
     return groups;
   }, {} as Record<string, { title: string; chatId: string; date: string }[]>);
+
+  const handleClick = (link: string, chatId: string) => {
+    router.push(link, undefined);
+    if (chatId) {
+      dispatch(fetchMessagesForChat(chatId as string));
+      dispatch(setChatId(chatId as string));
+    }
+  };
 
   const isActive =
     pathname === item.link || pathname.startsWith(`${item.link}/`);
@@ -61,14 +77,17 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({ item, contents }) => {
                 <p className="text-xs my-1">{group}</p>
                 {contents.map((content: any, index: number) => (
                   <div key={index} className="flex justify-between">
-                    <Link
-                      href={
-                        content.id ? `${item.link}/${content.id}` : item.link
+                    <button
+                      onClick={() =>
+                        handleClick(
+                          content.id ? `${item.link}/${content.id}` : item.link,
+                          content.id
+                        )
                       }
                       className="flex flex-col w-[210px]"
                     >
                       <p className="menu-list-btn pl-2">{content.title}</p>
-                    </Link>
+                    </button>
                     <DropDownModal />
                   </div>
                 ))}
