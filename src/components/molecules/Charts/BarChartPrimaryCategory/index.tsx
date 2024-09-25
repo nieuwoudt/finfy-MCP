@@ -29,13 +29,6 @@ export function BarChartPrimaryCategory() {
     <Chart config={chartConfig} className="min-h-[200px] w-full">
       <BarChart width={300} height={100} data={chartData}>
         <CartesianGrid vertical={false} strokeDasharray="8 8" />
-        {/* <XAxis
-          dataKey="category"
-          tickLine={false}
-          tickMargin={10}
-          axisLine={false}
-        />
-        <YAxis /> */}
         <Tooltip />
         <Legend />
         <Bar dataKey="amount" fill="var(--color-amount)" radius={[50, 50, 0, 0]} />
