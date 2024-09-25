@@ -1,73 +1,50 @@
-import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  PointElement,
   LineElement,
   Title,
   Tooltip,
   Legend,
-  PointElement,
 } from "chart.js";
-import { ChartOptions } from "chart.js";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  LineElement,
   PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
 );
 
-interface LineChartByDateProps {
-  data: { [date: string]: number };
-}
-
-const LineChartByDate: React.FC<LineChartByDateProps> = ({ data }) => {
-  const chartData = {
-    labels: Object.keys(data),
+const LineChartByDate = () => {
+  const data = {
+    labels: [
+      "2024-01-10",
+      "2024-01-15",
+      "2024-01-19",
+      "2024-02-27",
+      "2024-03-01",
+      "2024-03-15",
+      "2024-03-20",
+    ],
     datasets: [
       {
-        label: "Amount ($)",
-        data: Object.values(data),
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: true,
+        label: "Spending Over Time",
+        data: [300, 100, 75, 30, 420, 300, 150],
+        borderColor: "#36A2EB",
+        fill: false,
       },
     ],
   };
 
-  const options: ChartOptions<"line"> = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: "Spending by Date",
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: "Amount ($)",
-        },
-      },
-      x: {
-        title: {
-          display: true,
-          text: "Date",
-        },
-      },
-    },
-  };
-
   return (
     <div>
-      <Line data={chartData} options={options} />
+      <h2>Spending Over Time</h2>
+      <Line data={data} />
     </div>
   );
 };

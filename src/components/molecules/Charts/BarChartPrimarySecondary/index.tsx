@@ -1,75 +1,36 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { ChartOptions } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-interface BarChartPrimarySecondaryProps {
-  data: { [primaryCategory: string]: { [secondaryCategory: string]: number } };
-}
-
-const BarChartPrimarySecondary: React.FC<BarChartPrimarySecondaryProps> = ({
-  data,
-}) => {
-  const labels: string[] = [];
-  const values: number[] = [];
-  const colors: string[] = [];
-
-  Object.keys(data).forEach((primaryCategory) => {
-    Object.keys(data[primaryCategory]).forEach((secondaryCategory) => {
-      labels.push(`${primaryCategory} - ${secondaryCategory}`);
-      values.push(data[primaryCategory][secondaryCategory]);
-      colors.push(
-        `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${
-          Math.random() * 255
-        }, 0.6)`
-      ); // Random color
-    });
-  });
-
-  const chartData = {
-    labels,
+const BarChartPrimarySecondary = () => {
+  const data = {
+    labels: [
+      "Bank Fees - Other Bank Fees",
+      "Entertainment - Casinos & Gambling",
+      "Entertainment - Sporting Events",
+      "Entertainment - TV & Movies",
+      "General Services - Insurance",
+      "General Services - Security",
+      "Income - Other Income",
+    ],
     datasets: [
       {
-        label: "Amount ($)",
-        data: values,
-        backgroundColor: colors,
+        data: [420, 100, 30, 150, 75, 300, 300],
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+          "#FF9F40",
+          "#F7464A",
+        ],
       },
     ],
   };
 
-  const options: ChartOptions<"bar"> = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: "Spending by Primary and Secondary Category",
-      },
-      legend: {
-        display: false,
-      },
-    },
-  };
-
   return (
     <div>
-      <Bar data={chartData} options={options} />
+      <h2>Spending by Primary and Secondary Category</h2>
+      <Doughnut data={data} />
     </div>
   );
 };

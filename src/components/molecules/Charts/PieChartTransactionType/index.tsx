@@ -1,49 +1,23 @@
-import React from "react";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
-import { ChartOptions } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-ChartJS.register(ArcElement, Title, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface PieChartTransactionTypeProps {
-  data: { [transactionType: string]: number };
-}
-
-const PieChartTransactionType: React.FC<PieChartTransactionTypeProps> = ({
-  data,
-}) => {
-  const chartData = {
-    labels: Object.keys(data),
+const PieChartTransactionType = () => {
+  const data = {
+    labels: ["Bank Fees", "Entertainment", "General Services", "Income"],
     datasets: [
       {
-        label: "Spending by Transaction Type",
-        data: Object.values(data),
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(75, 192, 192, 0.6)",
-        ],
+        data: [420, 280, 375, 300], // Corresponding values
+        backgroundColor: ["#36A2EB", "#FF6384", "#FFCE56", "#4BC0C0"],
       },
     ],
   };
 
-  const options: ChartOptions<"pie"> = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: "Spending Per Transaction Type (Pie Chart)",
-      },
-      legend: {
-        position: "right",
-      },
-    },
-  };
-
   return (
     <div>
-      <Pie data={chartData} options={options} />
+      <h2>Spending by Primary Category</h2>
+      <Pie data={data} />
     </div>
   );
 };

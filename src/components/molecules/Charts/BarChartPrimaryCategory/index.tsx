@@ -1,61 +1,45 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
+"use client";
+
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+  Bar,
+  BarChart,
+  CartesianGrid,
   Tooltip,
   Legend,
-} from "chart.js";
-import { ChartOptions } from "chart.js";
+} from "recharts";
+import { Chart } from "@/components/atoms";
+import { ChartConfig } from "@/types";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+const chartData = [
+  { category: "Bank Fees", amount: 420 },
+  { category: "Entertainment", amount: 280 },
+  { category: "General Services", amount: 375 },
+  { category: "Income", amount: 300 },
+];
 
-interface BarChartPrimaryCategoryProps {
-  data: { [key: string]: number };
-}
+const chartConfig = {
+  amount: {
+    label: "Amount",
+    color: "#515AD9",
+  },
+} satisfies ChartConfig;
 
-const BarChartPrimaryCategory: React.FC<BarChartPrimaryCategoryProps> = ({
-  data,
-}) => {
-  const chartData = {
-    labels: Object.keys(data),
-    datasets: [
-      {
-        label: "Amount ($)",
-        data: Object.values(data),
-        backgroundColor: "rgba(54, 162, 235, 0.6)",
-      },
-    ],
-  };
-
-  const options: ChartOptions<"bar"> = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: "Spending by Primary Category",
-      },
-      legend: {
-        display: false,
-      },
-    },
-  };
-
+export function BarChartPrimaryCategory() {
   return (
-    <div>
-      <Bar data={chartData} options={options} />
-    </div>
+    <Chart config={chartConfig} className="min-h-[200px] w-full">
+      <BarChart width={300} height={100} data={chartData}>
+        <CartesianGrid vertical={false} strokeDasharray="8 8" />
+        {/* <XAxis
+          dataKey="category"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+        />
+        <YAxis /> */}
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="amount" fill="var(--color-amount)" radius={[50, 50, 0, 0]} />
+      </BarChart>
+    </Chart>
   );
-};
-
-export { BarChartPrimaryCategory };
+}
