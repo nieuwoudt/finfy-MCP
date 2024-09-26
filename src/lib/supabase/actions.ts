@@ -4,6 +4,7 @@ import { createSupabaseClient } from "@/lib/supabase/server";
 import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "@/utils/helpers";
 import { Account, Transaction } from "@/types";
+import * as Sentry from "@sentry/nextjs";
 
 export const createAccountAction = async (formData: FormData) => {
   try {
@@ -12,7 +13,10 @@ export const createAccountAction = async (formData: FormData) => {
 
     const { auth } = createSupabaseClient();
     const { error } = await auth.signUp({ password, email });
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return { errorMessage: null };
   } catch (error) {
     return {
@@ -27,7 +31,10 @@ export const loginAction = async (formData: FormData) => {
     const password = formData.get("password") as string;
     const { auth } = createSupabaseClient();
     const { error } = await auth.signInWithPassword({ password, email });
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return { errorMessage: null };
   } catch (error) {
     return {
@@ -40,7 +47,10 @@ export const signOutAction = async () => {
   try {
     const { auth } = createSupabaseClient();
     const { error } = await auth.signOut();
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException("error");
+      throw error;
+    }
     return { errorMessage: null };
   } catch (error) {
     return {
@@ -55,7 +65,10 @@ export const signInWithOtp = async (phone: string) => {
     const { error } = await auth.signInWithOtp({
       phone: `+${phone}`,
     });
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return { errorMessage: null };
   } catch (error) {
     return {
@@ -72,7 +85,10 @@ export const verifyPhoneUser = async (phone: string, token: string) => {
       token,
       type: "sms",
     });
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return { errorMessage: null };
   } catch (error) {
     return {
@@ -88,7 +104,10 @@ export const resendCodeOTP = async (phone: string) => {
       phone,
       type: "sms",
     });
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return { errorMessage: null };
   } catch (error) {
     return {
@@ -126,6 +145,7 @@ export const saveTransactionsAndAccounts = async (
     const { error: accountError } = await supabase
       .from("accounts")
       .insert(uniqueAccounts);
+    Sentry.captureException(accountError);
 
     if (accountError) {
       throw accountError;
@@ -200,8 +220,8 @@ export const saveBalances = async (accountData: any, userId: string) => {
         user_id: userId,
       }))
     );
-
     if (error) {
+      Sentry.captureException(error);
       throw error;
     }
 

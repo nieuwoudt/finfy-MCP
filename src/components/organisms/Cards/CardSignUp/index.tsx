@@ -9,6 +9,8 @@ import { createAccountAction } from "@/lib/supabase/actions";
 import { Loader2 } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { createUser } from "@/lib/store/features/user/userSlice";
+// import {d} from 'cookies-next';
+
 
 const CardSignUp = () => {
   const router = useRouter();
@@ -17,6 +19,7 @@ const CardSignUp = () => {
   const handleClickSignUpButton = (formData: FormData) => {
     startTransition(async () => {
       const email = formData.get("email") as string;
+      
       const { errorMessage } = await createAccountAction(formData);
 
       if (errorMessage) {

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { axiosExternal } from "@/utils/axios";
 import { getErrorMessage } from "@/utils/helpers";
 import { supabase } from "@/lib/supabase/client";
+import * as Sentry from "@sentry/nextjs";
 
 interface ChatState {
   user_id: string;
@@ -54,6 +55,7 @@ export const sendChatQuery = createAsyncThunk<
       }
       return response.data;
     } catch (error: any) {
+      Sentry.captureException(error);
       return rejectWithValue(error.response?.data || "Something went wrong");
     }
   }
@@ -89,8 +91,10 @@ export const createMessage = createAsyncThunk(
         },
       ])
       .select();
-
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data[0];
   }
 );
@@ -102,7 +106,10 @@ export const createChat = createAsyncThunk(
       .from("chats")
       .insert([{ user_id: userId, title }])
       .select();
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data.at(0);
   }
 );
@@ -114,7 +121,10 @@ export const fetchChatsByUserId = createAsyncThunk(
       .from("chats")
       .select("*")
       .eq("user_id", userId);
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data;
   }
 );
@@ -131,7 +141,10 @@ export const updateChat = createAsyncThunk(
         .update({ user_id })
         .eq("id", id)
         .select();
-      if (error) throw error;
+      if (error) {
+        Sentry.captureException(error);
+        throw error;
+      }
       return data[0];
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -144,7 +157,10 @@ export const deleteChat = createAsyncThunk(
   async (chatId: string, { rejectWithValue }) => {
     try {
       const { error } = await supabase.from("chats").delete().eq("id", chatId);
-      if (error) throw error;
+      if (error) {
+        Sentry.captureException(error);
+        throw error;
+      }
       return chatId;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -160,7 +176,10 @@ export const fetchMessagesForChat = createAsyncThunk(
         .from("messages")
         .select("*")
         .eq("chat_id", chatId);
-      if (error) throw error;
+      if (error) {
+        Sentry.captureException(error);
+        throw error;
+      }
       return data;
     } catch (error: any) {
       return rejectWithValue(error.message);

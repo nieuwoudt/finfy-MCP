@@ -4,6 +4,7 @@ import {
   saveTransactionsAndAccounts,
   saveBalances,
 } from "@/lib/supabase/actions";
+import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
 import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
@@ -28,6 +29,7 @@ const usePlaid = () => {
         const data = await response.json();
         setLinkToken(data.link_token);
       } catch (error) {
+        Sentry.captureException(error);
         console.error("Error creating link token", error);
       }
     };
@@ -45,6 +47,7 @@ const usePlaid = () => {
       setAccessToken(access_token);
       return access_token;
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error exchanging public token: ${getErrorMessage(error)}`);
     }
   };
@@ -62,6 +65,7 @@ const usePlaid = () => {
       }
       setTransactions(transactions);
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error fetching transactions: ${getErrorMessage(error)}`);
     }
   };
@@ -80,6 +84,7 @@ const usePlaid = () => {
       // }
       setAssets(assets);
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error fetching assets: ${getErrorMessage(error)}`);
     }
   };
@@ -98,6 +103,7 @@ const usePlaid = () => {
       }
       setBalances(balances);
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error fetching balances: ${getErrorMessage(error)}`);
     }
   };
@@ -117,6 +123,7 @@ const usePlaid = () => {
       // }
       setIncome(income);
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error fetching income: ${getErrorMessage(error)}`);
     }
   };
@@ -131,6 +138,7 @@ const usePlaid = () => {
       const data = await response.json();
       console.log(data, "fetchInvestments");
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error fetching income: ${getErrorMessage(error)}`);
     }
   };
@@ -145,6 +153,7 @@ const usePlaid = () => {
       const data = await response.json();
       console.log(data, "fetchInvestments");
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error fetching income: ${getErrorMessage(error)}`);
     }
   };
@@ -161,6 +170,7 @@ const usePlaid = () => {
       const data = await response.json();
       console.log(data, "data");
     } catch (error) {
+      Sentry.captureException(error);
       toast.error(`Error fetching income: ${getErrorMessage(error)}`);
     }
   };
@@ -172,7 +182,7 @@ const usePlaid = () => {
       if (token) {
         await fetchTransactions(token);
         await fetchInvestments(token);
-        await fetchLiabilities(token)
+        await fetchLiabilities(token);
         // await fetchAssets(token);
         await fetchBalances(token);
         // await fetchIncome(token);

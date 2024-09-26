@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "@/utils/helpers";
 import { Transaction } from "@/types";
+import * as Sentry from "@sentry/nextjs";
 
 interface TransactionsState {
   transactions: Transaction[];
@@ -19,7 +20,10 @@ export const fetchTransactions = createAsyncThunk(
   "transactions/fetchAll",
   async () => {
     const { data, error } = await supabase.from("transactions").select("*");
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data as Transaction[];
   }
 );
@@ -32,7 +36,10 @@ export const fetchTransactionById = createAsyncThunk<Transaction, string>(
       .select("*")
       .eq("transaction_id", id)
       .single();
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data as Transaction;
   }
 );
@@ -45,7 +52,10 @@ export const createTransaction = createAsyncThunk<
     .from("transactions")
     .insert([newTransaction])
     .single();
-  if (error) throw error;
+  if (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
   return data as Transaction;
 });
 
@@ -59,7 +69,10 @@ export const updateTransaction = createAsyncThunk<
     .update(dataTransaction)
     .eq("transaction_id", transaction_id)
     .single();
-  if (error) throw error;
+  if (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
   return data as Transaction;
 });
 
@@ -70,7 +83,10 @@ export const deleteTransaction = createAsyncThunk<string, string>(
       .from("transactions")
       .delete()
       .eq("transaction_id", transactionId);
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return transactionId;
   }
 );

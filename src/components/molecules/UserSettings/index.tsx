@@ -18,7 +18,8 @@ const UserSettings = () => {
   const { open: openSidebar } = useSidebar();
   const [open, setOpen] = useState(false);
   const handleClickLogOut = async () => {
-    await signOutAction();
+    const error = await signOutAction();
+    console.log(error, "error");
     route.push("/authentication");
   };
   return (

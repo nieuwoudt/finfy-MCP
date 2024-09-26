@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "@/utils/helpers";
 import { Account } from "@/types";
+import * as Sentry from "@sentry/nextjs";
 
 interface AccountsState {
   accounts: Account[];
@@ -17,6 +18,7 @@ const initialState: AccountsState = {
 
 export const fetchAccounts = createAsyncThunk("accounts/fetchAll", async () => {
   const { data, error } = await supabase.from("accounts").select("*");
+  Sentry.captureException(error);
   if (error) throw error;
   return data as Account[];
 });
@@ -29,7 +31,10 @@ export const fetchAccountById = createAsyncThunk<Account, string>(
       .select("*")
       .eq("id", id)
       .single();
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data as Account;
   }
 );
@@ -41,7 +46,10 @@ export const createAccount = createAsyncThunk<Account, Omit<Account, "id">>(
       .from("accounts")
       .insert([newAccount])
       .single();
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data as Account;
   }
 );
@@ -55,7 +63,10 @@ export const updateAccount = createAsyncThunk<Account, Partial<Account>>(
       .update(dataAccount)
       .eq("id", id)
       .single();
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return data as Account;
   }
 );
@@ -67,7 +78,10 @@ export const deleteAccount = createAsyncThunk<string, string>(
       .from("accounts")
       .delete()
       .eq("id", accountId);
-    if (error) throw error;
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
     return accountId;
   }
 );
