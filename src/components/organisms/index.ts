@@ -6,3 +6,4 @@ export { UserAvatarWithUpload } from "./UserAvatarWithUpload";
 export { ActionButtonsGroup } from "./ActionButtonsGroup";
 export { Message } from "./Message";
 export { Conversation } from "./Conversation";
+export { ListChartVisualizeButton } from "./ListChartVisualizeButton";

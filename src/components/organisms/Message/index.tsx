@@ -15,19 +15,13 @@ const Message: FC<MessageProps> = (props) => {
   return (
     <>
       <article className="w-full relative">
-        <div
-          className={clsx(
-            "flex gap-2.5 select-none w-full",
-            isUser ? "justify-end " : "justify-start"
-          )}
-        >
+        <div className={"flex gap-2.5 select-none w-full justify-start"}>
           <div
             className={cn(
-              "message relative inline-block text-white rounded-md px-2 py-1 md:px-4 md:py-2",
-              isUser ? "bg-navy-5" : " bg-purple-15"
+              "message relative inline-block text-white rounded-md px-2 py-1 md:px-4 md:py-2"
             )}
           >
-            <ContentMessage text={text} />
+            <ContentMessage text={text} isUser={isUser} />
           </div>
         </div>
       </article>

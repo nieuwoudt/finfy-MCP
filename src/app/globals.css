@@ -92,6 +92,11 @@
     background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
     background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%;
   }
+
+  .chart-button-border {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='14' ry='14' stroke='%23515AD9FF' stroke-width='2' stroke-dasharray='4%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 14px;
+  }
 }
 
 /* CurrencySelector styles */
