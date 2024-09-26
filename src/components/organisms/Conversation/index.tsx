@@ -38,7 +38,7 @@ const Conversation = () => {
                 />
               );
             })}
-            {!isLoading && (
+            {isLoading && (
               <Message
                 text={
                   <div className="flex items-center gap-1">
