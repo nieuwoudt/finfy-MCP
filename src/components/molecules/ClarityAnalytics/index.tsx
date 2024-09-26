@@ -1,6 +1,9 @@
 import Script from "next/script";
 
 const ClarityAnalytics = () => {
+  if (process.env.NEXT_PUBLIC_NODE_ENV === "dev") {
+    return null;
+  }
   return (
     <Script id="clarity-script" strategy="afterInteractive">
       {`
