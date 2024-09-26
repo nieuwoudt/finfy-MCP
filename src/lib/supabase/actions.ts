@@ -232,3 +232,116 @@ export const saveBalances = async (accountData: any, userId: string) => {
     };
   }
 };
+
+export const saveLiabilities = async (liabilitiesData: any, userId: string) => {
+  try {
+    const creditLiabilities = liabilitiesData.credit.map((credit: any) => ({
+      account_id: credit.account_id,
+      account_type: 'credit',
+      aprs: credit.aprs,
+      is_overdue: credit.is_overdue,
+      last_payment_amount: credit.last_payment_amount,
+      last_payment_date: credit.last_payment_date,
+      last_statement_issue_date: credit.last_statement_issue_date,
+      last_statement_balance: credit.last_statement_balance,
+      minimum_payment_amount: credit.minimum_payment_amount,
+      next_payment_due_date: credit.next_payment_due_date,
+      user_id: userId,
+    }));
+
+    const mortgageLiabilities = liabilitiesData.mortgage.map((mortgage: any) => ({
+      account_id: mortgage.account_id,
+      account_type: 'mortgage',
+      account_number: mortgage.account_number,
+      current_late_fee: mortgage.current_late_fee,
+      escrow_balance: mortgage.escrow_balance,
+      has_pmi: mortgage.has_pmi,
+      has_prepayment_penalty: mortgage.has_prepayment_penalty,
+      interest_rate: mortgage.interest_rate,
+      loan_term: mortgage.loan_term,
+      loan_type_description: mortgage.loan_type_description,
+      maturity_date: mortgage.maturity_date,
+      next_monthly_payment: mortgage.next_monthly_payment,
+      origination_date: mortgage.origination_date,
+      origination_principal_amount: mortgage.origination_principal_amount,
+      past_due_amount: mortgage.past_due_amount,
+      property_address: mortgage.property_address,
+      ytd_interest_paid: mortgage.ytd_interest_paid,
+      ytd_principal_paid: mortgage.ytd_principal_paid,
+      user_id: userId,
+    }));
+
+    const studentLiabilities = liabilitiesData.student.map((student: any) => ({
+      account_id: student.account_id,
+      account_type: 'student',
+      account_number: student.account_number,
+      disbursement_dates: student.disbursement_dates,
+      expected_payoff_date: student.expected_payoff_date,
+      guarantor: student.guarantor,
+      interest_rate_percentage: student.interest_rate_percentage,
+      loan_name: student.loan_name,
+      loan_status: student.loan_status,
+      outstanding_interest_amount: student.outstanding_interest_amount,
+      payment_reference_number: student.payment_reference_number,
+      pslf_status: student.pslf_status,
+      repayment_plan: student.repayment_plan,
+      servicer_address: student.servicer_address,
+      sequence_number: student.sequence_number,
+      user_id: userId,
+    }));
+
+    const { error } = await supabase.from("liabilities").insert([
+      ...creditLiabilities,
+      ...mortgageLiabilities,
+      ...studentLiabilities
+    ]);
+
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+
+export const saveInvestmentTransactions = async (transactions: any[], userId: string) => {
+  try {
+    const { error } = await supabase.from("investment_transactions").insert(
+      transactions.map((transaction: any) => ({
+        investment_transaction_id: transaction.investment_transaction_id,
+        account_id: transaction.account_id,
+        amount: transaction.amount,
+        cancel_transaction_id: transaction.cancel_transaction_id,
+        transaction_date: transaction.date,
+        fees: transaction.fees,
+        iso_currency_code: transaction.iso_currency_code,
+        name: transaction.name,
+        price: transaction.price,
+        quantity: transaction.quantity,
+        security_id: transaction.security_id,
+        subtype: transaction.subtype,
+        type: transaction.type,
+        unofficial_currency_code: transaction.unofficial_currency_code,
+        user_id: userId,
+        created_at: new Date().toISOString(),
+      }))
+    );
+
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};

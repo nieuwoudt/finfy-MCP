@@ -12,6 +12,8 @@ export async function GET() {
       products: [
         Products.Auth,
         Products.Transactions,
+        Products.Investments,
+        Products.Liabilities,
       ],
     });
 

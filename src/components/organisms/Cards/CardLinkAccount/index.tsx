@@ -7,6 +7,7 @@ import { usePlaid } from "@/hooks";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/utils/helpers";
 
 const CardLinkAccount = () => {
   const { nextStep } = useNavigationOnboarding();
@@ -19,6 +20,7 @@ const CardLinkAccount = () => {
       nextStep();
     }
   }, [transactions?.length]);
+
   return (
     <CardTemplate
       title="Here's why you should link yours:"
