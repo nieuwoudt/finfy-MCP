@@ -221,7 +221,7 @@ const chatSlice = createSlice({
       })
       .addCase(sendChatQuery.fulfilled, (state, action) => {
         if (action.payload.output) {
-          state.output = action.payload.output.text;
+          state.output = action.payload.output.text || action.payload.output;
           state.calculations = action.payload.calculations;
           if (state.user_query) {
             state.history.push(state.user_query);

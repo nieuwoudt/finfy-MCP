@@ -57,7 +57,7 @@ const ChatMessageInput = () => {
             createMessage({
               chat_id: currentChatId,
               user_id: userId,
-              content: data.payload.output.text,
+              content: data.payload.output.text || data.payload.output,
               message_type: "bot",
               is_processed: true,
             });
