@@ -1,10 +1,13 @@
+import { cn } from "@/lib/utils";
 import { FC, ReactNode } from "react";
+import { UserAvatar } from "../UserAvatar";
 
 interface ContentMessageProps {
   text: ReactNode;
+  isUser: boolean;
 }
 
-const ContentMessage: FC<ContentMessageProps> = ({ text }) => {
+const ContentMessage: FC<ContentMessageProps> = ({ text, isUser }) => {
   if (!text) {
     return null;
   }
@@ -12,10 +15,12 @@ const ContentMessage: FC<ContentMessageProps> = ({ text }) => {
   return (
     <div className="flex flex-col h-full">
       <p
-        className={
-          "whitespace-pre-line font-normal text-xs leading-[14px] md:text-lg md:leading-8"
-        }
+        className={cn(
+          "whitespace-pre-line flex gap-2.5 items-center text-white font-normal leading-[14px] md:leading-8",
+          isUser ? "text-4xl font-bold" : "text-base"
+        )}
       >
+        {isUser && <UserAvatar />}
         {text}
       </p>
     </div>
