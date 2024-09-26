@@ -38,9 +38,14 @@ const Conversation = () => {
                 />
               );
             })}
-            {isLoading && (
+            {!isLoading && (
               <Message
-                text={<Loader2 className="w-7 h-7 animate-spin" />}
+                text={
+                  <div className="flex items-center gap-1">
+                    Your data is being analyzed, this might take a moment...
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  </div>
+                }
                 isUser={false}
               />
             )}
