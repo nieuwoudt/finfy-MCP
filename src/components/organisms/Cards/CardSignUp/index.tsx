@@ -9,11 +9,11 @@ import { createAccountAction } from "@/lib/supabase/actions";
 import { Loader2 } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { createUser } from "@/lib/store/features/user/userSlice";
-import { getErrorMessage } from "@/utils/helpers";
-// import {d} from 'cookies-next';
+import { getErrorMessage, resetCookies } from "@/utils/helpers";
 
 const CardSignUp = () => {
   const router = useRouter();
+
   const dispatch = useAppDispatch();
   const [isPending, startTransition] = useTransition();
   const handleClickSignUpButton = (formData: FormData) => {
@@ -21,6 +21,7 @@ const CardSignUp = () => {
       const email = formData.get("email") as string;
       const ERROR_DUPLICATE_CODE = "23505";
       try {
+        resetCookies();
         const data: any = await dispatch(createUser({ email }));
         if (data?.error?.code !== ERROR_DUPLICATE_CODE) {
           const { errorMessage } = await createAccountAction(formData);
