@@ -29,3 +29,4 @@ export { DropzoneComponent } from "./DropzoneComponent";
 export { ContentMessage } from "./ContentMessage";
 export { FullScreenLoader } from "./FullScreenLoader";
 export { ChartVisualizeButton } from "./ChartVisualizeButton";
+export { ClarityAnalytics } from "./ClarityAnalytics";
