@@ -47,6 +47,7 @@ const Conversation = () => {
                   </div>
                 }
                 isUser={false}
+                isLoading={isLoading}
               />
             )}
             <div ref={scrollRef} />

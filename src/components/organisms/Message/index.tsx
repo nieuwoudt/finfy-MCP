@@ -7,10 +7,11 @@ interface MessageProps {
   text: ReactNode;
   isUser: boolean;
   date?: string;
+  isLoading?: boolean;
 }
 
 const Message: FC<MessageProps> = (props) => {
-  const { text, isUser } = props;
+  const { text, isUser, isLoading } = props;
 
   return (
     <>
@@ -21,7 +22,7 @@ const Message: FC<MessageProps> = (props) => {
               "message relative inline-block text-white rounded-md px-2 py-1 md:px-4 md:py-2"
             )}
           >
-            <ContentMessage text={text} isUser={isUser} />
+            <ContentMessage text={text} isUser={isUser} isLoading={isLoading} />
           </div>
         </div>
       </article>

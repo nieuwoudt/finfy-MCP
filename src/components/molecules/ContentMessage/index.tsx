@@ -1,13 +1,18 @@
 import { cn } from "@/lib/utils";
 import { FC, ReactNode } from "react";
 import { UserAvatar } from "../UserAvatar";
-
+import Markdown from "react-markdown";
 interface ContentMessageProps {
   text: ReactNode;
   isUser: boolean;
+  isLoading?: boolean;
 }
 
-const ContentMessage: FC<ContentMessageProps> = ({ text, isUser }) => {
+const ContentMessage: FC<ContentMessageProps> = ({
+  text,
+  isUser,
+  isLoading,
+}) => {
   if (!text) {
     return null;
   }
@@ -21,7 +26,7 @@ const ContentMessage: FC<ContentMessageProps> = ({ text, isUser }) => {
         )}
       >
         {isUser && <UserAvatar />}
-        {text}
+        {isUser || isLoading ? text : <Markdown>{text as string}</Markdown>}
       </p>
     </div>
   );
