@@ -50,7 +50,6 @@ const ChatMessageInput = () => {
             history,
             value
           );
-
           if (data?.error) {
             toast.error(data.error.message);
           } else {
@@ -60,6 +59,7 @@ const ChatMessageInput = () => {
               content: data.payload.output.text || data.payload.output,
               message_type: "bot",
               is_processed: true,
+              calculations: JSON.stringify(data.payload.calculations),
             });
           }
         }

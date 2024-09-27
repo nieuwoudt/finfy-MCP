@@ -46,23 +46,9 @@ export const useChat = () => {
   );
 
   const fetchCreateMessage = useCallback(
-    async ({
-      chat_id,
-      user_id,
-      content,
-      message_type,
-      is_processed,
-      response_time,
-    }: any) => {
+    async (data: any) => {
       await dispatch(
-        createMessage({
-          chat_id,
-          user_id,
-          content,
-          message_type,
-          is_processed,
-          response_time,
-        })
+        createMessage(data)
       );
     },
     [dispatch]

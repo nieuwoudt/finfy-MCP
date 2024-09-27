@@ -1,10 +1,11 @@
 "use client";
 
-import { Message } from "@/components/organisms";
+import { Message, ListChartVisualizeButton } from "@/components/organisms";
 import { PaginationScroll } from "@/hoc";
 import { useChat } from "@/hooks";
+import { formatSnakeCaseToTitleCase } from "@/utils/helpers";
 import { Loader2 } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 
 const Conversation = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -14,6 +15,7 @@ const Conversation = () => {
       scrollRef.current.scrollIntoView();
     }
   }, [messages]);
+
   return (
     <div className={"flex-1 overflow-hidden relative"}>
       <div className="react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0 pb-28">
@@ -29,13 +31,22 @@ const Conversation = () => {
             elementScroll={undefined}
           >
             {messages.map((message) => {
+              const calculations = message.calculations
+                ? JSON.parse(message.calculations)
+                : null;
               return (
-                <Message
-                  key={message.id}
-                  text={message.content}
-                  date={""}
-                  isUser={message.message_type === "user"}
-                />
+                <Fragment key={message.id}>
+                  <Message
+                    text={message.content}
+                    date={""}
+                    isUser={message.message_type === "user"}
+                  />
+                  {/* {calculations && (
+                    <ListChartVisualizeButton
+                      data={Object.entries(calculations)}
+                    />
+                  )} */}
+                </Fragment>
               );
             })}
             {isLoading && (

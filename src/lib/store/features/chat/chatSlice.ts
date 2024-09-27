@@ -63,14 +63,7 @@ export const sendChatQuery = createAsyncThunk<
 
 export const createMessage = createAsyncThunk(
   "chat/createMessage",
-  async ({
-    chat_id,
-    user_id,
-    content,
-    message_type,
-    is_processed = true,
-    response_time = null,
-  }: {
+  async (dataMessage: {
     chat_id: string;
     user_id: number;
     content: string;
@@ -80,16 +73,7 @@ export const createMessage = createAsyncThunk(
   }) => {
     const { data, error } = await supabase
       .from("messages")
-      .insert([
-        {
-          chat_id,
-          user_id,
-          content,
-          message_type,
-          is_processed,
-          response_time,
-        },
-      ])
+      .insert([dataMessage])
       .select();
     if (error) {
       Sentry.captureException(error);

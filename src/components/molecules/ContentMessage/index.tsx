@@ -21,8 +21,8 @@ const ContentMessage: FC<ContentMessageProps> = ({
     <div className="flex flex-col h-full">
       <p
         className={cn(
-          "whitespace-pre-line flex gap-2.5 items-center text-white font-normal leading-[14px] md:leading-8",
-          isUser ? "text-4xl font-bold" : "text-base"
+          "whitespace-pre-line text-white font-normal leading-[14px] md:leading-8",
+          isUser ? "text-4xl font-bold flex gap-2.5 items-center" : "text-base"
         )}
       >
         {isUser && <UserAvatar />}

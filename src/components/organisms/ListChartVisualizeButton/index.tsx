@@ -1,28 +1,27 @@
 "use client";
 
-import { ChartVisualizeButton } from "@/components/molecules";
+import { ChartVisualizeButton, DynamicChart } from "@/components/molecules";
+import { formatSnakeCaseToTitleCase } from "@/utils/helpers";
+import { FC } from "react";
 
-const mockData = [
-  {
-    text: "Visualise Institution",
-  },
-  {
-    text: "Visualise Institution",
-  },
-  {
-    text: "Visualise Institution",
-  },
-];
+interface ListChartVisualizeButton {
+  data: [string, any][];
+}
 
-const ListChartVisualizeButton = () => {
+const ListChartVisualizeButton: FC<ListChartVisualizeButton> = ({ data }) => {
+  console.log(data, "data");
   return (
     <div className="flex flex-col gap-4 w-full">
       <h3 className="text-white text-2xl font-semibold">Chart</h3>
       <ul title="" className="w-full flex flex-col gap-4">
-        {mockData.map((data, index) => {
+        <DynamicChart dataOptions={data as any} />
+        {data.map(([key, chart]) => {
           return (
-            <li className="w-full" key={index}>
-              <ChartVisualizeButton text={data.text} chart={[]} />
+            <li className="w-full" key={key}>
+              <ChartVisualizeButton
+                text={formatSnakeCaseToTitleCase(key)}
+                chart={chart}
+              />
             </li>
           );
         })}

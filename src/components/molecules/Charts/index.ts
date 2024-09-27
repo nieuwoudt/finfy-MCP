@@ -6,3 +6,4 @@ export { BarChartPrimaryCategory } from "./BarChartPrimaryCategory";
 export { BarChartPrimarySecondary } from "./BarChartPrimarySecondary";
 export { LineChartByDate } from "./LineChartByDate";
 export { PieChartTransactionType } from "./PieChartTransactionType";
+export { DynamicChart } from "./DynamicChart";
