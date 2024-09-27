@@ -22,7 +22,7 @@ export const menuItems: MenuItem[] = [
         className="w-6 h-6 stroke-grey-15 group-hover:stroke-white fill-grey-15 group-hover:fill-white"
       />
     ),
-    title: "Goals",
+    title: "Budget",
     link: "/goals",
     contents: [
       {
@@ -53,6 +53,7 @@ export const menuItems: MenuItem[] = [
         className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
       />
     ),
+    isHideChevron: true,
     title: "Payments",
     link: "/payments",
     contents: [],
@@ -65,6 +66,7 @@ export const menuItems: MenuItem[] = [
         className="w-5 h-5 fill-grey-15 group-hover:fill-white"
       />
     ),
+    isHideChevron: true,
     title: "Discover",
     link: "/discover",
     contents: [
@@ -98,6 +100,7 @@ export const menuItems: MenuItem[] = [
     ),
     title: "Advisors",
     link: "/advisors",
+    isHideChevron: true,
     contents: [
       {
         title: "🗂️ Manage, track, and review accounts.",

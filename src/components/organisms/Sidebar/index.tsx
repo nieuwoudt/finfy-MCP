@@ -84,7 +84,7 @@ const Sidebar = () => {
         <MenuAccordion />
       </ScrollableArea>
       <div className="mt-auto">
-        <Button
+        {/* <Button
           full
           icons={{
             iconLeft: (
@@ -123,8 +123,8 @@ const Sidebar = () => {
           variant="ghost"
         >
           <span className={cn({ "lg:hidden": !open })}>More</span>
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           full
           className={cn(
             "justify-start items-center text-xs font-semibold border-t border-t-navy-5 text-white p-6 !rounded-none",
@@ -135,9 +135,9 @@ const Sidebar = () => {
           variant="ghost"
         >
           Business Profile
-        </Button>
+        </Button> */}
         <UserSettings />
-        <div
+        {/* <div
           className={cn("menu-button-btn", {
             "lg:!p-2": !open,
           })}
@@ -146,7 +146,7 @@ const Sidebar = () => {
             <Icon type="ExtLinkIcon" className="size-4 text-grey-15" />
             <span className={cn({ "lg:hidden": !open })}>Try pro</span>
           </Button>
-        </div>
+        </div> */}
       </div>
     </aside>
   );

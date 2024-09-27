@@ -84,6 +84,7 @@ export type MenuItem = {
   icon: FC<{ className?: string }>;
   title: string;
   link: string;
+  isHideChevron?: boolean;
   contents:
     | {
         title: string;

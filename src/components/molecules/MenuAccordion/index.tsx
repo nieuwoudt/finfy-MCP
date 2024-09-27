@@ -20,11 +20,13 @@ interface MenuAccordionItemProps {
   item: MenuItem;
   contents: any;
   handleOpen?: any;
+  isHideChevron?: boolean;
 }
 
 const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
   item,
   contents,
+  isHideChevron,
   handleOpen,
 }) => {
   const { open } = useSidebar();
@@ -65,14 +67,19 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
   return (
     <Accordion.Item className="flex flex-col gap-0.5" value={item.value}>
       <Accordion.Trigger
+        isHideChevron={isHideChevron}
+        disabled={isHideChevron}
         onClick={() => handleOpen()}
         className={cn("p-2 rounded-sm group hover:text-white hover:bg-navy-5", {
           "bg-navy-25": isActive,
         })}
       >
-        <div className="flex gap-3 items-center">
-          <Icon />
-          <span>{item.title}</span>
+        <div className={"flex justify-between w-full items-center"}>
+          <div className="flex gap-3 items-center">
+            <Icon />
+            <span>{item.title}</span>
+          </div>
+          {isHideChevron && <span className="text-[10px] font-normal">Coming Soon</span>}
         </div>
       </Accordion.Trigger>
       {open && (
@@ -127,6 +134,7 @@ const MenuAccordion: FC = () => {
           item={item}
           contents={item.value === "assistant" ? chats : item.contents}
           handleOpen={handleOpen}
+          isHideChevron={item.isHideChevron}
         />
       ))}
     </Accordion>
