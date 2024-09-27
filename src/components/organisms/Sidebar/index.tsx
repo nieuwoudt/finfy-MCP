@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 const Sidebar = () => {
   const router = useRouter();
   const { handleResetChat } = useChat();
-  const { open } = useSidebar();
+  const { open, handleToggle } = useSidebar();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -57,7 +57,9 @@ const Sidebar = () => {
               <Icon type="LogoIcon" />
             )}
           </Link>
-          <BurgerButton />
+          <Button onClick={handleToggle} variant="ghost">
+            <Icon type={"ToggleSidebarIcon"} className={cn({"rotate-180": !open})} />
+          </Button>
         </div>
         <Button
           variant="ghost"

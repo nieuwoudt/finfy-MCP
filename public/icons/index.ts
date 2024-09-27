@@ -44,6 +44,7 @@ import PlusIcon from "./plus.svg";
 import FullLogoIcon from "./full-logo.svg";
 import FullLogoWhiteIcon from "./full-logo-white.svg";
 import PlusCircle from "./plus-circle.svg";
+import ToggleSidebarIcon from "./toggle-sidebar.svg";
 
 export default {
   FullLogoWhiteIcon,
@@ -92,4 +93,5 @@ export default {
   DotsIcon,
   QuestionMarkCircle,
   PlusCircle,
+  ToggleSidebarIcon,
 };

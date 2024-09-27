@@ -22,10 +22,10 @@ const ContentMessage: FC<ContentMessageProps> = ({
       <p
         className={cn(
           "whitespace-pre-line text-white font-normal leading-[14px] md:leading-8",
-          isUser ? "text-4xl font-bold flex gap-2.5 items-center" : "text-base"
+          isUser ? "text-2xl md:text-4xl font-bold flex gap-2.5 items-center" : "text-sm md:text-base"
         )}
       >
-        {isUser && <UserAvatar />}
+        {isUser && <UserAvatar className="w-12 h-12 md:w-16 md:h-16" />}
         {isUser || isLoading ? text : <Markdown>{text as string}</Markdown>}
       </p>
     </div>
