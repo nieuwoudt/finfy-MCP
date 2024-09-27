@@ -18,7 +18,7 @@ const CardPersonalize = () => {
 
   const onSubmit = async (values: { name: string }) => {
     if (user?.id) {
-      await updateUser({ name: values.name, id: user?.id });
+      await updateUser({ name: values.name });
     }
   };
 

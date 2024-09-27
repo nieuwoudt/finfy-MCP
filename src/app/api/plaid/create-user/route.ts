@@ -1,19 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { plaidClient } from "@/lib/plaid";
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
+    const { email, phone } = await req.json();
     const user = await plaidClient.userCreate({
-      client_user_id: process.env.PLAID_CLIENT_ID as string,
+      client_user_id: email || phone,
     });
-
-    return NextResponse.json({
-      user,
-    });
+    console.log();
+    return NextResponse.json({ user_token: user.data.user_token });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Error fetching transactions" },
+      { message: "Error fetching user" },
       { status: 500 }
     );
   }

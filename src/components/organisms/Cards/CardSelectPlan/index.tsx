@@ -40,7 +40,7 @@ const CardSelectPlan = () => {
 
   const handleCodeChange = async (plan: string) => {
     if (userCurrent?.id) {
-      await dispatch(updateUser({ plan, id: userCurrent.id }));
+      await dispatch(updateUser({ plan }));
     }
   };
 

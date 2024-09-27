@@ -24,6 +24,8 @@ export interface User {
   selected_currency: string;
   phone: string;
   finished_onboarding: boolean;
+  plaid_access_token: string;
+  plaid_user_token: string;
 }
 
 export interface Transaction {

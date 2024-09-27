@@ -29,12 +29,11 @@ const CardSelectCurrency = () => {
       await dispatch(
         updateUser({
           selected_currency: value,
-          id: user.id,
         })
       );
     }
   };
-  
+
   useEffect(() => {
     if (status === "succeeded" && user?.selected_currency) {
       toast.success("The chosen currency was successfully saved");

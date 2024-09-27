@@ -237,7 +237,7 @@ export const saveLiabilities = async (liabilitiesData: any, userId: string) => {
   try {
     const creditLiabilities = liabilitiesData.credit.map((credit: any) => ({
       account_id: credit.account_id,
-      account_type: 'credit',
+      account_type: "credit",
       aprs: credit.aprs,
       is_overdue: credit.is_overdue,
       last_payment_amount: credit.last_payment_amount,
@@ -249,31 +249,33 @@ export const saveLiabilities = async (liabilitiesData: any, userId: string) => {
       user_id: userId,
     }));
 
-    const mortgageLiabilities = liabilitiesData.mortgage.map((mortgage: any) => ({
-      account_id: mortgage.account_id,
-      account_type: 'mortgage',
-      account_number: mortgage.account_number,
-      current_late_fee: mortgage.current_late_fee,
-      escrow_balance: mortgage.escrow_balance,
-      has_pmi: mortgage.has_pmi,
-      has_prepayment_penalty: mortgage.has_prepayment_penalty,
-      interest_rate: mortgage.interest_rate,
-      loan_term: mortgage.loan_term,
-      loan_type_description: mortgage.loan_type_description,
-      maturity_date: mortgage.maturity_date,
-      next_monthly_payment: mortgage.next_monthly_payment,
-      origination_date: mortgage.origination_date,
-      origination_principal_amount: mortgage.origination_principal_amount,
-      past_due_amount: mortgage.past_due_amount,
-      property_address: mortgage.property_address,
-      ytd_interest_paid: mortgage.ytd_interest_paid,
-      ytd_principal_paid: mortgage.ytd_principal_paid,
-      user_id: userId,
-    }));
+    const mortgageLiabilities = liabilitiesData.mortgage.map(
+      (mortgage: any) => ({
+        account_id: mortgage.account_id,
+        account_type: "mortgage",
+        account_number: mortgage.account_number,
+        current_late_fee: mortgage.current_late_fee,
+        escrow_balance: mortgage.escrow_balance,
+        has_pmi: mortgage.has_pmi,
+        has_prepayment_penalty: mortgage.has_prepayment_penalty,
+        interest_rate: mortgage.interest_rate,
+        loan_term: mortgage.loan_term,
+        loan_type_description: mortgage.loan_type_description,
+        maturity_date: mortgage.maturity_date,
+        next_monthly_payment: mortgage.next_monthly_payment,
+        origination_date: mortgage.origination_date,
+        origination_principal_amount: mortgage.origination_principal_amount,
+        past_due_amount: mortgage.past_due_amount,
+        property_address: mortgage.property_address,
+        ytd_interest_paid: mortgage.ytd_interest_paid,
+        ytd_principal_paid: mortgage.ytd_principal_paid,
+        user_id: userId,
+      })
+    );
 
     const studentLiabilities = liabilitiesData.student.map((student: any) => ({
       account_id: student.account_id,
-      account_type: 'student',
+      account_type: "student",
       account_number: student.account_number,
       disbursement_dates: student.disbursement_dates,
       expected_payoff_date: student.expected_payoff_date,
@@ -290,11 +292,13 @@ export const saveLiabilities = async (liabilitiesData: any, userId: string) => {
       user_id: userId,
     }));
 
-    const { error } = await supabase.from("liabilities").insert([
-      ...creditLiabilities,
-      ...mortgageLiabilities,
-      ...studentLiabilities
-    ]);
+    const { error } = await supabase
+      .from("liabilities")
+      .insert([
+        ...creditLiabilities,
+        ...mortgageLiabilities,
+        ...studentLiabilities,
+      ]);
 
     if (error) {
       Sentry.captureException(error);
@@ -309,8 +313,10 @@ export const saveLiabilities = async (liabilitiesData: any, userId: string) => {
   }
 };
 
-
-export const saveInvestmentTransactions = async (transactions: any[], userId: string) => {
+export const saveInvestmentTransactions = async (
+  transactions: any[],
+  userId: string
+) => {
   try {
     const { error } = await supabase.from("investment_transactions").insert(
       transactions.map((transaction: any) => ({
@@ -332,6 +338,62 @@ export const saveInvestmentTransactions = async (transactions: any[], userId: st
         created_at: new Date().toISOString(),
       }))
     );
+
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const saveBankIncome = async (bankIncomeData: any, userId: string) => {
+  try {
+    const { error } = await supabase.from("bank_income").insert([
+      {
+        bank_income_id: bankIncomeData.bank_income_id,
+        bank_income_summary: bankIncomeData.bank_income_summary,
+        days_requested: bankIncomeData.days_requested,
+        generated_time: bankIncomeData.generated_time,
+        items: bankIncomeData.items,
+        request_id: bankIncomeData.request_id,
+        user_id: userId,
+        created_at: new Date().toISOString(),
+      },
+    ]);
+
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const saveAssetReport = async (reportData: any, userId: string) => {
+  try {
+    const { error } = await supabase.from("asset_reports").insert([
+      {
+        asset_report_id: reportData.report.asset_report_id,
+        client_report_id: reportData.report.client_report_id,
+        date_generated: reportData.report.date_generated,
+        days_requested: reportData.report.days_requested,
+        items: reportData.report.items,
+        user_info: reportData.report.user,
+        created_at: new Date().toISOString(),
+        user_id: userId,
+      },
+    ]);
 
     if (error) {
       Sentry.captureException(error);

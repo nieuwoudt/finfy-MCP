@@ -15,7 +15,7 @@ const CardSetupComplete = () => {
   const dispatch = useAppDispatch();
   const { user } = useUser();
   const router = useRouter();
-  
+
   const handleClickComplete = () => {
     startTransition(async () => {
       if (user?.id) {
@@ -24,7 +24,6 @@ const CardSetupComplete = () => {
           await dispatch(
             updateUser({
               finished_onboarding: true,
-              id: user.id,
             })
           );
         }

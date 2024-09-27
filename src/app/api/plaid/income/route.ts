@@ -3,10 +3,10 @@ import { plaidClient } from "@/lib/plaid";
 
 export async function POST(req: NextRequest) {
   try {
-    const { access_token } = await req.json();
+    const { user_token } = await req.json();
 
     const income = await plaidClient.creditBankIncomeGet({
-      user_token: access_token,
+      user_token,
     });
 
     return NextResponse.json({

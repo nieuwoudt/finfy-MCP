@@ -5,6 +5,8 @@ import {
   saveBalances,
   saveInvestmentTransactions,
   saveLiabilities,
+  saveBankIncome,
+  saveAssetReport
 } from "@/lib/supabase/actions";
 import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
@@ -12,13 +14,15 @@ import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import { usePlaidLink } from "react-plaid-link";
 import { useUser } from "./useUser";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { updateUser } from "@/lib/store/features/user/userSlice";
 
 const usePlaid = () => {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-
+  const dispatch = useAppDispatch();
   const [transactions, setTransactions] = useState<any[]>([]);
   const [assets, setAssets] = useState<any[]>([]);
   const [balances, setBalances] = useState<any[]>([]);
@@ -91,19 +95,19 @@ const usePlaid = () => {
     }
   };
 
-  const fetchIncome = async (token: string) => {
+  const fetchIncome = async (userToken: string) => {
     try {
       const response = await fetch("/api/plaid/income", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ access_token: token }),
+        body: JSON.stringify({ user_token: userToken }),
       });
       const { income } = await response.json();
       console.log(income, "income");
 
-      // if (user?.id) {
-      //   await saveIncome(income, user.id);
-      // }
+      if (user?.id) {
+        await saveBankIncome(income, user.id);
+      }
       setIncome(income);
     } catch (error) {
       Sentry.captureException(error);
@@ -153,13 +157,16 @@ const usePlaid = () => {
       const response = await fetch("/api/plaid/create-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user?.email, phone: user?.phone }),
       });
       const data = await response.json();
-      console.log(data, "data");
-    } catch (error) {
-      Sentry.captureException(error);
-      toast.error(`Error fetching income: ${getErrorMessage(error)}`);
-    }
+      dispatch(
+        updateUser({
+          plaid_user_token: data.user_token,
+        })
+      );
+      return data.user_token;
+    } catch (error) {}
   };
 
   const onSuccess = useCallback(
@@ -167,10 +174,20 @@ const usePlaid = () => {
       setIsLoading(true);
       const token = await exchangePublicToken(publicToken);
       if (token) {
+        await dispatch(
+          updateUser({
+            plaid_access_token: token,
+          })
+        );
         await fetchTransactions(token);
         await fetchInvestments(token);
         await fetchLiabilities(token);
         await fetchBalances(token);
+        let userToken = user?.plaid_user_token;
+        if (!userToken) {
+          userToken = await fetchCreateUser();
+        }
+        await fetchIncome(userToken as string);
       }
       setIsLoading(false);
     },
@@ -185,6 +202,7 @@ const usePlaid = () => {
   return {
     openPlaidLink: open,
     isPlaidLinkReady: ready,
+    accessToken,
     transactions,
     assets,
     balances,

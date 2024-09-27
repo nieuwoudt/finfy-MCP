@@ -86,12 +86,13 @@ export const createUser = createAsyncThunk<User, Pick<User, "email">>(
 
 export const updateUser = createAsyncThunk<User, Partial<User>>(
   "users/updateUser",
-  async (updatedUser) => {
-    const { id, ...dataUser } = updatedUser;
+  async (updatedUser, { getState }) => {
+    const data = getState() as any;
+    const { ...dataUser } = updatedUser;
     const { error } = await supabase
       .from("users")
       .update(dataUser)
-      .eq("id", id)
+      .eq("id", data.user.user.id)
       .single();
     if (error) throw error;
     return dataUser as User;
