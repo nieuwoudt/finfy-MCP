@@ -105,7 +105,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose }) => {
   return (
     <form
       action={onSubmit}
-      className="md:rounded-md flex justify-between items-center bg-navy-15 relative shadow md:shadow-none shadow-grey-15"
+      className="md:rounded-md flex justify-between items-center bg-navy-15 relative border-t border-t-grey-15 md:border-none"
     >
       <Textarea
         ref={setTextareaRef}

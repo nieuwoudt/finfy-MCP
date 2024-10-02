@@ -3,10 +3,12 @@
 import { Button, Dialog, Icon } from "@/components/atoms";
 import { FC, PropsWithChildren, useState } from "react";
 import { AssistInput } from "@/components/organisms";
+import { useSidebar } from "@/hooks";
 
 interface CreateNewChatPopProps extends PropsWithChildren {}
 
 const CreateNewChatPop: FC<CreateNewChatPopProps> = ({ children }) => {
+  const { handleClose: handleCloseSidebar } = useSidebar();
   const [open, setOpen] = useState(false);
   const handleOpenChange = (value: boolean) => {
     setOpen(value);
@@ -14,6 +16,9 @@ const CreateNewChatPop: FC<CreateNewChatPopProps> = ({ children }) => {
 
   const handleClose = () => {
     setOpen(false);
+    if (window.innerWidth <= 768) {
+      handleCloseSidebar();
+    }
   };
 
   return (

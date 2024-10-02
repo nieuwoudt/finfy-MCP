@@ -21,7 +21,7 @@ const AssistInput: FC<AssistInputProps> = ({ classes, handleClose }) => {
     >
       <div
         className={cn(
-          "w-full pt-1 md:p-2 bottom-0 absolute bg-navy-15 md:bg-transparent",
+          "w-full md:p-2 bottom-0 absolute bg-navy-15 md:bg-transparent",
           classes?.container
         )}
       >
