@@ -31,3 +31,4 @@ export { FullScreenLoader } from "./FullScreenLoader";
 export { ChartVisualizeButton } from "./ChartVisualizeButton";
 export { ClarityAnalytics } from "./ClarityAnalytics";
 export { ConfirmDeletePop } from "./ConfirmDeletePop";
+export { RenameTitleChatPop } from "./RenameTitleChatPop";

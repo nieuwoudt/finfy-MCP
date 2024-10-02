@@ -119,13 +119,13 @@ export const fetchChatsByUserId = createAsyncThunk(
 export const updateChat = createAsyncThunk(
   "chat/updateChat",
   async (
-    { id, user_id }: { id: string; user_id: number },
+    { id, updateData }: { id: string; updateData: any },
     { rejectWithValue }
   ) => {
     try {
       const { data, error } = await supabase
         .from("chats")
-        .update({ user_id })
+        .update(updateData)
         .eq("id", id)
         .select();
       if (error) {

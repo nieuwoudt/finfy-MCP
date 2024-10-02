@@ -47,9 +47,7 @@ export const useChat = () => {
 
   const fetchCreateMessage = useCallback(
     async (data: any) => {
-      await dispatch(
-        createMessage(data)
-      );
+      await dispatch(createMessage(data));
     },
     [dispatch]
   );
@@ -83,8 +81,8 @@ export const useChat = () => {
   );
 
   const updateChatCallback = useCallback(
-    async (chatId: string, userId: number) => {
-      await dispatch(updateChat({ id: chatId, user_id: userId }));
+    async (chatId: string, updateData: any) => {
+      await dispatch(updateChat({ id: chatId, updateData }));
     },
     [dispatch]
   );

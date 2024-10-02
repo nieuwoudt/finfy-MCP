@@ -109,7 +109,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                       </p>
                     </button>
                     {content.id && (
-                      <DropDownModal chatId={content.id}>
+                      <DropDownModal chatId={content.id} title={content.title}>
                         <Button
                           className="!px-2 !py-0 !rounded-sm"
                           variant="ghost"
