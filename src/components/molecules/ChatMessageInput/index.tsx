@@ -3,17 +3,22 @@
 import { Button, Icon, Textarea } from "@/components/atoms";
 import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
 import { Loader2 } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const ChatMessageInput = () => {
+interface ChatMessageInputProps {
+  handleClose?: () => void;
+}
+
+const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose }) => {
   const { user } = useUser();
   const router = useRouter();
   const {
     createChat,
     sendChatQuery,
     createMessage,
+    handleResetChat,
     chatId,
     history,
     isLoading,
@@ -28,10 +33,14 @@ const ChatMessageInput = () => {
       setIsLoadingSendQuery(true);
       const value = formData.get("message") as string;
       setMessage("");
+      handleClose && handleClose();
       const userId = user?.id;
       if (value && userId) {
         let currentChatId = chatId;
-        if (!currentChatId) {
+        if (handleClose) {
+          handleResetChat();
+        }
+        if (!currentChatId || handleClose) {
           const chat = await createChat(userId, value);
           currentChatId = chat.payload.id;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);

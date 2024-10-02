@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useChat, useSidebar } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CreateNewChatPop } from "../CreateNewChatPop";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -64,24 +65,26 @@ const Sidebar = () => {
             />
           </Button>
         </div>
-        <Button
-          variant="ghost"
-          className="flex gap-2 bg-navy-25 group text-nowrap border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
-          onClick={handleClick}
-        >
-          <Icon
-            type="PlusSolidIcon"
-            className="fill-grey-15 group-hover:fill-white w-5 h-5"
-          />
-
-          <span
-            className={cn("text-base text-grey-15 group-hover:text-white", {
-              "lg:hidden": !open,
-            })}
+        <CreateNewChatPop>
+          <Button
+            variant="ghost"
+            className="flex gap-2 bg-navy-25 group text-nowrap border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
+            // onClick={handleClick}
           >
-            New Thread
-          </span>
-        </Button>
+            <Icon
+              type="PlusSolidIcon"
+              className="fill-grey-15 group-hover:fill-white w-5 h-5"
+            />
+
+            <span
+              className={cn("text-base text-grey-15 group-hover:text-white", {
+                "lg:hidden": !open,
+              })}
+            >
+              New Thread
+            </span>
+          </Button>
+        </CreateNewChatPop>
       </div>
       <ScrollableArea className="px-2">
         <MenuAccordion />
