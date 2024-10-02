@@ -83,7 +83,7 @@
     @apply text-xs text-red-500;
   }
   .menu-list-btn {
-    @apply whitespace-nowrap overflow-hidden text-ellipsis my-1 cursor-pointer hover:text-white text-grey-5;
+    @apply whitespace-nowrap overflow-hidden text-ellipsis cursor-pointer hover:text-white text-grey-5;
   }
 
   .drop-zone-border {

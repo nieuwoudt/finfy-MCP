@@ -4,7 +4,7 @@ import { Button, Icon } from "@/components/atoms";
 import { UserSettings, MenuAccordion } from "@/components/molecules";
 import Image from "next/image";
 import Link from "next/link";
-import { ScrollableArea, BurgerButton } from "@/components/molecules";
+import { ScrollableArea } from "@/components/molecules";
 import { cn } from "@/lib/utils";
 import { useChat, useSidebar } from "@/hooks";
 import { useRouter } from "next/navigation";
@@ -58,7 +58,10 @@ const Sidebar = () => {
             )}
           </Link>
           <Button onClick={handleToggle} variant="ghost">
-            <Icon type={"ToggleSidebarIcon"} className={cn({"rotate-180": !open})} />
+            <Icon
+              type={"ToggleSidebarIcon"}
+              className={cn({ "rotate-180": !open })}
+            />
           </Button>
         </div>
         <Button

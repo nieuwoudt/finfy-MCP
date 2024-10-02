@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { axiosExternal } from "@/utils/axios";
-import { getErrorMessage } from "@/utils/helpers";
+import { getErrorMessage, randomNumber } from "@/utils/helpers";
 import { supabase } from "@/lib/supabase/client";
 import * as Sentry from "@sentry/nextjs";
+import { emojis } from "@/utils/variables";
 
 interface ChatState {
   user_id: string;
@@ -86,9 +87,11 @@ export const createMessage = createAsyncThunk(
 export const createChat = createAsyncThunk(
   "chat/createChat",
   async ({ userId, title }: any) => {
+    const index = randomNumber(1, emojis.length);
+
     const { data, error } = await supabase
       .from("chats")
-      .insert([{ user_id: userId, title }])
+      .insert([{ user_id: userId, title: `${emojis[index]} ${title}` }])
       .select();
     if (error) {
       Sentry.captureException(error);

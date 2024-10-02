@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Accordion } from "@/components/atoms";
+import { Accordion, Button, Icon as IconComponent } from "@/components/atoms";
 import { DropDownModal } from "@/components/molecules";
 import Link from "next/link";
 import { categorizeDate, cn } from "@/lib/utils";
@@ -89,7 +89,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
               <Accordion.Content key={group}>
                 <p className="text-xs my-1">{group}</p>
                 {contents.map((content: any, index: number) => (
-                  <div key={index} className="flex justify-between">
+                  <div key={index} className="flex justify-between hover:bg-navy-25 p-2 rounded-sm">
                     <button
                       onClick={() =>
                         handleClick(
@@ -97,11 +97,19 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                           content.id
                         )
                       }
-                      className="flex flex-col w-[210px]"
+                      className="flex flex-col w-[180px]"
                     >
-                      <p className="menu-list-btn pl-2">{content.title}</p>
+                      <p className="menu-list-btn max-w-[calc(100%)] text-start m-0 group-hover:text-white text-grey-5">
+                        {content.title}
+                      </p>
                     </button>
-                    <DropDownModal />
+                    <Button className="!px-2 !py-0 !rounded-sm" variant="ghost">
+                      <IconComponent
+                        type="DotsIcon"
+                        className="stroke-grey-15 w-4 h-4"
+                      />
+                    </Button>
+                    {/* <DropDownModal /> */}
                   </div>
                 ))}
               </Accordion.Content>
@@ -127,7 +135,7 @@ const MenuAccordion: FC = () => {
   const { handleOpen } = useSidebar();
 
   return (
-    <Accordion type="single" collapsible className="flex flex-col gap-0.5">
+    <Accordion type="single" collapsible className="flex flex-col gap-0.5 max-w-[calc(100%)]">
       {menuItems.map((item) => (
         <MenuAccordionItem
           key={item.value}
