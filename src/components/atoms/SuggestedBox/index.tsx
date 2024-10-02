@@ -1,4 +1,3 @@
-import { Icon } from "@/components/atoms";
 import { useChat, useUser } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { FC } from "react";

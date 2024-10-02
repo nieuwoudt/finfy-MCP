@@ -79,7 +79,9 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
             <Icon />
             <span>{item.title}</span>
           </div>
-          {isHideChevron && <span className="text-[10px] font-normal">Coming Soon</span>}
+          {isHideChevron && (
+            <span className="text-[10px] font-normal">Coming Soon</span>
+          )}
         </div>
       </Accordion.Trigger>
       {open && (
@@ -89,7 +91,10 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
               <Accordion.Content key={group}>
                 <p className="text-xs my-1">{group}</p>
                 {contents.map((content: any, index: number) => (
-                  <div key={index} className="flex justify-between hover:bg-navy-25 p-2 rounded-sm">
+                  <div
+                    key={index}
+                    className="flex justify-between hover:bg-navy-25 p-2 rounded-sm"
+                  >
                     <button
                       onClick={() =>
                         handleClick(
@@ -103,13 +108,19 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                         {content.title}
                       </p>
                     </button>
-                    <Button className="!px-2 !py-0 !rounded-sm" variant="ghost">
-                      <IconComponent
-                        type="DotsIcon"
-                        className="stroke-grey-15 w-4 h-4"
-                      />
-                    </Button>
-                    {/* <DropDownModal /> */}
+                    {content.id && (
+                      <DropDownModal chatId={content.id}>
+                        <Button
+                          className="!px-2 !py-0 !rounded-sm"
+                          variant="ghost"
+                        >
+                          <IconComponent
+                            type="DotsIcon"
+                            className="stroke-grey-15 w-4 h-4"
+                          />
+                        </Button>
+                      </DropDownModal>
+                    )}
                   </div>
                 ))}
               </Accordion.Content>
@@ -135,7 +146,11 @@ const MenuAccordion: FC = () => {
   const { handleOpen } = useSidebar();
 
   return (
-    <Accordion type="single" collapsible className="flex flex-col gap-0.5 max-w-[calc(100%)]">
+    <Accordion
+      type="single"
+      collapsible
+      className="flex flex-col gap-0.5 max-w-[calc(100%)]"
+    >
       {menuItems.map((item) => (
         <MenuAccordionItem
           key={item.value}

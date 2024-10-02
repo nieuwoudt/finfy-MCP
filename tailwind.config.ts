@@ -134,6 +134,9 @@ const config: Config = {
         `,
       },
       colors: {
+        red: {
+          5: "#EF4444"
+        },
         grey: {
           5: "#D1D5DB",
           15: "#9CA3AF",
