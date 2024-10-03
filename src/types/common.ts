@@ -22,6 +22,7 @@ export interface User {
   created_at: string;
   plan: string;
   selected_currency: string;
+  selected_country: string;
   phone: string;
   finished_onboarding: boolean;
   plaid_access_token: string;
