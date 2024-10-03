@@ -35,26 +35,116 @@ const fakeSuggestionData = [
 
 const mockData = [
   {
-    title: "💼 Financial Coaching",
-    text: "Personalized financial advice for better planning.",
+    title: "🗂️ Accounts",
+    text: "Manage, track, and review accounts.",
     suggest: [
       {
         label: "Expense Alert",
         content: "You spent $120 on groceries today.",
-        icon: "💼",
+        icon: "🗂️",
         category: "expense",
       },
       {
         label: "Investment Update",
         content: "Your portfolio gained $500 in value this week.",
-        icon: "💼",
+        icon: "🗂️",
         category: "investment",
       },
     ],
   },
   {
-    title: "🛒 Product Recommendation",
-    text: "Tailored product saggestions to fit your needs.",
+    title: "🛍️ Spending",
+    text: "Monitor and analyze spending habits.",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "🛍️",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "🛍️",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "📊 Budgets",
+    text: "Create and adjust financial budgets.",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "📊",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "📊",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "🧑‍💼 Financial Advisor",
+    text: "Expert guidance on financial strategies.",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "🧑‍💼",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "🧑‍💼",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "💰 Cash Flow",
+    text: "Ensure adequate funds for expenses.",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "💰",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "💰",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "🎯 Goals",
+    text: "Set and pursue financial targets.",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "🎯",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "🎯",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "🛒 Financial Products",
+    text: "Explore and compare financial offerings.",
     suggest: [
       {
         label: "Expense Alert",
@@ -71,19 +161,91 @@ const mockData = [
     ],
   },
   {
-    title: "👥 Connect with a Human Advisor",
-    text: "Instantly connect with a financial expert.",
+    title: "📈 Net Worth",
+    text: "Calculate and track total worth.",
     suggest: [
       {
         label: "Expense Alert",
         content: "You spent $120 on groceries today.",
-        icon: "👥",
+        icon: "📈",
         category: "expense",
       },
       {
         label: "Investment Update",
         content: "Your portfolio gained $500 in value this week.",
-        icon: "👥",
+        icon: "📈",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "🌤️ Cash Forecast",
+    text: "Predict future financial status..",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "🌤️",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "🌤️",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "💸 Recent Transactionst",
+    text: "Track and review recent expenses.",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "💸",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "💸",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "🏠 Investment Holdings",
+    text: "Manage and assess investment assets.",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "🏠",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "🏠",
+        category: "investment",
+      },
+    ],
+  },
+  {
+    title: "💳 Credit Card Usage",
+    text: "Optimize and track card benefit..",
+    suggest: [
+      {
+        label: "Expense Alert",
+        content: "You spent $120 on groceries today.",
+        icon: "💳",
+        category: "expense",
+      },
+      {
+        label: "Investment Update",
+        content: "Your portfolio gained $500 in value this week.",
+        icon: "💳",
         category: "investment",
       },
     ],
