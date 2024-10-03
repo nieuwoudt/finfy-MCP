@@ -5,13 +5,38 @@ import { Button, Field } from "@/components/atoms";
 import { updatePassword } from "@/lib/supabase/actions";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import toast from "react-hot-toast";
 import { resetCookies } from "@/utils/helpers";
+import { supabase } from "@/lib/supabase/client";
 
 const CardUpdatePassword = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    async function init() {
+      const { data } = await supabase.auth.getUser();
+      if (!data.user) {
+        const code = new URLSearchParams(window.location.search).get("code");
+        if (!code) {
+          console.error("Missing code");
+          return;
+        }
+
+        const { data: newSession, error: newSessionError } =
+          await supabase.auth.exchangeCodeForSession(code);
+
+        console.log("NEW SESSION DATA:", newSession.session);
+
+        if (newSessionError) {
+          console.log(newSessionError);
+        }
+      }
+    }
+
+    init();
+  }, []);
 
   const onSubmit = (formData: FormData) => {
     startTransition(async () => {
