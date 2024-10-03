@@ -9,9 +9,14 @@ import { getErrorMessage } from "@/utils/helpers";
 
 interface ConfirmDeletePopProps extends PropsWithChildren {
   chatId: string;
+  handleClose: () => void;
 }
 
-const ConfirmDeletePop: FC<ConfirmDeletePopProps> = ({ children, chatId }) => {
+const ConfirmDeletePop: FC<ConfirmDeletePopProps> = ({
+  children,
+  chatId,
+  handleClose,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { deleteChat } = useChat();
@@ -19,11 +24,11 @@ const ConfirmDeletePop: FC<ConfirmDeletePopProps> = ({ children, chatId }) => {
     try {
       setIsLoading(true);
       await deleteChat(chatId);
-
       toast.success("The chat was successfully deleted!");
     } catch (error) {
       toast.error(getErrorMessage(error));
     } finally {
+      handleClose();
       setOpen(false);
       setIsLoading(false);
     }

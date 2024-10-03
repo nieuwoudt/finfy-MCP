@@ -41,7 +41,7 @@ const DropDownModal: FC<DropDownModalProps> = ({ children, chatId, title }) => {
             <Icon type="InboxIcon" className="size-4 text-grey-15" />
             <p>Archive</p>
           </DropdownMenu.Item> */}
-          <ConfirmDeletePop chatId={chatId}>
+          <ConfirmDeletePop chatId={chatId} handleClose={handleClose}>
             <DropdownMenu.Item
               onSelect={(event) => event.preventDefault()}
               className="flex cursor-pointer hover:bg-navy-5 items-center w-full gap-4 text-red-500 "

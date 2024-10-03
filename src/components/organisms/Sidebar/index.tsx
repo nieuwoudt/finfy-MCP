@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   const handleClick = () => {
     handleResetChat();
-    router.push("/dashboard", undefined);
+    router.push("/dashboard");
   };
 
   if (!isMounted) {
@@ -45,7 +45,7 @@ const Sidebar = () => {
             "lg:flex-col-reverse lg:gap-2": !open,
           })}
         >
-          <Link href="/dashboard">
+          <button onClick={handleClick}>
             {open ? (
               <Image
                 src="/icons/full-logo.svg"
@@ -57,7 +57,7 @@ const Sidebar = () => {
             ) : (
               <Icon type="LogoIcon" />
             )}
-          </Link>
+          </button>
           <Button onClick={handleToggle} variant="ghost">
             <Icon
               type={"ToggleSidebarIcon"}
@@ -69,7 +69,6 @@ const Sidebar = () => {
           <Button
             variant="ghost"
             className="flex gap-2 bg-navy-25 group text-nowrap border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
-            // onClick={handleClick}
           >
             <Icon
               type="PlusSolidIcon"
