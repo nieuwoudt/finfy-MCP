@@ -11,3 +11,6 @@ export { CardFinalUserPolicy } from "./CardFinalUserPolicy";
 export { CardLinkAccount } from "./CardLinkAccount";
 export { CardSelectCurrency } from "./CardSelectCurrency";
 export { CardSetupComplete } from "./CardSetupComplete";
+export { CardResetPassword } from "./CardResetPassword";
+export { CardUpdatePassword } from "./CardUpdatePassword";
+export { CardSendResetPassword } from "./CardSendResetPassword";

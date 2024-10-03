@@ -2,40 +2,36 @@
 
 import { CardTemplate } from "@/components/molecules";
 import { Button, Field } from "@/components/atoms";
-import { loginAction } from "@/lib/supabase/actions";
+import { resetPasswordForEmail } from "@/lib/supabase/actions";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
-import { useAppDispatch } from "@/lib/store/hooks";
-import { fetchUserByEmailOrPhone } from "@/lib/store/features/user/userSlice";
 import { resetCookies } from "@/utils/helpers";
 
-const CardLogin = () => {
+const CardResetPassword = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const dispatch = useAppDispatch();
 
-  const handleClickLogInButton = (formData: FormData) => {
+  const onSubmit = (formData: FormData) => {
     startTransition(async () => {
       resetCookies();
-      const { errorMessage } = await loginAction(formData);
+      const { errorMessage } = await resetPasswordForEmail(formData);
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
-        router.push("/onboarding");
-        dispatch(fetchUserByEmailOrPhone());
-        toast.success("Successfully logged in!");
+        router.push("/send-reset-password");
+        toast.success("The reset email has been sent successfully.");
       }
     });
   };
 
   return (
     <CardTemplate
-      title="Login"
-      description="To continue, please enter your password."
+      title="Reset Password"
+      description="Enter your email address below, and we'll send you instructions to reset your password."
     >
-      <form action={handleClickLogInButton}>
+      <form action={onSubmit}>
         <CardTemplate.Content className="flex flex-col gap-4 mt-4">
           <Field
             name="email"
@@ -44,43 +40,27 @@ const CardLogin = () => {
             full
             type="email"
           />
-          <Field
-            name="password"
-            disabled={isPending}
-            label={"Password"}
-            full
-            type="password"
-          />
         </CardTemplate.Content>
         <CardTemplate.Footer className="flex flex-col w-full justify-between">
           <div className="flex flex-col gap-4 mt-4 w-full">
             <Button disabled={isPending} size="xl" full type="submit">
-              {isPending ? <Loader2 className="animate-spin" /> : "Login"}
+              {isPending ? <Loader2 className="animate-spin" /> : "Reset"}
             </Button>
             <Button
               disabled={isPending}
               size="xl"
               variant="ghost"
               full
-              href="/sign-up"
+              href="/login"
               as="link"
             >
-              Sign up
+              Log In
             </Button>
           </div>
-          <Button
-            variant="link"
-            size="xs"
-            className="text-xs text-purple-5 underline-offset-1 underline font-normal self-end"
-            href="/reset-password"
-            as="link"
-          >
-            Reset password
-          </Button>
         </CardTemplate.Footer>
       </form>
     </CardTemplate>
   );
 };
 
-export { CardLogin };
+export { CardResetPassword };

@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "@/utils/helpers";
 import { Account, Transaction } from "@/types";
 import * as Sentry from "@sentry/nextjs";
+import { config } from "@/config/env";
 
 export const createAccountAction = async (formData: FormData) => {
   try {
@@ -65,6 +66,44 @@ export const signInWithOtp = async (phone: string) => {
     const { error } = await auth.signInWithOtp({
       phone: `+${phone}`,
     });
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const resetPasswordForEmail = async (formData: FormData) => {
+  try {
+    const email = formData.get("email") as string;
+    const { auth } = createSupabaseClient();
+    const { error } = await auth.resetPasswordForEmail(email, {
+      redirectTo: `${config.BASE_URL}/update-password`,
+    });
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const updatePassword = async (formData: FormData) => {
+  try {
+    const newPassword = formData.get("password") as string;
+    const { auth } = createSupabaseClient();
+    const { error } = await auth.updateUser({
+      password: newPassword
+    })
     if (error) {
       Sentry.captureException(error);
       throw error;

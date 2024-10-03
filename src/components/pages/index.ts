@@ -9,3 +9,6 @@ export { SettingsPage } from "./Settings";
 export { DiscoverPage } from "./Discover";
 export { GoalsPage } from "./Goals";
 export { AdvisorsPage } from "./Advisors";
+export { UpdatePasswordPage } from "./UpdatePassword";
+export { ResetPasswordPage } from "./ResetPassword";
+export { SendResetPasswordPage } from "./SendResetPassword";

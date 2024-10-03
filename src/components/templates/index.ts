@@ -8,3 +8,6 @@ export { SettingsSection } from "./SettingsSection";
 export { GoalsSection } from "./GoalsSection";
 export { DiscoverSection } from "./DiscoverSection";
 export { AdvisorsSection } from "./AdvisorsSection";
+export { UpdatePasswordSection } from "./UpdatePasswordSection";
+export { ResetPasswordSection } from "./ResetPasswordSection";
+export { SendResetPasswordSection } from './SendResetPasswordSection';
