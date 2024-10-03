@@ -9,7 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { CountrySelector } from "@/components/molecules/CountrySelector"; // Імпортуємо компонент
+import { CountrySelector } from "@/components/molecules/CountrySelector";
 import { OptionsType } from "@/types/common";
 import { updateUser } from "@/lib/store/features/user/userSlice";
 
@@ -50,7 +50,7 @@ const CardSelectCountry = () => {
 
   return (
     <CardTemplate title="Choose your country">
-      <form onSubmit={onSubmit}>
+      <form action={onSubmit}>
         <CardTemplate.Content>
           <CountrySelector onChange={handleCountryChange} />
         </CardTemplate.Content>
