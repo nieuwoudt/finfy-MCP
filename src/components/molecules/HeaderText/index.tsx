@@ -1,7 +1,9 @@
 "use client";
+import { useUser } from "@/hooks";
 import { usePathname } from "next/navigation";
 
 const HeaderText = () => {
+  const { user } = useUser();
   const pathname = usePathname();
   const firstName = "Nieve";
 
@@ -9,8 +11,8 @@ const HeaderText = () => {
     home: {
       title: (
         <>
-          <span className="text-purple-15">Hey {firstName}!</span> I&apos;m your
-          financial assistant.
+          <span className="text-purple-15">Hey {user?.name}!</span> I&apos;m
+          your financial assistant.
         </>
       ),
       cta: (

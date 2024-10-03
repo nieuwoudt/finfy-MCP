@@ -57,7 +57,7 @@
     @apply font-semibold text-white text-4xl;
   }
   .suggest-box {
-    @apply border max-h-[96px] text-sm min-w-72 max-w-[335px] p-2 rounded-md border-navy-5 bg-navy-15 hover:bg-navy-5 cursor-pointer;
+    @apply border text-sm min-w-52 flex-1 max-w-80 p-2 rounded-md border-navy-5 bg-navy-15 hover:bg-navy-5 cursor-pointer;
   }
   .menu-button-btn {
     @apply border-t border-navy-5 p-4 text-white;

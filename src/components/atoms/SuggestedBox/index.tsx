@@ -66,12 +66,12 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
     }
   };
   return (
-    <button onClick={handleClick} className="suggest-box">
+    <button onClick={handleClick} className="suggest-box flex flex-col items-start block-suggest">
       <p className="text-white mb-1 text-start">
         {icon} {label}
       </p>
       <div className="relative text-grey-15">
-        <p className="line-clamp-2 overflow-hidden text-ellipsis max-h-12 pr-6 text-start">
+        <p className="pr-6 text-start">
           {content}
         </p>
         {/* <Icon
