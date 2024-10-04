@@ -41,11 +41,11 @@ const Conversation = () => {
                     date={""}
                     isUser={message.message_type === "user"}
                   />
-                  {/* {calculations && (
+                  {calculations && (
                     <ListChartVisualizeButton
                       data={Object.entries(calculations)}
                     />
-                  )} */}
+                  )}
                 </Fragment>
               );
             })}

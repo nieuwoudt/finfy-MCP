@@ -6,3 +6,4 @@ export { useAutoResizeTextArea } from "./useAutoResizeTextArea";
 export { useSidebar } from "./useSidebar";
 export { useUploadFiles } from "./useUploadFiles";
 export { useChat } from "./useChat";
+export { useDynamicChart } from "./useDynamicChart";

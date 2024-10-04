@@ -1,78 +1,97 @@
 "use client";
 
-import React, { FC, useState } from "react";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import React, { FC } from "react";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
+import { useDynamicChart } from "@/hooks";
+import { formatSnakeCaseToTitleCase, isObject } from "@/utils/helpers";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-interface DynamicChartProps {
-  dataOptions: any;
-}
+interface DynamicChartProps {}
 
-const DynamicChart: FC<DynamicChartProps> = ({ dataOptions }) => {
-  const [chartData, setChartData] = useState<any>({
-    labels: [],
-    datasets: [],
-  });
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
-  const handleAddDataset = (datasetKey: string, datasetValues: any) => {
-    const newLabels = Array.isArray(datasetValues)
-      ? Object.keys(datasetValues)
-      : [datasetKey];
+const calculateTotal = (data: any): number => {
+  let total = 0;
 
-    const newDataset = {
-      label: datasetKey.replace(/_/g, " ").toUpperCase(),
-      data: Array.isArray(datasetValues)
-        ? Object.values(datasetValues)
-        : [datasetValues],
-      borderColor: getRandomColor(),
-      fill: false,
-    };
-    setChartData((prevState: any) => ({
-      labels: [...Array.from(new Set([...prevState.labels, ...newLabels]))],
-      datasets: [...prevState.datasets, newDataset],
-    }));
-  };
-
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+  for (const key in data) {
+    if (typeof data[key] === "object" && data[key] !== null) {
+      total += calculateTotal(data[key]);
+    } else if (typeof data[key] === "number") {
+      total += data[key];
     }
-    return color;
-  };
+  }
+
+  return total;
+};
+
+const getDataForChart = (chart: any) => {
+  if (chart) {
+    const totalData = Object.entries(chart).find(
+      ([key]: any) => key === "total_spending"
+    );
+    // ?.map(([key, data]: any) => ({
+    //   label: [formatSnakeCaseToTitleCase(key)],
+    //   backgroundColor: [getRandomColor()],
+    //   data: [isObject(data) ? calculateTotal(data) : data],
+    // }));
+
+    const data = Object.entries(chart)
+      .filter(([key]) => key !== "total_spending")
+      .reduce(
+        (item: any, [key, data]: any) => {
+          item.label = [...item.label, formatSnakeCaseToTitleCase(key)];
+          item.backgroundColor = [...item.backgroundColor, getRandomColor()];
+          item.data = [
+            ...item.data,
+            isObject(data) ? calculateTotal(data) : data,
+          ];
+
+          return item;
+        },
+        {
+          label: [],
+          backgroundColor: [],
+          data: [],
+        }
+      );
+    return {
+      labels: [],
+      datasets: totalData
+        ? [
+            {
+              label: [formatSnakeCaseToTitleCase(totalData.at(0) as string)],
+              backgroundColor: [getRandomColor()],
+              data: [totalData.at(1)],
+            },
+            data,
+          ]
+        : [data],
+    };
+  }
+  return { labels: [], datasets: [] };
+};
+
+const DynamicChart: FC<DynamicChartProps> = () => {
+  const { charts } = useDynamicChart();
+  const data: any = getDataForChart(charts);
+
+  if (!data?.datasets?.at(0)?.data?.length) {
+    return null;
+  }
 
   return (
     <div>
-      <h2>Dynamic Spending Chart</h2>
-      <Line data={chartData} />
-
-      <div>
-        {dataOptions.map(([key, values]: any) => (
-          <button key={key} onClick={() => handleAddDataset(key, values)}>
-            {key.replace(/_/g, " ").toUpperCase()}
-          </button>
-        ))}
-      </div>
+      <h2 className="text-white">Dynamic Multi-Series Pie Chart</h2>
+      <Pie data={data} />
     </div>
   );
 };

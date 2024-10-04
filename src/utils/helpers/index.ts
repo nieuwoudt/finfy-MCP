@@ -5,3 +5,4 @@ export { extractDate } from "./extractDate";
 export { resetCookies } from "./resetCookies";
 export { formatSnakeCaseToTitleCase } from "./formatSnakeCaseToTitleCase";
 export { randomNumber } from "./randomNumber";
+export { isObject } from "./isObject";
