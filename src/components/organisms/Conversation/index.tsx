@@ -18,7 +18,7 @@ const Conversation = () => {
 
   return (
     <div className={"flex-1 overflow-hidden relative"}>
-      <div className="react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0 pb-28">
+      <div className="react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0 pb-[110px] mb-8">
         <div
           className={
             "react-scroll-to-bottom--css-ikyem-1n7m0yu custom-scrollbar flex flex-col items-center gap-2.5 md:gap-5 overflow-x-hidden pr-2"

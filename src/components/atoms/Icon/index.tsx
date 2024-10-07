@@ -1,3 +1,4 @@
+"use client";
 import includedIcons from "@/public/icons/index";
 import type { FC } from "react";
 
