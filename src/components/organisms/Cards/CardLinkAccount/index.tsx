@@ -26,6 +26,11 @@ const CardLinkAccount = () => {
       title="Here's why you should link yours:"
       description="Please enter the code sent via text"
     >
+      <div id="container-fastlink">
+        <div style={{ textAlign: "center" }}>
+          <input type="submit" id="btn-fastlink" value="Link an Account" />
+        </div>
+      </div>
       <CardTemplate.Content>
         <div className="space-y-3 text-grey-15">
           <div className="flex gap-2 items-center">
@@ -71,7 +76,7 @@ const CardLinkAccount = () => {
           </Button>
         </div>
       </CardTemplate.Footer>
-    </CardTemplate>
+    </CardTemplate >
   );
 };
 

@@ -6,7 +6,7 @@ import {
   saveInvestmentTransactions,
   saveLiabilities,
   saveBankIncome,
-  saveAssetReport
+  saveAssetReport,
 } from "@/lib/supabase/actions";
 import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
@@ -16,6 +16,29 @@ import { usePlaidLink } from "react-plaid-link";
 import { useUser } from "./useUser";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
+
+declare global {
+  interface Window {
+    fastlink: any;
+  }
+}
+
+const loadYodleeFastLinkScript = () => {
+  return new Promise<void>((resolve, reject) => {
+    if (window.fastlink) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://cdn.yodlee.com/fastlink/v4/initialize.js";
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Failed to load FastLink script"));
+
+    document.body.appendChild(script);
+  });
+};
 
 const usePlaid = () => {
   const { user } = useUser();
@@ -28,27 +51,37 @@ const usePlaid = () => {
   const [balances, setBalances] = useState<any[]>([]);
   const [income, setIncome] = useState<any[]>([]);
 
+  const isPlaid = false; // TODO implement filter country
+
   useEffect(() => {
     const createLinkToken = async () => {
       try {
-        const response = await fetch("/api/plaid/create-link-token");
+        const response = await fetch(
+          isPlaid ? "/api/plaid/create-link-token" : "/api/yodlee/create-link-token"
+        );
         const data = await response.json();
         setLinkToken(data.link_token);
+        console.log("Link token created successfully");
       } catch (error) {
         Sentry.captureException(error);
         console.error("Error creating link token", error);
       }
     };
     createLinkToken();
-  }, []);
+  }, [isPlaid]);
 
   const exchangePublicToken = async (publicToken: string) => {
     try {
-      const response = await fetch("/api/plaid/exchange-public-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ public_token: publicToken }),
-      });
+      const response = await fetch(
+        isPlaid
+          ? "/api/plaid/exchange-public-token"
+          : "/api/yodlee/exchange-public-token",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ public_token: publicToken }),
+        }
+      );
       const { access_token } = await response.json();
       setAccessToken(access_token);
       return access_token;
@@ -60,11 +93,14 @@ const usePlaid = () => {
 
   const fetchTransactions = async (token: string) => {
     try {
-      const response = await fetch("/api/plaid/transactions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ access_token: token }),
-      });
+      const response = await fetch(
+        isPlaid ? "/api/plaid/transactions" : "/api/yodlee/transactions",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ access_token: token }),
+        }
+      );
       const { transactions } = await response.json();
       if (user?.id) {
         await saveTransactionsAndAccounts(transactions, user.id);
@@ -78,11 +114,14 @@ const usePlaid = () => {
 
   const fetchBalances = async (token: string) => {
     try {
-      const response = await fetch("/api/plaid/balance", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ access_token: token }),
-      });
+      const response = await fetch(
+        isPlaid ? "/api/plaid/balance" : "/api/yodlee/balance",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ access_token: token }),
+        }
+      );
       const { balances } = await response.json();
 
       if (user?.id) {
@@ -97,11 +136,14 @@ const usePlaid = () => {
 
   const fetchIncome = async (userToken: string) => {
     try {
-      const response = await fetch("/api/plaid/income", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_token: userToken }),
-      });
+      const response = await fetch(
+        isPlaid ? "/api/plaid/income" : "/api/yodlee/income",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_token: userToken }),
+        }
+      );
       const { income } = await response.json();
       console.log(income, "income");
 
@@ -117,48 +159,55 @@ const usePlaid = () => {
 
   const fetchInvestments = async (token: string) => {
     try {
-      const response = await fetch("/api/plaid/investments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ access_token: token }),
-      });
+      const response = await fetch(
+        isPlaid ? "/api/plaid/investments" : "/api/yodlee/investments",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ access_token: token }),
+        }
+      );
       const data = await response.json();
       if (user?.id) {
         await saveInvestmentTransactions(data.investments, user?.id);
       }
     } catch (error) {
       Sentry.captureException(error);
-      toast.error(`Error fetching income: ${getErrorMessage(error)}`);
+      toast.error(`Error fetching investments: ${getErrorMessage(error)}`);
     }
   };
 
   const fetchLiabilities = async (token: string) => {
     try {
-      const response = await fetch("/api/plaid/liabilities", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ access_token: token }),
-      });
+      const response = await fetch(
+        isPlaid ? "/api/plaid/liabilities" : "/api/yodlee/liabilities",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ access_token: token }),
+        }
+      );
       const data = await response.json();
       if (user?.id) {
         await saveLiabilities(data.liabilities, user?.id);
       }
     } catch (error) {
       Sentry.captureException(error);
-      toast.error(`Error fetching income: ${getErrorMessage(error)}`);
+      toast.error(`Error fetching liabilities: ${getErrorMessage(error)}`);
     }
   };
 
-  // Creating a new user to obtain a `user_token` from Plaid.
-  // This `user_token` is not associated with the current session or user authentication.
-  // It is required for long-term access to financial data through the Plaid API, such as income or assets.
+  // Creating a new user to obtain a `user_token` from Plaid or Yodlee.
   const fetchCreateUser = async () => {
     try {
-      const response = await fetch("/api/plaid/create-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email, phone: user?.phone }),
-      });
+      const response = await fetch(
+        isPlaid ? "/api/plaid/create-user" : "/api/yodlee/create-user",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user?.email, phone: user?.phone }),
+        }
+      );
       const data = await response.json();
       dispatch(
         updateUser({
@@ -166,7 +215,9 @@ const usePlaid = () => {
         })
       );
       return data.user_token;
-    } catch (error) {}
+    } catch (error) {
+      Sentry.captureException(error);
+    }
   };
 
   const onSuccess = useCallback(
@@ -191,7 +242,7 @@ const usePlaid = () => {
       }
       setIsLoading(false);
     },
-    [user?.id]
+    [user?.id, isPlaid]
   );
 
   const { open, ready } = usePlaidLink({
@@ -199,8 +250,45 @@ const usePlaid = () => {
     onSuccess,
   });
 
+  const openPlaidLink = useCallback(async () => {
+    if (isPlaid) {
+      open(); // Plaid opening
+    } else {
+      try {
+        console.log("linkToken", linkToken)
+        await loadYodleeFastLinkScript();
+
+        if (!window.fastlink) {
+          throw new Error("FastLink script not loaded properly");
+        }
+
+        window.fastlink.open({
+          fastLinkURL: 'https://fl4.sandbox.yodlee.com/authenticate/restserver/fastlink',
+          accessToken: `Bearer ${linkToken}`,
+          params: {
+            configName: 'Example3',
+            providerId : 16441,
+            flow: 'add',
+          },
+          onSuccess: (data: any) => {
+            console.log("FastLink Success:", data);
+            onSuccess(data.public_token);
+          },
+          onError: (error: any) => {
+            console.error("FastLink Error:", error);
+          },
+          onClose: () => {
+            console.log("FastLink Closed");
+          }
+        }, 'container-fastlink');
+      } catch (error) {
+        console.error("Error loading FastLink script:", error);
+      }
+    }
+  }, [isPlaid, open, linkToken, onSuccess]);
+
   return {
-    openPlaidLink: open,
+    openPlaidLink,
     isPlaidLinkReady: ready,
     accessToken,
     transactions,
