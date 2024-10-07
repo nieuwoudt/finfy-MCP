@@ -35,7 +35,7 @@ const SubscribePop: FC<SubscribePopProps> = ({ children }) => {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <Dialog.Trigger className="text-sm w-full">{children}</Dialog.Trigger>
-      <Dialog.Content className="text-white bg-navy-25 rounded-none border-none pt-4 max-w-72">
+      <Dialog.Content className="text-white bg-navy-25 rounded-lg border-none pt-4 max-w-72">
         <div className="w-full flex flex-col justify-center items-center mt-5 gap-1.5">
           <Icon type="FullLogoIcon" className="w-32" />
           <p className="text-grey-15 text-xs text-center">

@@ -9,10 +9,11 @@ interface ListChartVisualizeButton {
 }
 
 const ListChartVisualizeButton: FC<ListChartVisualizeButton> = ({ data }) => {
+  console.log(data, "data");
   return (
     <div className="flex flex-col gap-4 w-full">
       <h3 className="text-white text-2xl font-semibold">Chart</h3>
-      {/* <DynamicChart /> */}
+      <DynamicChart />
       <ul className="w-full flex flex-col gap-4">
         {data.map(([key, chart]) => {
           return (
