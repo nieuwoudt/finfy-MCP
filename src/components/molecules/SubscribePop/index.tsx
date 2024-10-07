@@ -1,13 +1,13 @@
 "use client";
 
-import { Dialog, Button, Field } from "@/components/atoms";
+import { Dialog, Button, Field, Icon } from "@/components/atoms";
 import { Loader2 } from "lucide-react";
 import { FC, PropsWithChildren, useState } from "react";
-import toast from "react-hot-toast";
-import { getErrorMessage } from "@/utils/helpers";
 import { config } from "@/config/env";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { benefits } from "./index.constants";
+
 interface SubscribePopProps extends PropsWithChildren {}
 
 const SubscribePop: FC<SubscribePopProps> = ({ children }) => {
@@ -32,12 +32,34 @@ const SubscribePop: FC<SubscribePopProps> = ({ children }) => {
     setOpen(value);
   };
 
-
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <Dialog.Trigger className="text-sm w-full">{children}</Dialog.Trigger>
-      <Dialog.Content className="text-white bg-navy-25 rounded-none border-none pt-4 max-w-96">
-        <form action={onSubmit} className="mt-5 gap-4 flex-col flex w-full">
+      <Dialog.Content className="text-white bg-navy-25 rounded-none border-none pt-4 max-w-72">
+        <div className="w-full flex flex-col justify-center items-center mt-5 gap-1.5">
+          <Icon type="FullLogoIcon" className="w-32" />
+          <p className="text-grey-15 text-xs text-center">
+            Personalized AI that makes you more productive, creative, and
+            extraordinary
+          </p>
+          <ul className="flex flex-col w-full gap-4 my-4">
+            {benefits.map((item, index) => {
+              const { icon, title, desc } = item as any;
+              return (
+                <li className="flex gap-3" key={index}>
+                  <span className="min-w-4 bg-purple-15 h-4 rounded-full flex justify-center items-center">
+                    {icon}
+                  </span>
+                  <div className="w-full gap-1 flex flex-col">
+                    <h3 className="text-sm text-white font-medium">{title}</h3>
+                    <p className="text-xs text-grey-15 font-medium">{desc}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <form action={onSubmit} className="gap-4 flex-col flex w-full">
           <div className="flex gap-4">
             <Field
               full
@@ -94,7 +116,7 @@ const SubscribePop: FC<SubscribePopProps> = ({ children }) => {
               }}
             />
           </div>
-          <div className="flex w-full flex-col gap-2 items-center justify-between !mt-12">
+          <div className="flex w-full flex-col gap-2 items-center justify-between !mt-4">
             <Button
               size="xl"
               type={"submit"}
