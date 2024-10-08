@@ -9,7 +9,7 @@ import { SpendingBarChart } from "../SpendingBarChart";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-interface DynamicChartProps {}
+interface DynamicChartProps { selectedChartId: any }
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -39,22 +39,17 @@ const Chart: any = {
 //   spending_by_transaction_type: <></>,
 // };
 
-const DynamicChart: FC<DynamicChartProps> = () => {
+const DynamicChart: FC<DynamicChartProps> = ({ selectedChartId }) => {
   const { charts } = useDynamicChart();
-  if (!Object.keys(charts).length) {
+
+  if (!selectedChartId || !charts[selectedChartId]) {
     return null;
   }
 
+  const chartData = charts[selectedChartId];
   return (
     <div>
-      <h2 className="text-white">Dynamic Multi-Series Pie Chart</h2>
-      {Object.entries(charts).map(([key, data]: any) => {
-        const ChartComponent = Chart[key];
-        if (!Chart) {
-          return null;
-        }
-        return <SpendingBarChart data={data} />;
-      })}
+      <SpendingBarChart data={chartData} />
     </div>
   );
 };

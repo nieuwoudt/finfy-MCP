@@ -8,21 +8,21 @@ interface ChartVisualizeButtonProps {
   id: string;
   text: string;
   chart: any;
+  onClick: () => void;
 }
 
 const ChartVisualizeButton: FC<ChartVisualizeButtonProps> = ({
   id,
   text,
   chart,
+  onClick,
 }) => {
   const { addChart, charts } = useDynamicChart();
-  if (charts[id]) {
-    return null;
-  }
+
   return (
     <li className="w-full">
       <Button
-        onClick={() => addChart({ [id]: chart })}
+        onClick={onClick}
         full
         className="chart-button-border px-3 py-4 !rounded-lg text-base text-white justify-between bg-purple-15 bg-opacity-10"
         variant="ghost"
