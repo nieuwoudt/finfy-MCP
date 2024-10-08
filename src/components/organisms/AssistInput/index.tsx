@@ -1,5 +1,7 @@
+"use client";
+
 import { ChatMessageInput } from "@/components/molecules";
-import { ActionButtonsGroup } from "@/components/organisms";
+import { ActionButtonsGroup, SuggestedQuestions } from "@/components/organisms";
 import { cn } from "@/lib/utils";
 import { FC } from "react";
 
@@ -25,6 +27,7 @@ const AssistInput: FC<AssistInputProps> = ({ classes, handleClose }) => {
           classes?.container
         )}
       >
+        <SuggestedQuestions />
         <ActionButtonsGroup />
         <ChatMessageInput handleClose={handleClose} />
       </div>

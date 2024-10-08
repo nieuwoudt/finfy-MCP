@@ -1,5 +1,12 @@
+"use client";
+
 import { Icon } from "@/components/atoms";
-import { ActionButton, FocusAssistantPopover } from "@/components/molecules";
+import {
+  ActionButton,
+  ConnectBankAction,
+  FocusAssistantPopover,
+} from "@/components/molecules";
+
 import { FC } from "react";
 
 const ActionButtonsGroup: FC = () => {
@@ -16,15 +23,7 @@ const ActionButtonsGroup: FC = () => {
           text={"Focus"}
         />
       </FocusAssistantPopover>
-      <ActionButton
-        Icon={
-          <Icon
-            type="UserSolidIcon"
-            className="fill-purple-15 group-hover:fill-white h-3.5 w-5"
-          />
-        }
-        text={"Link Accounts"}
-      />
+      <ConnectBankAction />
       <ActionButton
         Icon={
           <Icon

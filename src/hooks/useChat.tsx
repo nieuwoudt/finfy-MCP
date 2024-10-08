@@ -13,6 +13,7 @@ import {
   createMessage,
   resetChat,
   setIsLoadingSendMessage,
+  setSuggestQuestions,
 } from "@/lib/store/features/chat/chatSlice";
 
 export const useChat = () => {
@@ -23,6 +24,13 @@ export const useChat = () => {
   const fetchChatsCallback = useCallback(
     (user_id: string) => {
       dispatch(fetchChatsByUserId(user_id));
+    },
+    [dispatch]
+  );
+
+  const handleSetSuggestQuestions = useCallback(
+    (suggests: any) => {
+      dispatch(setSuggestQuestions(suggests));
     },
     [dispatch]
   );
@@ -101,6 +109,7 @@ export const useChat = () => {
     loading: chatState.loading,
     error: chatState.error,
     chatId: chatState.chat_id,
+    setSuggestQuestions: handleSetSuggestQuestions,
     history: chatState.history,
     fetchChats: fetchChatsCallback,
     fetchMessagesForChat: fetchMessagesForChatCallback,
