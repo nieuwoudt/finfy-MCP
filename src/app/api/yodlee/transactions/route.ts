@@ -24,7 +24,6 @@ export async function GET(req: NextRequest) {
         toDate: formattedEndDate,
       },
     });
-    console.log(transactionsResponse, 'transactionsResponse')
     return NextResponse.json({
       transactions: transactionsResponse.data.transaction,
     });

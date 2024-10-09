@@ -13,13 +13,9 @@ const useNavigationOnboarding = () => {
   const indexCurrentStep = stepsOnboarding.indexOf(currentStep);
 
   const nextStep = (params: string = "") => {
-    // route.push(
-    //   `http://localhost:3000/onboarding/connect-bank`
-    // );
-    window.location.pathname = `/onboarding/connect-bank`
-    // route.push(
-    //   `/onboarding/${stepsOnboarding?.at(indexCurrentStep + 1)}` + params
-    // );
+    route.push(
+      `/onboarding/${stepsOnboarding?.at(indexCurrentStep + 1)}` + params
+    );
   };
   const prevStep = () => {
     route.push(`/onboarding/${stepsOnboarding?.at(indexCurrentStep - 1)}`);

@@ -36,10 +36,10 @@ export const saveTransactionsYodlee = async (
 ) => {
   try {
     const formattedTransactions = transactions.map((transaction) => ({
-      id: transaction.id,
+      transaction_id: transaction.id,
       container: transaction.container,
-      amount: transaction.amount,
-      currency: transaction.currency,
+      amount: transaction.amount.amount,
+      currency: transaction.amount.currency,
       category_type: transaction.category_type,
       category_id: transaction.category_id,
       category: transaction.category,

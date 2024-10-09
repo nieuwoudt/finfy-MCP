@@ -34,26 +34,30 @@ const loadYodleeFastLinkScript = () => {
 };
 
 const useYodlee = () => {
+  const [openModal, setOpenModal] = useState(false);
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const [isLinkReady, setIsLinkReady] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
   const [transactions, setTransactions] = useState<any[]>([]);
 
   useEffect(() => {
-    const createLinkToken = async () => {
+    const createAccessToken = async () => {
       try {
         const { data } = await axiosYodleeInternal(
           "/api/yodlee/create-access-token"
         );
         setAccessToken(data.accessToken);
+        setIsLinkReady(true);
       } catch (error) {
         Sentry.captureException(error);
         console.error("Error creating link token", error);
       }
     };
-    createLinkToken();
-  }, []);
+    if (user?.is_connected_bank === false && user.selected_country === "AU") {
+      createAccessToken();
+    }
+  }, [user?.is_connected_bank]);
 
   const fetchTransactions = async (token: string, accountId: string) => {
     try {
@@ -63,11 +67,10 @@ const useYodlee = () => {
           accountId,
         },
       });
-      console.log(data, "data");
       if (user?.id) {
         await saveTransactionsYodlee(data.transactions, user.id);
       }
-      setTransactions(transactions);
+      setTransactions(data.transactions);
     } catch (error) {
       Sentry.captureException(error);
       toast.error(`Error fetching transactions: ${getErrorMessage(error)}`);
@@ -75,39 +78,45 @@ const useYodlee = () => {
   };
 
   const onSuccess = async (data: any) => {
+    setIsLoading(true);
     if (accessToken) {
       await fetchTransactions(accessToken, data.provideAccountId);
     }
+    setIsLoading(false);
   };
 
   const handleOpenYodlee = useCallback(async () => {
     try {
+      setOpenModal(true);
       await loadYodleeFastLinkScript();
-
       if (!window.fastlink) {
         throw new Error("FastLink script not loaded properly");
       }
-
       window.fastlink.open(
         {
-          fastLinkURL:
-            "https://fl4.sandbox.yodlee.com/authenticate/restserver/fastlink",
+          fastLinkURL: process.env.NEXT_PUBLIC_YODLEE_FASTLINK_URL,
           accessToken: `Bearer ${accessToken}`,
           params: {
             configName: "Verification",
           },
           onSuccess,
+          onClose: () => {
+            setOpenModal(false);
+          },
         },
         "container-fastlink"
       );
     } catch (error) {
       console.error("Error loading FastLink script:", error);
     }
-  }, []);
+  }, [accessToken, onSuccess]);
 
   return {
     transactions,
-    openYodleeLik: handleOpenYodlee,
+    open: handleOpenYodlee,
+    isLinkReady: isLinkReady,
+    isAlreadyConnected: user?.is_connected_bank,
+    openModal,
     isLoading,
   };
 };
