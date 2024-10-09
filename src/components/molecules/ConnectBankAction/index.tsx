@@ -1,23 +1,22 @@
 "use client";
 
-import { usePlaid } from "@/hooks";
+import { useConnectBank, usePlaid } from "@/hooks";
 import { Loader2 } from "lucide-react";
 import { ActionButton } from "@/components/molecules";
 import { Icon } from "@/components/atoms";
 
 const ConnectBankAction = () => {
-  const { openPlaidLink, isPlaidLinkReady, isLoading, isAlreadyConnected } =
-    usePlaid();
+  const { open, isLinkReady, isLoading, isAlreadyConnected } = useConnectBank();
   if (isAlreadyConnected) {
     return null;
   }
   return (
     <ActionButton
-      onClick={() => openPlaidLink()}
-      disabled={!isPlaidLinkReady}
+      onClick={() => open()}
+      disabled={!isLinkReady}
       Icon={
         <>
-          {!isPlaidLinkReady || isLoading ? (
+          {!isLinkReady || isLoading ? (
             <Loader2 className="animate-spin w-3 h-3" />
           ) : (
             <Icon
