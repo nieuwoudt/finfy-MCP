@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 
     // Return the session token and FastLink URL to the frontend
     return NextResponse.json({
-      link_token: tokenData.token.accessToken,  // Adjusted to access the correct field
+      accessToken: tokenData.token.accessToken, 
       fastLinkURL: `${process.env.YODLEE_FASTLINK_URL}`,
     });
   } catch (error) {

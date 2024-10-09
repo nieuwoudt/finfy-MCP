@@ -62,6 +62,32 @@ export interface Transaction {
   user_id: string;
 }
 
+export interface TransactionYodlee {
+  id: number;
+  container: string;
+  amount: number;
+  currency: string;
+  category_type: string;
+  category_id: number;
+  category: string;
+  category_source: string;
+  high_level_category_id: number;
+  created_date: string;
+  last_updated: string;
+  description_original: string;
+  is_manual: boolean;
+  source_type: string;
+  date: string;
+  transaction_date: string;
+  post_date: string;
+  status: string;
+  account_id: number;
+  running_balance_amount: number;
+  running_balance_currency: string;
+  check_number: string;
+  user_id: string;
+}
+
 export interface Account {
   id?: string;
   account_id: string;

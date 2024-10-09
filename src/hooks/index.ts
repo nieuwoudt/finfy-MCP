@@ -6,3 +6,5 @@ export { useAutoResizeTextArea } from "./useAutoResizeTextArea";
 export { useSidebar } from "./useSidebar";
 export { useUploadFiles } from "./useUploadFiles";
 export { useChat } from "./useChat";
+export { useYodlee } from "./useYodlee";
+export { useConnectBank } from "./useConnectBank";

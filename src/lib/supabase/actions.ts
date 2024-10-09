@@ -165,6 +165,7 @@ export const saveTransactionsAndAccounts = async (
         if (
           !acc.some((account) => account.account_id === transaction.account_id)
         ) {
+
           const account: Account = {
             account_id: transaction.account_id,
             account_owner: transaction.account_owner,
@@ -189,6 +190,8 @@ export const saveTransactionsAndAccounts = async (
     if (accountError) {
       throw accountError;
     }
+
+
 
     const formattedTransactions = transactions.map((transaction) => ({
       account_id: transaction.account_id,

@@ -16,6 +16,7 @@ import { usePlaidLink } from "react-plaid-link";
 import { useUser } from "./useUser";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
+import axios from "axios";
 
 declare global {
   interface Window {
@@ -57,7 +58,9 @@ const usePlaid = () => {
     const createLinkToken = async () => {
       try {
         const response = await fetch(
-          isPlaid ? "/api/plaid/create-link-token" : "/api/yodlee/create-link-token"
+          isPlaid
+            ? "/api/plaid/create-link-token"
+            : "/api/yodlee/create-link-token"
         );
         const data = await response.json();
         setLinkToken(data.link_token);
@@ -255,32 +258,44 @@ const usePlaid = () => {
       open(); // Plaid opening
     } else {
       try {
-        console.log("linkToken", linkToken)
+        console.log("linkToken", linkToken);
         await loadYodleeFastLinkScript();
 
         if (!window.fastlink) {
           throw new Error("FastLink script not loaded properly");
         }
 
-        window.fastlink.open({
-          fastLinkURL: 'https://fl4.sandbox.yodlee.com/authenticate/restserver/fastlink',
-          accessToken: `Bearer ${linkToken}`,
-          params: {
-            configName: 'Example3',
-            providerId : 16441,
-            flow: 'add',
+        window.fastlink.open(
+          {
+            fastLinkURL:
+              "https://fl4.sandbox.yodlee.com/authenticate/restserver/fastlink",
+            accessToken: `Bearer ${linkToken}`,
+            params: {
+              configName: "Verification",
+              // providerId : 16441,
+              // flow: 'add',
+            },
+            onSuccess: async (data: any) => {
+              console.log("FastLink Success:", data);
+              const response = await axios("/api/yodlee/transactions", {
+                params: {
+                  accessToken: linkToken,
+                  accountId: data.provideAccountId,
+                },
+              });
+
+              console.log(response, "response");
+              // onSuccess(data.public_token);
+            },
+            onError: (error: any) => {
+              console.error("FastLink Error:", error);
+            },
+            onClose: () => {
+              console.log("FastLink Closed");
+            },
           },
-          onSuccess: (data: any) => {
-            console.log("FastLink Success:", data);
-            onSuccess(data.public_token);
-          },
-          onError: (error: any) => {
-            console.error("FastLink Error:", error);
-          },
-          onClose: () => {
-            console.log("FastLink Closed");
-          }
-        }, 'container-fastlink');
+          "container-fastlink"
+        );
       } catch (error) {
         console.error("Error loading FastLink script:", error);
       }
