@@ -17,6 +17,7 @@ interface ChatState {
   calculations: any | null;
   chats: any[];
   messages: any[];
+  suggests: any;
 }
 
 interface ChatResponse {
@@ -36,6 +37,7 @@ const initialState: ChatState = {
   calculations: null,
   chats: [],
   messages: [],
+  suggests: null,
 };
 
 export const sendChatQuery = createAsyncThunk<
@@ -200,6 +202,9 @@ const chatSlice = createSlice({
     setIsLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    setSuggestQuestions(state, action: PayloadAction<any>) {
+      state.suggests = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -210,6 +215,7 @@ const chatSlice = createSlice({
         if (action.payload.output) {
           state.output = action.payload.output.text || action.payload.output;
           state.calculations = action.payload.calculations;
+          state.suggests = action.payload?.suggested_questions || null;
           if (state.user_query) {
             state.history.push(state.user_query);
           }
@@ -297,5 +303,6 @@ export const {
   setIsLoadingSendMessage,
   setIsLoading,
   setChatId,
+  setSuggestQuestions,
 } = chatSlice.actions;
 export default chatSlice.reducer;

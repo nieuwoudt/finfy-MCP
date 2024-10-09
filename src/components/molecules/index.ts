@@ -32,3 +32,6 @@ export { ChartVisualizeButton } from "./ChartVisualizeButton";
 export { ClarityAnalytics } from "./ClarityAnalytics";
 export { ConfirmDeletePop } from "./ConfirmDeletePop";
 export { RenameTitleChatPop } from "./RenameTitleChatPop";
+export { SubscribePop } from "./SubscribePop";
+export { SuggestedQuestion } from "./SuggestedQuestion";
+export { ConnectBankAction } from './ConnectBankAction';

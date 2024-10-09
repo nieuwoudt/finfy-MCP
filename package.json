@@ -27,6 +27,7 @@
     "axios": "^1.7.7",
     "browser-image-compression": "^2.0.2",
     "chart.js": "^4.4.4",
+    "chartjs-plugin-annotation": "^3.0.1",
     "clsx": "^2.1.1",
     "cookies-next": "^4.2.1",
     "date-fns": "^3.6.0",
@@ -47,6 +48,7 @@
     "react-plaid-link": "^3.6.0",
     "react-redux": "^9.1.2",
     "recharts": "^2.12.7",
+    "stripe": "^17.1.0",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.2"
   },

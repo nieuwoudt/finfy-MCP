@@ -184,3 +184,22 @@ input:-webkit-autofill:active{
     width: 48px;
   }
 }
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #6B7280 #2D3748;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #2D3748;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #6B7280;
+  border-radius: 10px;
+  border: 2px solid #2D3748;
+}

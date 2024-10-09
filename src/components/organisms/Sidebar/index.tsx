@@ -1,7 +1,11 @@
 "use client";
 
 import { Button, Icon } from "@/components/atoms";
-import { UserSettings, MenuAccordion } from "@/components/molecules";
+import {
+  UserSettings,
+  MenuAccordion,
+  SubscribePop,
+} from "@/components/molecules";
 import Image from "next/image";
 import Link from "next/link";
 import { ScrollableArea } from "@/components/molecules";
@@ -142,16 +146,18 @@ const Sidebar = () => {
           Business Profile
         </Button> */}
         <UserSettings />
-        {/* <div
+        <div
           className={cn("menu-button-btn", {
             "lg:!p-2": !open,
           })}
         >
-          <Button full className="!rounded-sm gap-1.5 h-7 p-0 text-nowrap">
-            <Icon type="ExtLinkIcon" className="size-4 text-grey-15" />
-            <span className={cn({ "lg:hidden": !open })}>Try pro</span>
-          </Button>
-        </div> */}
+          <SubscribePop>
+            <Button full className="!rounded-sm gap-1.5 h-7 p-0 text-nowrap">
+              <Icon type="ExtLinkIcon" className="size-4 text-grey-15" />
+              <span className={cn({ "lg:hidden": !open })}>Try pro</span>
+            </Button>
+          </SubscribePop>
+        </div>
       </div>
     </aside>
   );

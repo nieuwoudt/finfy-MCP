@@ -78,12 +78,31 @@ export const signInWithOtp = async (phone: string) => {
   }
 };
 
+export const getAppURL = () => {
+  const env = process.env.NEXT_PUBLIC_NODE_ENV ;
+
+  // Set default URL for localhost
+  let url = "http://localhost:3000/";
+
+  if (env === "prod") {
+    // If it is a preview deployment, use the branch URL
+    url = process.env.NEXT_PUBLIC_BASE_URL ?? "";
+  }
+
+  // Make sure to include `https://` when not localhost.
+  url = url.includes("http") ? url : `https://${url}`;
+
+  // Remove trailing `/`.
+  url = url.endsWith("/") ? url.slice(0, -1) : url;
+  return url;
+};
+
 export const resetPasswordForEmail = async (formData: FormData) => {
   try {
     const email = formData.get("email") as string;
     const { auth } = createSupabaseClient();
     const { error } = await auth.resetPasswordForEmail(email, {
-      redirectTo: `${config.BASE_URL}/update-password`,
+      redirectTo: `${getAppURL()}/update-password`,
     });
     if (error) {
       Sentry.captureException(error);
@@ -102,8 +121,8 @@ export const updatePassword = async (formData: FormData) => {
     const newPassword = formData.get("password") as string;
     const { auth } = createSupabaseClient();
     const { error } = await auth.updateUser({
-      password: newPassword
-    })
+      password: newPassword,
+    });
     if (error) {
       Sentry.captureException(error);
       throw error;

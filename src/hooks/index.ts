@@ -8,3 +8,4 @@ export { useUploadFiles } from "./useUploadFiles";
 export { useChat } from "./useChat";
 export { useYodlee } from "./useYodlee";
 export { useConnectBank } from "./useConnectBank";
+export { useDynamicChart } from "./useDynamicChart";

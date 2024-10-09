@@ -8,3 +8,4 @@ export { Message } from "./Message";
 export { Conversation } from "./Conversation";
 export { ListChartVisualizeButton } from "./ListChartVisualizeButton";
 export { CreateNewChatPop } from "./CreateNewChatPop";
+export { SuggestedQuestions } from "./SuggestedQuestions";

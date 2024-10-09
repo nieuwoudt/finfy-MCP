@@ -1,78 +1,55 @@
 "use client";
 
-import React, { FC, useState } from "react";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import React, { FC } from "react";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
+import { useDynamicChart } from "@/hooks";
+import { ExpenseChart } from "../ExpenseChart";
+import { GroupedBarChart } from "../GroupedBarChart";
+import { SpendingBarChart } from "../SpendingBarChart";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-interface DynamicChartProps {
-  dataOptions: any;
-}
+interface DynamicChartProps { selectedChartId: any }
 
-const DynamicChart: FC<DynamicChartProps> = ({ dataOptions }) => {
-  const [chartData, setChartData] = useState<any>({
-    labels: [],
-    datasets: [],
-  });
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
-  const handleAddDataset = (datasetKey: string, datasetValues: any) => {
-    const newLabels = Array.isArray(datasetValues)
-      ? Object.keys(datasetValues)
-      : [datasetKey];
+const Chart: any = {
+  spending_by_primary_secondary_date: ({ data }: any) => {
+    return <GroupedBarChart data={data} />;
+  },
+  spending_by_primary_secondary: ({ data }: any) => {
+    return <GroupedBarChart data={data} />;
+  },
+};
 
-    const newDataset = {
-      label: datasetKey.replace(/_/g, " ").toUpperCase(),
-      data: Array.isArray(datasetValues)
-        ? Object.values(datasetValues)
-        : [datasetValues],
-      borderColor: getRandomColor(),
-      fill: false,
-    };
-    setChartData((prevState: any) => ({
-      labels: [...Array.from(new Set([...prevState.labels, ...newLabels]))],
-      datasets: [...prevState.datasets, newDataset],
-    }));
-  };
+// const chart: any = {
+//   total_spending: <></>,
+//   spending_by_primary_category: <></>,
+//   spending_by_primray_category_percentage: <></>,
+//   spending_by_primary_secondary: <></>,
+//   spending_by_date: <></>,
+//   spending_by_primary_secondary_date: ExpenseChart,
+//   spending_by_transaction_type: <></>,
+// };
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
+const DynamicChart: FC<DynamicChartProps> = ({ selectedChartId }) => {
+  const { charts } = useDynamicChart();
 
+  if (!selectedChartId || !charts[selectedChartId]) {
+    return null;
+  }
+
+  const chartData = charts[selectedChartId];
   return (
     <div>
-      <h2>Dynamic Spending Chart</h2>
-      <Line data={chartData} />
-
-      <div>
-        {dataOptions.map(([key, values]: any) => (
-          <button key={key} onClick={() => handleAddDataset(key, values)}>
-            {key.replace(/_/g, " ").toUpperCase()}
-          </button>
-        ))}
-      </div>
+      <SpendingBarChart data={chartData} />
     </div>
   );
 };
