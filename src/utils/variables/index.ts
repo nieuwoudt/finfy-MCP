@@ -21,6 +21,7 @@ export const routesOnboarding = {
   personalize: "personalize",
   userPolicy: "user-policy",
   finalUserPolicy: "final-user-policy",
+  selectCountry: "select-country",
   connectBank: "connect-bank",
   selectCurrency: "select-currency",
   // selectBank: "select-bank",

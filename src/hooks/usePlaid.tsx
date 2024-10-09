@@ -6,7 +6,6 @@ import {
   saveInvestmentTransactions,
   saveLiabilities,
   saveBankIncome,
-  saveAssetReport,
 } from "@/lib/supabase/actions";
 import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
@@ -38,7 +37,7 @@ const usePlaid = () => {
         console.error("Error creating link token", error);
       }
     };
-    if (user?.is_connected_bank === false) {
+    if (user?.is_connected_bank === false && user.selected_country !== "AU") {
       createLinkToken();
     }
   }, [user?.is_connected_bank]);
@@ -201,8 +200,8 @@ const usePlaid = () => {
   });
 
   return {
-    openPlaidLink: open,
-    isPlaidLinkReady: ready,
+    open,
+    isLinkReady: ready,
     accessToken,
     transactions,
     assets,

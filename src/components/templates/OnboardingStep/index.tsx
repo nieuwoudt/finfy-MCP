@@ -8,6 +8,7 @@ import {
   CardLinkAccount,
   CardSelectCurrency,
   CardSetupComplete,
+  CardSelectCountry
 } from "@/components/organisms";
 import { RouteOnboardingValues } from "@/types";
 import { routesOnboarding } from "@/utils/variables";
@@ -26,6 +27,7 @@ const stepComponents: {
   [routesOnboarding.personalize]: CardPersonalize,
   [routesOnboarding.userPolicy]: CardUserPolicy,
   [routesOnboarding.finalUserPolicy]: CardFinalUserPolicy,
+  [routesOnboarding.selectCountry]: CardSelectCountry,
   [routesOnboarding.connectBank]: CardLinkAccount,
   [routesOnboarding.selectCurrency]: CardSelectCurrency,
   [routesOnboarding.setupComplete]: CardSetupComplete,

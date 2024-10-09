@@ -22,6 +22,7 @@ export interface User {
   created_at: string;
   plan: string;
   selected_currency: string;
+  selected_country: string;
   phone: string;
   finished_onboarding: boolean;
   plaid_access_token: string;
@@ -59,6 +60,32 @@ export interface Transaction {
   transaction_type: string;
   unofficial_currency_code: string | null;
   website: string;
+  user_id: string;
+}
+
+export interface TransactionYodlee {
+  id: number;
+  container: string;
+  amount: number;
+  currency: string;
+  category_type: string;
+  category_id: number;
+  category: string;
+  category_source: string;
+  high_level_category_id: number;
+  created_date: string;
+  last_updated: string;
+  description_original: string;
+  is_manual: boolean;
+  source_type: string;
+  date: string;
+  transaction_date: string;
+  post_date: string;
+  status: string;
+  account_id: number;
+  running_balance_amount: number;
+  running_balance_currency: string;
+  check_number: string;
   user_id: string;
 }
 
