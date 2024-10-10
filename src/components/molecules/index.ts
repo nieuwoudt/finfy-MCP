@@ -35,3 +35,6 @@ export { RenameTitleChatPop } from "./RenameTitleChatPop";
 export { SubscribePop } from "./SubscribePop";
 export { SuggestedQuestion } from "./SuggestedQuestion";
 export { ConnectBankAction } from './ConnectBankAction';
+export { AcceptableUsePolicy } from './AcceptableUsePolicy';
+export { TermsOfServicePolicy } from './TermsOfServicePolicy';
+export { PrivacyPolicy } from './PrivacyPolicy';

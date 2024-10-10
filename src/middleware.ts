@@ -35,58 +35,58 @@ export async function getUser(response: NextResponse, request: NextRequest) {
 }
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request,
-  });
+  // let response = NextResponse.next({
+  //   request,
+  // });
 
-  const path = new URL(request.url).pathname;
+  // const path = new URL(request.url).pathname;
 
-  const protectedRoutes = ["/", "/onboarding"];
-  const authRoutes = [
-    "/login",
-    "/sign-up",
-    "/authentication",
-    "/confirm-email",
-    "/update-password",
-    "/reset-password",
-    "/send-reset-password",
-  ];
-  const isProtectedRoute = protectedRoutes.includes(path);
-  const isAuthRoute = authRoutes.includes(path);
+  // const protectedRoutes = ["/", "/onboarding"];
+  // const authRoutes = [
+  //   "/login",
+  //   "/sign-up",
+  //   "/authentication",
+  //   "/confirm-email",
+  //   "/update-password",
+  //   "/reset-password",
+  //   "/send-reset-password",
+  // ];
+  // const isProtectedRoute = protectedRoutes.includes(path);
+  // const isAuthRoute = authRoutes.includes(path);
 
-  if (isProtectedRoute || isAuthRoute) {
-    const user = await getUser(response, request);
+  // if (isProtectedRoute || isAuthRoute) {
+  //   const user = await getUser(response, request);
 
-    if (!user && isProtectedRoute) {
-      return NextResponse.redirect(new URL("/authentication", request.url));
-    }
-    if (isAuthRoute && user) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-    }
+  //   if (!user && isProtectedRoute) {
+  //     return NextResponse.redirect(new URL("/authentication", request.url));
+  //   }
+  //   if (isAuthRoute && user) {
+  //     return NextResponse.redirect(new URL("/onboarding", request.url));
+  //   }
 
-    if (isProtectedRoute) {
-      return NextResponse.redirect(
-        new URL(`/onboarding/${stepsOnboarding.at(0)}`, request.url)
-      );
-    }
-  } else {
-    const user = await getUser(response, request);
-    if (!user && !isAuthRoute) {
-      return NextResponse.redirect(new URL("/authentication", request.url));
-    }
-    if (!path.includes("/dashboard")) {
-      const { data } = await supabase
-        .from("users")
-        .select()
-        .eq("email", user?.email)
-        .single();
-      if (data?.finished_onboarding) {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
-      } else if (!path.includes("/onboarding")) {
-        return NextResponse.redirect(new URL("/onboarding", request.url));
-      }
-    }
-  }
+  //   if (isProtectedRoute) {
+  //     return NextResponse.redirect(
+  //       new URL(`/onboarding/${stepsOnboarding.at(0)}`, request.url)
+  //     );
+  //   }
+  // } else {
+  //   const user = await getUser(response, request);
+  //   if (!user && !isAuthRoute) {
+  //     return NextResponse.redirect(new URL("/authentication", request.url));
+  //   }
+  //   if (!path.includes("/dashboard")) {
+  //     const { data } = await supabase
+  //       .from("users")
+  //       .select()
+  //       .eq("email", user?.email)
+  //       .single();
+  //     if (data?.finished_onboarding) {
+  //       return NextResponse.redirect(new URL("/dashboard", request.url));
+  //     } else if (!path.includes("/onboarding")) {
+  //       return NextResponse.redirect(new URL("/onboarding", request.url));
+  //     }
+  //   }
+  // }
 }
 
 export const config = {

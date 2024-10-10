@@ -10,4 +10,7 @@ export { DiscoverSection } from "./DiscoverSection";
 export { AdvisorsSection } from "./AdvisorsSection";
 export { UpdatePasswordSection } from "./UpdatePasswordSection";
 export { ResetPasswordSection } from "./ResetPasswordSection";
-export { SendResetPasswordSection } from './SendResetPasswordSection';
+export { SendResetPasswordSection } from "./SendResetPasswordSection";
+export { AcceptableUsePolicySection } from "./AcceptableUsePolicySection";
+export { PrivacyPolicySection } from "./PrivacyPolicySection";
+export { TermsOfServicePolicySection } from "./TermsOfServicePolicySection";

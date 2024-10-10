@@ -12,3 +12,6 @@ export { AdvisorsPage } from "./Advisors";
 export { UpdatePasswordPage } from "./UpdatePassword";
 export { ResetPasswordPage } from "./ResetPassword";
 export { SendResetPasswordPage } from "./SendResetPassword";
+export { PrivacyPolicyPage } from "./PrivacyPolicy";
+export { TermsOfServicePolicyPage } from "./TermsOfServicePolicy";
+export { AcceptableUsePolicyPage } from "./AcceptableUsePolicy";

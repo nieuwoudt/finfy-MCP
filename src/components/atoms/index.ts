@@ -21,3 +21,4 @@ export { Select } from "./Select";
 export { Chart } from "./Chart";
 export { Popover } from "./Popover";
 export { Loader } from "./Loader";
+export { EmbedTerms } from "./EmbedTerms";

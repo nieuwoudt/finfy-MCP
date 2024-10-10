@@ -4,23 +4,30 @@ const FooterAuth = () => {
   return (
     <footer className="flex flex-col relative z-10 justify-center items-center w-full gap-4 mt-auto mb-6">
       <Icon type="FullLogoWhiteIcon" className="w-28 h-8" />
-      <div className="flex gap-6">
+      <div className="flex gap-2 justify-between md:gap-6">
         <Button
-          href="/term-of-use"
+          href="/terms-of-service"
           as="link"
-          className="underline text-sm !font-medium underline-offset-4"
+          className="underline text-sm !font-medium underline-offset-4 p-0"
           variant="link"
         >
-          Terms of Use
+          Terms of Service
         </Button>
-        <span className="bg-white h-full w-px block"></span>
         <Button
           href="/privacy-policy"
           as="link"
-          className="underline text-sm !font-medium underline-offset-4"
+          className="underline text-sm !font-medium underline-offset-4 p-0"
           variant="link"
         >
           Privacy Policy
+        </Button>
+        <Button
+          href="/acceptable-use-policy"
+          as="link"
+          className="underline text-sm !font-medium underline-offset-4 p-0"
+          variant="link"
+        >
+          Acceptable Use Policy
         </Button>
       </div>
     </footer>
