@@ -8,7 +8,7 @@ import {
   CardLinkAccount,
   CardSelectCurrency,
   CardSetupComplete,
-  CardSelectCountry
+  CardSelectCountry,
 } from "@/components/organisms";
 import { RouteOnboardingValues } from "@/types";
 import { routesOnboarding } from "@/utils/variables";
@@ -19,7 +19,7 @@ interface OnboardingStepPops {
 }
 
 const stepComponents: {
-  [key: string]: () => JSX.Element;
+  [key: string]: (props: any) => JSX.Element;
 } = {
   [routesOnboarding.verifyPhoneNumber]: CardVerifyPhoneNumber,
   [routesOnboarding.confirmPhoneNumber]: CardConfirmPhoneNumber,
