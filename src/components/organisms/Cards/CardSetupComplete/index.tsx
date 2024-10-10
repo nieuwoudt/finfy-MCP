@@ -51,8 +51,7 @@ const CardSetupComplete = () => {
         <Button
           variant="ghost"
           as="link"
-          href="/onboarding/connect-bank"
-          onClick={handleClickComplete}
+          href="/onboarding/connect-bank?redirect=/onboarding/setup-complete"
           size="xl"
           full
         >

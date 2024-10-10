@@ -1,1 +1,1 @@
-export { PaginationScroll } from "./PaginationScroll";
+export { withRedirect } from "./withRedirect";

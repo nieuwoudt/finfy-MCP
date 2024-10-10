@@ -4,10 +4,15 @@ import { useConnectBank, useNavigationOnboarding } from "@/hooks";
 import { Button, Dialog, Icon } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import toast from "react-hot-toast";
+import { useSearchParams } from "next/navigation";
+import { withRedirect } from "@/hoc";
+import { WithRedirectProps } from "@/types";
 
-const CardLinkAccount = () => {
+interface HomePageProps extends WithRedirectProps {}
+
+const CardLinkAccount: FC<HomePageProps> = ({ redirect, pathRedirect }) => {
   const { nextStep } = useNavigationOnboarding();
   const { isLinkReady, open, transactions, openModal, isLoading } =
     useConnectBank();
@@ -15,7 +20,11 @@ const CardLinkAccount = () => {
   useEffect(() => {
     if (transactions?.length) {
       toast.success("The bank connection was successful");
-      nextStep();
+      if (pathRedirect) {
+        redirect();
+      } else {
+        nextStep();
+      }
     }
   }, [transactions?.length]);
 
@@ -84,4 +93,5 @@ const CardLinkAccount = () => {
   );
 };
 
-export { CardLinkAccount };
+const CardLinkAccountComponent = withRedirect(CardLinkAccount);
+export { CardLinkAccountComponent as CardLinkAccount };

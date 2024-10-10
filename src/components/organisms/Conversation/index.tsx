@@ -1,12 +1,11 @@
 "use client";
 
 import { Message, ListChartVisualizeButton } from "@/components/organisms";
-import { PaginationScroll } from "@/hoc";
 import { useChat, useDynamicChart } from "@/hooks";
 import { Loader2 } from "lucide-react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { DynamicChart } from "@/components/molecules";
-import { MobileChartModal } from "../../molecules/MobileChartModal/MobileChartModal";
+import { DynamicChart, PaginationScroll } from "@/components/molecules";
+import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
 import { DesktopChartModal } from "../../molecules/DesktopChartModal/DesktopChartModal";
 
 const Conversation = () => {
