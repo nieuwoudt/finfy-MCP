@@ -4,7 +4,7 @@ const FooterAuth = () => {
   return (
     <footer className="flex flex-col relative z-10 justify-center items-center w-full gap-4 mt-auto mb-6">
       <Icon type="FullLogoWhiteIcon" className="w-28 h-8" />
-      <div className="flex gap-2 justify-between md:gap-6">
+      <div className="flex gap-3 justify-between items-center px-2 flex-wrap md:gap-6">
         <Button
           href="/terms-of-service"
           as="link"
