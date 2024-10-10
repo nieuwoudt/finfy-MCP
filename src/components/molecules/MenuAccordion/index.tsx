@@ -21,6 +21,8 @@ interface MenuAccordionItemProps {
   contents: any;
   handleOpen?: any;
   isHideChevron?: boolean;
+  href: string;
+  onClick: () => void;
 }
 
 const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
@@ -28,6 +30,8 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
   contents,
   isHideChevron,
   handleOpen,
+  href,
+  onClick,
 }) => {
   const { open } = useSidebar();
   const router = useRouter();
@@ -75,10 +79,10 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
         })}
       >
         <div className={"flex justify-between w-full items-center"}>
-          <div className="flex gap-3 items-center">
+          <Link href={href} onClick={onClick} className="flex gap-3 items-center">
             <Icon />
             <span>{item.title}</span>
-          </div>
+          </Link>
           {isHideChevron && (
             <span className="text-[10px] font-normal">Coming Soon</span>
           )}
@@ -142,7 +146,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
 };
 
 const MenuAccordion: FC = () => {
-  const { chats } = useChat();
+  const { chats, handleResetChat } = useChat();
   const { handleOpen } = useSidebar();
 
   return (
@@ -158,6 +162,8 @@ const MenuAccordion: FC = () => {
           contents={item.value === "assistant" ? chats : item.contents}
           handleOpen={handleOpen}
           isHideChevron={item.isHideChevron}
+          onClick={handleResetChat}
+          href={item.href}
         />
       ))}
     </Accordion>

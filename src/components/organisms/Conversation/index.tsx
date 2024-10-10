@@ -25,8 +25,8 @@ const Conversation = () => {
     const titleReplaced = id?.split("_")?.join(" ");
     const firsLetter = titleReplaced.slice(0, 1)?.toLocaleUpperCase();
     const restLetters = titleReplaced.slice(1, titleReplaced?.length);
-    return firsLetter + restLetters as string
-  }
+    return (firsLetter + restLetters) as string;
+  };
 
   const handleCloseModal = (id: string) => {
     deleteChart(id);
@@ -42,9 +42,7 @@ const Conversation = () => {
 
   return (
     <div className="flex-1 overflow-hidden relative flex flex-row gap-8">
-      <div
-        className={`${isModalOpen ? "" : ""} w-full relative pb-28`}
-      >
+      <div className={`${isModalOpen ? "" : ""} w-full relative pb-28`}>
         <div className="react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0 pb-28">
           <div className="react-scroll-to-bottom--css-ikyem-1n7m0yu custom-scrollbar flex flex-col items-center gap-2.5 md:gap-5 overflow-x-hidden pr-2">
             <PaginationScroll
@@ -92,13 +90,17 @@ const Conversation = () => {
       </div>
       <DesktopChartModal
         isOpen={isModalOpen}
-        onClose={selectedChartId ? () => handleCloseModal(selectedChartId) : () => { }}
+        onClose={
+          selectedChartId ? () => handleCloseModal(selectedChartId) : () => {}
+        }
         component={<DynamicChart selectedChartId={selectedChartId} />}
         title={selectedChartId ? makeTitle(selectedChartId) : ""}
       />
       <MobileChartModal
         isOpen={isModalOpen}
-        onClose={selectedChartId ? () => handleCloseModal(selectedChartId) : () => { }}
+        onClose={
+          selectedChartId ? () => handleCloseModal(selectedChartId) : () => {}
+        }
         component={<DynamicChart selectedChartId={selectedChartId} />}
         title={selectedChartId ? makeTitle(selectedChartId) : ""}
       />

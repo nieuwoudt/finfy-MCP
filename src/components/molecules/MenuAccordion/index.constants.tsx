@@ -12,6 +12,7 @@ export const menuItems: MenuItem[] = [
     ),
     title: "Assistant",
     link: "/dashboard/chat",
+    href: "/dashboard",
     contents: [],
   },
   {
@@ -24,6 +25,7 @@ export const menuItems: MenuItem[] = [
     ),
     title: "Budget",
     link: "/goals",
+    href: "/dashboard",
     contents: [
       {
         title: "🗂️ Manage, track, and review accounts.",
@@ -56,6 +58,7 @@ export const menuItems: MenuItem[] = [
     isHideChevron: true,
     title: "Payments",
     link: "/payments",
+    href: "/dashboard",
     contents: [],
   },
   {
@@ -69,6 +72,7 @@ export const menuItems: MenuItem[] = [
     isHideChevron: true,
     title: "Discover",
     link: "/discover",
+    href: "/dashboard",
     contents: [
       {
         title: "🗂️ Manage, track, and review accounts.",
@@ -101,6 +105,7 @@ export const menuItems: MenuItem[] = [
     title: "Advisors",
     link: "/advisors",
     isHideChevron: true,
+    href: "/dashboard",
     contents: [
       {
         title: "🗂️ Manage, track, and review accounts.",
