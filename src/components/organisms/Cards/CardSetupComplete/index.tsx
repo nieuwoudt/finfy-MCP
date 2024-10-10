@@ -65,6 +65,7 @@ const CardSetupComplete = () => {
           size="xl"
           onClick={prevStep}
           type="button"
+          full
           variant="destructive"
           className="!rounded-md"
         >
