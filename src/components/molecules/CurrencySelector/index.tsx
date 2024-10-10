@@ -5,6 +5,8 @@ import CurrencyFlag from "react-currency-flags";
 import axios from "axios";
 import { Autocomplete } from "../Autocomplete";
 import { OptionsType } from "@/types";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 interface CurrencyData {
   [key: string]: {
@@ -20,6 +22,7 @@ interface CurrencySelectorProps {
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
   const [currencies, setCurrencies] = useState<OptionsType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const fetchCurrencies = async () => {
@@ -39,6 +42,12 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
             </div>
           ),
         }));
+        const defaultValue = currencyOptions.find(
+          (currency) => currency.value === user?.selected_currency
+        );
+        if (defaultValue && onChange) {
+          onChange(defaultValue);
+        }
         setCurrencies(currencyOptions);
         setLoading(false);
       } catch (error) {
@@ -57,6 +66,9 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
       handleOptionClick={onChange}
       full
       placeholder="Choose your currency"
+      defaultValue={currencies.find(
+        (currency) => currency.value === user?.selected_currency
+      )}
     />
   );
 };

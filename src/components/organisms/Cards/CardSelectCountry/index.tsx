@@ -32,15 +32,10 @@ const CardSelectCountry = () => {
           selected_country: value,
         })
       );
-    }
-  };
-
-  useEffect(() => {
-    if (status === "succeeded" && user?.selected_country) {
       toast.success("The chosen country was successfully saved");
       nextStep();
     }
-  }, [status, user?.selected_country]);
+  };
 
   useEffect(() => {
     if (error) {
@@ -57,6 +52,7 @@ const CardSelectCountry = () => {
         <CardTemplate.Footer className="flex justify-between items-center mt-6">
           <Button
             size="xl"
+            type={"button"}
             onClick={prevStep}
             variant="destructive"
             className="!rounded-md"

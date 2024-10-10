@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigationOnboarding } from "@/hooks";
 
 const CardFinalUserPolicy = () => {
-  const { nextStep } = useNavigationOnboarding();
+  const { nextStep, prevStep } = useNavigationOnboarding();
   const {
     setValue,
     getValues,
@@ -53,7 +53,10 @@ const CardFinalUserPolicy = () => {
             </div>
             <div className="flex gap-2">
               <div className="flex w-24 items-center">
-                <Icon type="MicroChipIcon" className="w-10 h-10 stroke-grey-15" />
+                <Icon
+                  type="MicroChipIcon"
+                  className="w-10 h-10 stroke-grey-15"
+                />
               </div>
               <p>
                 Imali may change usage limits, functionality, or policies as we
@@ -64,6 +67,9 @@ const CardFinalUserPolicy = () => {
           </div>
         </CardTemplate.Content>
         <CardTemplate.Footer className="flex gap-4 mt-4">
+          <Button size="xl" type="button" onClick={prevStep} variant="destructive" full>
+            Back
+          </Button>
           <Button size="xl" full type="submit">
             Sounds Good, Let’s Begin
           </Button>

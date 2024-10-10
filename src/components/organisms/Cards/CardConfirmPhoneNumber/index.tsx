@@ -13,7 +13,7 @@ const CardConfirmPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const phone = searchParams.get("phone") as string;
-  const { nextStep } = useNavigationOnboarding();
+  const { nextStep, prevStep } = useNavigationOnboarding();
 
   const onSubmit = async (formData: FormData) => {
     startTransition(async () => {
@@ -45,6 +45,15 @@ const CardConfirmPhoneNumber = () => {
               ) : (
                 "Verify & Create Account"
               )}
+            </Button>
+            <Button
+              size="xl"
+              onClick={prevStep}
+              variant="destructive"
+              full
+              className="!rounded-md"
+            >
+              Back
             </Button>
             <ResendCodeWithTimer initialSeconds={60} phone={phone} />
           </div>

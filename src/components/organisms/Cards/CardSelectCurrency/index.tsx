@@ -31,15 +31,10 @@ const CardSelectCurrency = () => {
           selected_currency: value,
         })
       );
-    }
-  };
-
-  useEffect(() => {
-    if (status === "succeeded" && user?.selected_currency) {
       toast.success("The chosen currency was successfully saved");
       nextStep();
     }
-  }, [status, user?.selected_currency]);
+  };
 
   useEffect(() => {
     if (error) {
@@ -57,6 +52,7 @@ const CardSelectCurrency = () => {
           <Button
             size="xl"
             onClick={prevStep}
+            type="button"
             variant="destructive"
             className="!rounded-md"
           >

@@ -13,7 +13,7 @@ import { WithRedirectProps } from "@/types";
 interface HomePageProps extends WithRedirectProps {}
 
 const CardLinkAccount: FC<HomePageProps> = ({ redirect, pathRedirect }) => {
-  const { nextStep } = useNavigationOnboarding();
+  const { nextStep, prevStep } = useNavigationOnboarding();
   const { isLinkReady, open, transactions, openModal, isLoading } =
     useConnectBank();
 
@@ -68,6 +68,15 @@ const CardLinkAccount: FC<HomePageProps> = ({ redirect, pathRedirect }) => {
               ) : (
                 "LINK YOUR OWN ACCOUNT"
               )}
+            </Button>
+            <Button
+              size="xl"
+              onClick={prevStep}
+              variant="destructive"
+              full
+              className="mb-4"
+            >
+              Back
             </Button>
             <Button
               onClick={() => nextStep()}

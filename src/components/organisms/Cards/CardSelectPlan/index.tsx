@@ -41,14 +41,9 @@ const CardSelectPlan = () => {
   const handleCodeChange = async (plan: string) => {
     if (userCurrent?.id) {
       await dispatch(updateUser({ plan }));
-    }
-  };
-
-  useEffect(() => {
-    if (status === "succeeded" && userCurrent?.plan) {
       nextStep();
     }
-  }, [status, userCurrent?.plan]);
+  };
 
   useEffect(() => {
     if (error) {

@@ -9,25 +9,20 @@ import toast from "react-hot-toast";
 
 const CardPersonalize = () => {
   const { updateUser, statusUpdate, error, user } = useUser();
-  const { nextStep } = useNavigationOnboarding();
+  const { nextStep, prevStep } = useNavigationOnboarding();
   const { handleSubmit, register } = useForm({
     defaultValues: {
-      name: "",
+      name: user?.name,
     },
   });
 
-  const onSubmit = async (values: { name: string }) => {
+  const onSubmit = async (values: { name?: string }) => {
     if (user?.id) {
       await updateUser({ name: values.name });
-    }
-  };
-
-  useEffect(() => {
-    if (statusUpdate === "succeeded" && user?.name) {
       toast.success("The name was successfully saved!");
       nextStep();
     }
-  }, [statusUpdate, user?.name]);
+  };
 
   useEffect(() => {
     if (error) {
@@ -49,7 +44,7 @@ const CardPersonalize = () => {
             disabled={statusUpdate === "loading"}
           />
         </CardTemplate.Content>
-        <CardTemplate.Footer className="flex gap-4 mt-4">
+        <CardTemplate.Footer className="flex gap-4 flex-col mt-4">
           <Button
             disabled={statusUpdate === "loading"}
             size="xl"
@@ -57,6 +52,15 @@ const CardPersonalize = () => {
             type="submit"
           >
             Send
+          </Button>
+          <Button
+            size="xl"
+            type="button"
+            onClick={prevStep}
+            variant="destructive"
+            full
+          >
+            Back
           </Button>
         </CardTemplate.Footer>
       </form>

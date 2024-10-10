@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigationOnboarding } from "@/hooks";
 
 const CardUserPolicy = () => {
-  const { nextStep } = useNavigationOnboarding();
+  const { nextStep, prevStep } = useNavigationOnboarding();
   const {
     formState: { errors },
     handleSubmit,
@@ -58,6 +58,9 @@ const CardUserPolicy = () => {
           </div>
         </CardTemplate.Content>
         <CardTemplate.Footer className="flex gap-4 mt-4">
+          <Button size="xl" type="button" onClick={prevStep} variant="destructive" full>
+            Back
+          </Button>
           <Button size="xl" full type="submit">
             Acknowledge & Continue
           </Button>
