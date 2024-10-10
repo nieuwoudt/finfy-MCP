@@ -12,14 +12,8 @@ const PhoneInputField = ({ onChange, value, disabled }: PhoneInputFieldProps) =>
         value={value}
         disabled={disabled}
         onChange={(phone) => onChange(phone)}
-        buttonStyle={{
-          backgroundColor: "transparent",
-          border: "none",
-        }}
-        dropdownStyle={{
-          color: "white",
-          backgroundColor: "#272E48",
-        }}
+        buttonClass="buttonPhoneNumber"
+        dropdownClass="dropdown"
         inputStyle={{
           width: "100%",
           paddingLeft: "50px",

@@ -203,3 +203,39 @@ input:-webkit-autofill:active{
   border-radius: 10px;
   border: 2px solid #2D3748;
 }
+
+.dropdown::-webkit-scrollbar-track {
+  background: #2D3748;
+}
+
+.dropdown::-webkit-scrollbar-thumb {
+  background-color: #6B7280;
+  border-radius: 10px;
+  border: 2px solid #2D3748;
+}
+
+.dropdown {
+  color: white;
+  background-color: #272E48 !important;
+}
+
+.dropdown > li.highlight {
+  background-color: #2D3748 !important;
+}
+
+.dropdown > li:hover {
+  background-color: #2D3748 !important;
+}
+
+.buttonPhoneNumber {
+  background-color: transparent !important;
+  border: 1px solid #6870DA !important;
+}
+
+.buttonPhoneNumber > .selected-flag:hover {
+  background-color: #2D3748 !important;
+}
+
+.buttonPhoneNumber > .open {
+  background-color: #2D3748 !important;
+}
