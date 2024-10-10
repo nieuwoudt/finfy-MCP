@@ -47,8 +47,10 @@ import PlusCircle from "./plus-circle.svg";
 import ToggleSidebarIcon from "./toggle-sidebar.svg";
 import LightningIcon from "./lightning.svg";
 import InfinityIcon from "./infinity.svg";
+import SmallLogo from "./small-logo.svg";
 
 export default {
+  SmallLogo,
   LightningIcon,
   InfinityIcon,
   FullLogoWhiteIcon,

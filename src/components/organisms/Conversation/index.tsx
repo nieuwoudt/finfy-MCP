@@ -2,11 +2,11 @@
 
 import { Message, ListChartVisualizeButton } from "@/components/organisms";
 import { useChat, useDynamicChart } from "@/hooks";
-import { Loader2 } from "lucide-react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { DynamicChart, PaginationScroll } from "@/components/molecules";
-import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
+import { MobileChartModal } from "../../molecules/MobileChartModal/MobileChartModal";
 import { DesktopChartModal } from "../../molecules/DesktopChartModal/DesktopChartModal";
+import { Loader } from "@/components/atoms";
 
 const Conversation = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -74,9 +74,13 @@ const Conversation = () => {
               {isLoading && (
                 <Message
                   text={
-                    <div className="flex items-center gap-1">
-                      Your data is being analyzed, this might take a moment...
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                    <div className="flex items-end gap-4">
+                      <span className="w-4 h-4">
+                        <div className="small-loader" />
+                      </span>
+                      <span className="text-white text-2xl leading-3 font-medium">
+                        Answer
+                      </span>
                     </div>
                   }
                   isUser={false}

@@ -1,3 +1,5 @@
+"use client";
+
 import { ContentMessage } from "@/components/molecules";
 import { cn } from "@/lib/utils";
 import clsx from "clsx";

@@ -176,6 +176,36 @@ input:-webkit-autofill:active{
   animation-delay: 0s;
 }
 
+
+.small-loader {
+  width: 2px;
+  height: 5px;
+  display: inline-block;
+  position: relative;
+  border-radius: 4px;
+  color: #515ada;
+  background: currentColor;
+  box-sizing: border-box;
+  animation: small-animloader 0.5s 0.3s linear infinite alternate;
+}
+.small-loader::after,
+.small-loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 2px;
+  height: 5px;
+  border-radius: 4px;
+  background: currentColor;
+  position: absolute;
+  left: 0;
+  top: -12px;
+  animation: small-animloader 0.5s 0.8s linear infinite alternate;
+}
+.small-loader::after {
+  top: -6px;
+  animation-delay: 0s;
+}
+
 @keyframes animloader {
   0% {
     width: 4.8px;
@@ -184,6 +214,16 @@ input:-webkit-autofill:active{
     width: 48px;
   }
 }
+
+@keyframes small-animloader {
+  0% {
+    width: 4.8px;
+  }
+  100% {
+    width: 24px;
+  }
+}
+
 
 .custom-scrollbar {
   scrollbar-width: thin;
