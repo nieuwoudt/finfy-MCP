@@ -51,16 +51,18 @@ const Conversation = () => {
               chatUUID={undefined}
               elementScroll={undefined}
             >
-              {messages.map((message) => {
+              {messages.map((message, index) => {
                 const calculations = message.calculations
                   ? JSON.parse(message.calculations)
                   : null;
+
                 return (
                   <Fragment key={message.id}>
                     <Message
                       text={message.content}
                       date={""}
                       isUser={message.message_type === "user"}
+                      isLastMessage={index === messages.length - 1}
                     />
                     {calculations && (
                       <ListChartVisualizeButton

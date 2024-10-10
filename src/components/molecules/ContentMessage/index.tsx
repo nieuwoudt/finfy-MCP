@@ -8,12 +8,14 @@ interface ContentMessageProps {
   text: ReactNode;
   isUser: boolean;
   isLoading?: boolean;
+  isLastMessage?: boolean;
 }
 
 const ContentMessage: FC<ContentMessageProps> = ({
   text,
   isUser,
   isLoading,
+  isLastMessage,
 }) => {
   if (!text) {
     return null;
@@ -26,7 +28,9 @@ const ContentMessage: FC<ContentMessageProps> = ({
           <span className="w-4 h-4">
             <Icon type="SmallLogo" />
           </span>
-          <span className="text-white text-2xl leading-3 font-medium">Answer</span>
+          <span className="text-white text-2xl leading-3 font-medium">
+            {isLastMessage ? "Answer" : "Finfy"}
+          </span>
         </div>
       )}
       <p

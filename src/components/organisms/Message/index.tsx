@@ -10,10 +10,11 @@ interface MessageProps {
   isUser: boolean;
   date?: string;
   isLoading?: boolean;
+  isLastMessage?: boolean;
 }
 
 const Message: FC<MessageProps> = (props) => {
-  const { text, isUser, isLoading } = props;
+  const { text, isUser, isLoading, isLastMessage } = props;
 
   return (
     <>
@@ -24,7 +25,12 @@ const Message: FC<MessageProps> = (props) => {
               "message relative inline-block text-white rounded-md px-2 py-1 md:px-4 md:py-2"
             )}
           >
-            <ContentMessage text={text} isUser={isUser} isLoading={isLoading} />
+            <ContentMessage
+              text={text}
+              isUser={isUser}
+              isLoading={isLoading}
+              isLastMessage={isLastMessage}
+            />
           </div>
         </div>
       </article>
