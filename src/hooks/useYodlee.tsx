@@ -1,6 +1,6 @@
 "use client";
 
-import { saveTransactionsYodlee } from "@/utils/yodlee-api";
+import { saveAccountYodlee, saveTransactionsYodlee } from "@/utils/yodlee-api";
 import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
 import { useEffect, useState, useCallback } from "react";
@@ -59,14 +59,15 @@ const useYodlee = () => {
     }
   }, [user?.is_connected_bank]);
 
-  const fetchTransactions = async (token: string, accountId: string) => {
+  const fetchTransactions = async (token: string, accountIds: string) => {
     try {
       const { data } = await axiosInternal("/api/yodlee/transactions", {
         params: {
           accessToken: token,
-          accountId,
+          accountIds,
         },
       });
+      console.log(data, "data");
       if (user?.id) {
         await saveTransactionsYodlee(data.transactions, user.id);
       }
@@ -77,10 +78,39 @@ const useYodlee = () => {
     }
   };
 
+  const fetchAccounts = async (
+    token: string,
+    providerAccountId: string,
+    requestId: string
+  ) => {
+    try {
+      const { data } = await axiosInternal("/api/yodlee/accounts", {
+        params: {
+          accessToken: token,
+          providerAccountId,
+          requestId,
+        },
+      });
+      if (user?.id) {
+        await saveAccountYodlee(data.accounts, user.id);
+      }
+      return data.accounts;
+    } catch (error) {
+      Sentry.captureException(error);
+      toast.error(`Error fetching accounts: ${getErrorMessage(error)}`);
+    }
+  };
+
   const onSuccess = async (data: any) => {
     setIsLoading(true);
     if (accessToken) {
-      await fetchTransactions(accessToken, data.provideAccountId);
+      const accounts = await fetchAccounts(
+        accessToken,
+        data.providerAccountId,
+        data.requestId
+      );
+      const accountIds = accounts.map((item: any) => item.id).join();
+      await fetchTransactions(accessToken, accountIds);
     }
     setIsLoading(false);
   };

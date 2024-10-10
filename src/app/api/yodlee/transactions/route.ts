@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = req.nextUrl;
-    const accessToken = searchParams.get('accessToken');
-    const accountId = searchParams.get('accountId');
+    const accessToken = searchParams.get("accessToken");
+    const accountIds = searchParams.get("accountIds");
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() - 1);
     const formattedStartDate = startDate.toISOString().split("T")[0];
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
-        accountId,
+        accountId: accountIds,
         fromDate: formattedStartDate,
         toDate: formattedEndDate,
       },

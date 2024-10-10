@@ -2,6 +2,7 @@ import axios from "axios";
 import { config } from "@/config/env";
 import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "../helpers";
+import { AccountYodlee } from "@/types";
 
 const getBaseURL = (isExternal: boolean): string => {
   if (typeof window !== "undefined") {
@@ -40,24 +41,24 @@ export const saveTransactionsYodlee = async (
       container: transaction.container,
       amount: transaction.amount.amount,
       currency: transaction.amount.currency,
-      category_type: transaction.category_type,
-      category_id: transaction.category_id,
+      category_type: transaction.categoryType,
+      category_id: transaction.categoryId,
       category: transaction.category,
-      category_source: transaction.category_source,
-      high_level_category_id: transaction.high_level_category_id,
-      created_date: transaction.created_date,
-      last_updated: transaction.last_updated,
-      description_original: transaction.description_original,
-      is_manual: transaction.is_manual,
-      source_type: transaction.source_type,
+      category_source: transaction.categorySource,
+      high_level_category_id: transaction.highLevelCategoryId,
+      created_date: transaction.createdDate,
+      last_updated: transaction.lastUpdated,
+      description_original: transaction.descriptionOriginal,
+      is_manual: transaction.isManual,
+      source_type: transaction.sourceType,
       date: transaction.date,
-      transaction_date: transaction.transaction_date,
-      post_date: transaction.post_date,
+      transaction_date: transaction.transactionDate,
+      post_date: transaction.postDate,
       status: transaction.status,
-      account_id: transaction.account_id,
-      running_balance_amount: transaction.running_balance_amount,
-      running_balance_currency: transaction.running_balance_currency,
-      check_number: transaction.check_number,
+      account_id: transaction.accountId,
+      running_balance_amount: transaction.runningBalanceAmount,
+      running_balance_currency: transaction.runningBalanceCurrency,
+      check_number: transaction.checkNumber,
       user_id: `${userId}`,
     }));
 
@@ -67,6 +68,57 @@ export const saveTransactionsYodlee = async (
 
     if (transactionError) {
       throw transactionError;
+    }
+
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+};
+
+export const saveAccountYodlee = async (
+  accounts: AccountYodlee[],
+  userId: string
+) => {
+  try {
+    const formattedAccounts = accounts.map((account) => ({
+      account_id: account.id,
+      container: account.CONTAINER,
+      provider_account_id: account.providerAccountId,
+      account_name: account.accountName,
+      account_status: account.accountStatus,
+      account_number: account.accountNumber,
+      aggregation_source: account.aggregationSource,
+      is_asset: account.isAsset,
+      balance_amount: account.balance.amount,
+      balance_currency: account.balance.currency,
+      user_classification: account.userClassification,
+      include_in_net_worth: account.includeInNetWorth,
+      provider_id: account.providerId,
+      provider_name: account.providerName,
+      is_manual: account.isManual,
+      available_balance_amount: account.availableBalance?.amount,
+      available_balance_currency: account.availableBalance?.currency,
+      current_balance_amount: account.currentBalance.amount,
+      current_balance_currency: account.currentBalance.currency,
+      account_type: account.accountType,
+      displayed_name: account.displayedName,
+      created_date: account.createdDate,
+      last_updated: account.lastUpdated,
+      bank_transfer_code_id: account.bankTransferCode[0]?.id,
+      bank_transfer_code_type: account.bankTransferCode[0]?.type,
+      full_account_number: account.fullAccountNumber,
+      payment_account_number:
+        account.fullAccountNumberList.paymentAccountNumber,
+      user_id: `${userId}`,
+    }));
+    const { error } = await supabase
+      .from("accounts_yodlee")
+      .insert(formattedAccounts);
+    if (error) {
+      throw error;
     }
 
     return { errorMessage: null };

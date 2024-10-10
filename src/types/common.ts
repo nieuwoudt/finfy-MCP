@@ -89,6 +89,45 @@ export interface TransactionYodlee {
   user_id: string;
 }
 
+export interface AccountYodlee {
+  id: number;
+  CONTAINER: string;
+  providerAccountId: number;
+  accountName: string;
+  accountStatus: string;
+  accountNumber: string;
+  aggregationSource: string;
+  isAsset: boolean;
+  balance: {
+    amount: number;
+    currency: string;
+  };
+  userClassification: string;
+  includeInNetWorth: boolean;
+  providerId: string;
+  providerName: string;
+  isManual: boolean;
+  availableBalance?: {
+    amount: number;
+    currency: string;
+  };
+  currentBalance: {
+    amount: number;
+    currency: string;
+  };
+  accountType: string;
+  displayedName: string;
+  createdDate: string;
+  lastUpdated: string;
+  bankTransferCode: Array<{
+    id: string;
+    type: string;
+  }>;
+  fullAccountNumber: string;
+  fullAccountNumberList: {
+    paymentAccountNumber: string;
+  };
+}
 export interface Account {
   id?: string;
   account_id: string;
