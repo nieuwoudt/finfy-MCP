@@ -220,11 +220,11 @@ input:-webkit-autofill:active{
 }
 
 .dropdown > li.highlight {
-  background-color: #2D3748 !important;
+  background-color: #374061 !important;
 }
 
 .dropdown > li:hover {
-  background-color: #2D3748 !important;
+  background-color: #374061 !important;
 }
 
 .buttonPhoneNumber {
@@ -233,9 +233,9 @@ input:-webkit-autofill:active{
 }
 
 .buttonPhoneNumber > .selected-flag:hover {
-  background-color: #2D3748 !important;
+  background-color: #374061 !important;
 }
 
 .buttonPhoneNumber > .open {
-  background-color: #2D3748 !important;
+  background-color: #374061 !important;
 }

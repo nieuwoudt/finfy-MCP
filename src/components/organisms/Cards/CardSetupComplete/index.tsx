@@ -47,7 +47,17 @@ const CardSetupComplete = () => {
       }}
       description="Thank you! Your bank account was connected to Imali"
     >
-      <CardTemplate.Footer className="flex justify-between items-center mt-6">
+      <CardTemplate.Footer className="flex justify-between flex-col w-full gap-3 items-center mt-6">
+        <Button
+          variant="ghost"
+          as="link"
+          href="/onboarding/connect-bank"
+          onClick={handleClickComplete}
+          size="xl"
+          full
+        >
+          Connect another account
+        </Button>
         <Button onClick={handleClickComplete} size="xl" full>
           {isPending ? <Loader2 className="animate-spin" /> : "Go to Dashboard"}
         </Button>

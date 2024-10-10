@@ -37,8 +37,8 @@ const CardPersonalize = () => {
 
   return (
     <CardTemplate
-      title="Hello, I’m Imali"
-      description="I’m next generation AI assistnt built for work and trained to be safe, accurate, and securre. I’d love for us to get to know each other a bit better. Helper text"
+      title="Hello, I’m Finfy"
+      description="I’m your AI-powered financial assistant, here to help you manage your money smarter. With me, you can track your spending, set savings goals, and plan your financial future—all securely and accurately. Let’s get started!"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardTemplate.Content>

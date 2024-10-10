@@ -9,6 +9,7 @@ import { OptionsType } from "@/types";
 import { AutocompleteProps } from "./index.types";
 import { Loader2 } from "lucide-react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const Autocomplete: FC<AutocompleteProps> = ({
   classes,
@@ -219,7 +220,12 @@ const Autocomplete: FC<AutocompleteProps> = ({
                       <li
                         key={option.value}
                         onClick={() => handleClick(option)}
-                        className="px-4 pl-10 py-2 flex gap-1 relative items-center text-white text-sm font-medium hover:bg-navy-15 cursor-pointer"
+                        className={cn(
+                          "px-4 pl-10 py-2 flex gap-1 relative items-center text-white text-sm font-medium hover:bg-navy-15 cursor-pointer",
+                          {
+                            "bg-navy-15": selectOption?.value === option.value,
+                          }
+                        )}
                       >
                         {selectOption?.value === option.value && (
                           <Icon
