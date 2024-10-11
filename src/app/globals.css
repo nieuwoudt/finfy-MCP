@@ -279,3 +279,15 @@ input:-webkit-autofill:active{
 .buttonPhoneNumber > .open {
   background-color: #6870DA !important;
 }
+
+.markdown ul, ol {
+  list-style: initial;
+}
+
+.markdown ol {
+  list-style:decimal;
+}
+
+.markdown li {
+  margin-bottom: 15px;
+}

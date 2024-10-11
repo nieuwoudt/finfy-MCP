@@ -41,7 +41,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
             : "text-sm md:text-base"
         )}
       >
-        {isUser || isLoading ? text : <Markdown>{text as string}</Markdown>}
+        {isUser || isLoading ? text : <Markdown className={"markdown !whitespace-normal"}>{text as string}</Markdown>}
       </p>
     </div>
   );
