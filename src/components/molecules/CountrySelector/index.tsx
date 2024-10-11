@@ -30,10 +30,16 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onChange }) => {
           "https://restcountries.com/v3.1/all"
         );
         const countryData = response.data;
-        const countryOptions = countryData.map((country) => ({
-          value: country.cca2,
-          label: country.name.common,
-        }));
+        const countryOptions = [
+          ...countryData.map((country) => ({
+            value: country.cca2,
+            label: country.name.common,
+          })),
+          {
+            value: "SA",
+            label: "South Africa",
+          },
+        ];
         const defaultValue = countryOptions.find(
           (count) => count.value === user?.selected_country
         );

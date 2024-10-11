@@ -4,14 +4,14 @@ import { SettingsTab } from "@/components/organisms";
 const SettingsSection = () => {
   return (
     <div className="flex flex-col h-full w-full">
-      <div className="flex-grow ">
+      <div className="flex-grow sticky top-0">
         <h1 className="font-semibold px-10 pt-5 text-white text-2xl">
           Settings
         </h1>
         <SeparatorLine />
       </div>
-      <div className="flex items-center justify-center w-full h-full text-grey-15 text-sm">
-        <div className=" justify-between flex flex-col">
+      <div className="flex items-start justify-center w-full h-full text-grey-15 text-sm">
+        <div className=" flex flex-col">
           <SettingsTab />
         </div>
       </div>

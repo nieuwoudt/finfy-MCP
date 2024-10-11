@@ -5,16 +5,19 @@ import { FieldProps } from "./index.types";
 import { cn } from "@/lib/utils";
 
 const Field: FC<FieldProps> = forwardRef(
-  ({
-    classes,
-    label,
-    helperText,
-    id,
-    full,
-    isRequired,
-    sideElements = {},
-    ...props
-  }, ref) => {
+  (
+    {
+      classes,
+      label,
+      helperText,
+      id,
+      full,
+      isRequired,
+      sideElements = {},
+      ...props
+    },
+    ref
+  ) => {
     const { left, right } = sideElements;
     return (
       <div className={cn(classes?.wrapper, full ? "w-full" : "w-fit")}>
@@ -25,17 +28,24 @@ const Field: FC<FieldProps> = forwardRef(
             classes?.container
           )}
         >
-          {label && (
-            <Label
-              isRequired={isRequired}
-              className={cn(classes?.label, {
-                "!text-accent-content": Boolean(helperText),
-              })}
-              htmlFor={id}
-            >
-              {label}
-            </Label>
-          )}
+          <div className="flex justify-between items-center">
+            {label && (
+              <Label
+                isRequired={isRequired}
+                className={cn(classes?.label, {
+                  "!text-accent-content": Boolean(helperText),
+                })}
+                htmlFor={id}
+              >
+                {label}
+              </Label>
+            )}
+            {!isRequired && (
+              <span className="text-grey-15 font-semibold text-sm">
+                (Optional)
+              </span>
+            )}
+          </div>
           <div
             className={cn(
               "rounded-lg overflow-hidden px-3 py-2 text-base font-medium bg-navy-15 border flex items-center shadow-sm border-deep-slate",
@@ -73,3 +83,4 @@ const Field: FC<FieldProps> = forwardRef(
 );
 Field.displayName = "Field";
 export { Field };
+export type { FieldProps };

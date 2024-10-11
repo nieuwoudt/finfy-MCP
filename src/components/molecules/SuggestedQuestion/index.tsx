@@ -69,9 +69,9 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
   return (
     <button
       onClick={handleClick}
-      className="border flex-1 min-w-56 text-white text-xs md:text-sm bg-navy-25 rounded-full p-1 md:p-2 border-grey-15 hover:bg-navy-15"
+      className="border flex-1 min-w-72 max-w-72 h-16 flex justify-start text-start items-start text-white text-xs md:text-sm bg-navy-15 rounded-md p-2 md:p-3 border-navy-5"
     >
-      {question}
+      <span className="overflow-hidden line-clamp-2">{question}</span>
     </button>
   );
 };

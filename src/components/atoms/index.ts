@@ -4,7 +4,7 @@ export { Modal } from "./Modal";
 export { Portal } from "./Portal";
 export { RootMain } from "./RootMain";
 export { Label } from "./Label";
-export { Field } from "./Field";
+export { Field, type FieldProps } from "./Field";
 export { Card } from "./Card";
 export { CustomButtonIcon } from "./CustomButtonIcon";
 export { ScrollArea } from "./ScrollArea";

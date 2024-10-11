@@ -11,9 +11,12 @@ const SuggestedQuestions = () => {
   }
   const { simple, open_ended } = suggests;
   return (
-    <div className="flex flex-wrap gap-2 md:gap-4 absolute w-full px-3 bottom-[105%]">
-      <SuggestedQuestion question={open_ended.at(0)} />
-      <SuggestedQuestion question={simple.at(0)} />
+    <div className="absolute w-full px-3 bottom-[105%]">
+      <div className="flex gap-2 md:gap-4 overflow-auto w-full custom-scrollbar">
+        {[...simple, ...open_ended].map((question) => {
+          return <SuggestedQuestion key={question} question={question} />;
+        })}
+      </div>
     </div>
   );
 };

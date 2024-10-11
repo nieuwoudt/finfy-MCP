@@ -54,7 +54,7 @@ const useYodlee = () => {
         console.error("Error creating link token", error);
       }
     };
-    if (user?.is_connected_bank === false && user.selected_country === "AU") {
+    if (user?.is_connected_bank === false && user.selected_country === "SA") {
       createAccessToken();
     }
   }, [user?.is_connected_bank]);

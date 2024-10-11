@@ -6,7 +6,7 @@ const useConnectBank = () => {
   const yodleeData = useYodlee();
   const plaidData = usePlaid();
 
-  const hookData = user?.selected_country === "AU" ? yodleeData : plaidData;
+  const hookData = user?.selected_country === "SA" ? yodleeData : plaidData;
   const {
     isLinkReady = false,
     open,
