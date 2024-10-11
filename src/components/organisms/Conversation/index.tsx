@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const Conversation = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { messages, isLoading } = useChat();
+  const { messages, isLoading, chatId } = useChat();
   const suggests = useSelector((state: RootState) => state.chat.suggests);
   const { addChart, deleteChart, charts } = useDynamicChart();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,7 +41,7 @@ const Conversation = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView();
     }
-  }, [messages]);
+  }, [chatId]);
 
   return (
     <div className="flex-1 overflow-hidden relative flex flex-row gap-8">
@@ -49,7 +49,7 @@ const Conversation = () => {
         <div
           className={cn(
             "react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0",
-            suggests ? "pb-44" : "pb-24 md:pb-28"
+            suggests ? "pb-52" : "pb-24 md:pb-28"
           )}
         >
           <div className="react-scroll-to-bottom--css-ikyem-1n7m0yu custom-scrollbar flex flex-col items-center gap-2.5 md:gap-5 overflow-x-hidden pr-2">
