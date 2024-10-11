@@ -181,3 +181,28 @@ export type FileType = {
   type?: string;
   name?: string;
 };
+
+
+export interface Plan {
+  id: number;
+  name: string;
+  pricing: {
+    amount: number;
+    formattedPrice: string;
+    currency: string;
+    billingCycle: string;
+  };
+  description: {
+    short: string;
+    detailed: string;
+  };
+  features: {
+    highlighted: string[];
+  };
+  ctaButton: {
+    label: string;
+    isDisabled: boolean;
+    type: string;
+    link: string | null;
+  };
+}
