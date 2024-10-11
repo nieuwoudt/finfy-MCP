@@ -37,7 +37,7 @@ const usePlaid = () => {
         console.error("Error creating link token", error);
       }
     };
-    if (user?.is_connected_bank === false && user.selected_country !== "SA") {
+    if (user?.is_connected_bank === false && user.selected_country !== "ZA") {
       createLinkToken();
     }
   }, [user?.is_connected_bank]);

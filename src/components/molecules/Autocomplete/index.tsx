@@ -74,7 +74,7 @@ const Autocomplete: FC<AutocompleteProps> = ({
 
   const filterOptions = (value: string) => {
     const newOptions = options.filter((item) =>
-      item.value.toLowerCase().includes(value.toLowerCase())
+      item.content.toLowerCase().includes(value.toLowerCase())
     );
     setCurrentOptions(newOptions);
   };

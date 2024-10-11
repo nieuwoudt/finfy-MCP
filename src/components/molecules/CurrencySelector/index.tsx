@@ -41,6 +41,7 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
               </span>
             </div>
           ),
+          content: currencyData[code].name,
         }));
         const defaultValue = currencyOptions.find(
           (currency) => currency.value === user?.selected_currency

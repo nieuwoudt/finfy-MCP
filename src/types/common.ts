@@ -144,6 +144,7 @@ export interface Account {
 export type OptionsType = {
   label: string | ReactNode;
   value: string;
+  content: string;
 };
 
 export type MenuItem = {
