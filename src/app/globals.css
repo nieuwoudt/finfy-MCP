@@ -291,3 +291,8 @@ input:-webkit-autofill:active{
 .markdown li {
   margin-bottom: 15px;
 }
+
+.scroll-hidden::-webkit-scrollbar {
+  width: 0; 
+  height: 0;
+}
