@@ -37,7 +37,10 @@ const initialState: ChatState = {
   calculations: null,
   chats: [],
   messages: [],
-  suggests: null,
+  suggests: {
+    simple: ['teamsfl;ksdgmlkmdsgkmfl;kmg;lmdf;lmg;l,mdf; lgml;mdf;hm;ldfmh;lmfdl;mh'],
+    open_ended: ['sdf;lm,lskmgdlkmg;sdmf;msd;lmfk   sdlkfmlksngndf '],
+  },
 };
 
 export const sendChatQuery = createAsyncThunk<

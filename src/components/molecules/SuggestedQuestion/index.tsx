@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useChat, useUser } from "@/hooks";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
     history,
     isLoading,
     setIsLoadingSendQuery,
+    setSuggestQuestions,
   } = useChat();
   const handleClick = async () => {
     if (!isLoading) {
@@ -41,6 +42,7 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
             message_type: "user",
             is_processed: true,
           });
+          setSuggestQuestions(null);
           const data: any = await sendChatQuery(
             `${userId}`,
             currentChatId,
@@ -67,7 +69,7 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
   return (
     <button
       onClick={handleClick}
-      className="border flex-1 text-white text-sm bg-navy-25 rounded-full p-2 border-grey-15 hover:bg-navy-15"
+      className="border flex-1 min-w-56 text-white text-xs md:text-sm bg-navy-25 rounded-full p-1 md:p-2 border-grey-15 hover:bg-navy-15"
     >
       {question}
     </button>

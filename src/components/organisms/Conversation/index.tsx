@@ -6,11 +6,14 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { DynamicChart, PaginationScroll } from "@/components/molecules";
 import { MobileChartModal } from "../../molecules/MobileChartModal/MobileChartModal";
 import { DesktopChartModal } from "../../molecules/DesktopChartModal/DesktopChartModal";
-import { Loader } from "@/components/atoms";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
+import { cn } from "@/lib/utils";
 
 const Conversation = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { messages, isLoading } = useChat();
+  const suggests = useSelector((state: RootState) => state.chat.suggests);
   const { addChart, deleteChart, charts } = useDynamicChart();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChartId, setSelectedChartId] = useState<string | null>(null);
@@ -42,8 +45,13 @@ const Conversation = () => {
 
   return (
     <div className="flex-1 overflow-hidden relative flex flex-row gap-8">
-      <div className={`${isModalOpen ? "" : ""} w-full relative pb-28`}>
-        <div className="react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0 pb-28">
+      <div className={`${isModalOpen ? "" : ""} w-full relative pb-32`}>
+        <div
+          className={cn(
+            "react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0",
+            suggests ? "pb-44" : "pb-24 md:pb-28"
+          )}
+        >
           <div className="react-scroll-to-bottom--css-ikyem-1n7m0yu custom-scrollbar flex flex-col items-center gap-2.5 md:gap-5 overflow-x-hidden pr-2">
             <PaginationScroll
               elements={undefined}
