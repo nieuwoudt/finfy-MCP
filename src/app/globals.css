@@ -282,6 +282,7 @@ input:-webkit-autofill:active{
 
 .markdown ul, ol {
   list-style: initial;
+  margin-top: 15px;
 }
 
 .markdown ol {

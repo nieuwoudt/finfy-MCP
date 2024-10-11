@@ -1,4 +1,4 @@
-import { Icon, Label, Textarea } from "@/components/atoms";
+import { Button, Icon, Label, Textarea } from "@/components/atoms";
 import { DropzoneComponent, FieldForm } from "@/components/molecules";
 
 const SupportTab = () => {
@@ -72,6 +72,10 @@ const SupportTab = () => {
                 throw new Error("Function not implemented.");
               }}
             />
+          </div>
+          <div className="flex gap-3 items-center justify-center col-span-2 w-full">
+            <Button>Send message</Button>
+            <Button variant="outline">Schedule a call</Button>
           </div>
         </form>
       </div>

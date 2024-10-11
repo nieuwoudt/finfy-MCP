@@ -79,8 +79,14 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
         })}
       >
         <div className={"flex justify-between w-full items-center"}>
-          <Link href={href} onClick={onClick} className="flex gap-3 items-center">
-            <Icon />
+          <Link
+            href={href}
+            onClick={onClick}
+            className="flex gap-3 items-center"
+          >
+            <span className="w-6 h-6 flex justify-center items-center">
+              <Icon />
+            </span>
             <span>{item.title}</span>
           </Link>
           {isHideChevron && (
