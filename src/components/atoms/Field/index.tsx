@@ -12,7 +12,7 @@ const Field: FC<FieldProps> = forwardRef(
       helperText,
       id,
       full,
-      isRequired,
+      isRequired = true,
       sideElements = {},
       ...props
     },
@@ -31,7 +31,6 @@ const Field: FC<FieldProps> = forwardRef(
           <div className="flex justify-between items-center">
             {label && (
               <Label
-                isRequired={isRequired}
                 className={cn(classes?.label, {
                   "!text-accent-content": Boolean(helperText),
                 })}
