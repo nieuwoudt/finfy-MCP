@@ -4,7 +4,7 @@ import { SettingsTab } from "@/components/organisms";
 const SettingsSection = () => {
   return (
     <div className="flex flex-col h-full w-full">
-      <div className="flex-grow sticky top-0">
+      <div className="flex-grow sticky top-0 bg-navy-25">
         <h1 className="font-semibold px-10 pt-5 text-white text-2xl">
           Settings
         </h1>
