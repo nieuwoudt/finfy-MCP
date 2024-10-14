@@ -264,6 +264,7 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
       </div>
     </div>
   );
+  
 };
 
 export { SpendingChart };
