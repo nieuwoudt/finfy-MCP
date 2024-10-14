@@ -176,6 +176,70 @@ input:-webkit-autofill:active{
   animation-delay: 0s;
 }
 
+.markdown-special ul,
+.markdown-special ol {
+  margin: 16px 0;
+  padding-left: 20px; /* Controls the left padding for the lists */
+}
+
+.markdown-special li {
+  margin-bottom: 8px; /* Adds spacing between list items */
+  line-height: 1.6;   /* Adjusts line spacing */
+}
+
+/* Optionally, you can adjust the font size and color to match the design */
+.markdown-special ul li,
+.markdown-special ol li {
+  font-size: 1rem;
+  color: white;
+}
+
+/* You can also add specific bullet styling */
+.markdown-special ul {
+  list-style-type: disc; /* Bullet points */
+}
+
+.markdown-special ol {
+  list-style-type: decimal; /* Numbered lists */
+}
+
+.markdown-special h1,
+.markdown-special h2,
+.markdown-special h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white; /* White color for headers */
+}
+
+
+.markdown-special table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.markdown-special th,
+.markdown-special td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.markdown-special th {
+  background-color: #2d3748;
+  color: white;
+}
+
+.markdown-special tr:nth-child(even) {
+  background-color: #3a3f47;
+}
+
+.markdown-special tr:hover {
+  background-color: #555a64;
+}
+
 
 .small-loader {
   width: 2px;

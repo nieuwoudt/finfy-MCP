@@ -4,6 +4,7 @@ import { Icon } from "@/components/atoms";
 import { cn } from "@/lib/utils";
 import { FC, ReactNode } from "react";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 interface ContentMessageProps {
   text: ReactNode;
   isUser: boolean;
@@ -21,6 +22,19 @@ const ContentMessage: FC<ContentMessageProps> = ({
     return null;
   }
 
+  const transformMarkdownContent = (text: string) => {
+    // Convert the link to an image if it matches the pattern: (alt text)(URL)
+    return text.replace(
+      /\(([^)]+)\)\((https?:\/\/[^\s]+)\)/g,
+      "![$1]($2)"
+    );
+  };
+
+  // Transform the content if it's a string
+  const transformedText =
+    typeof text === "string" ? transformMarkdownContent(text) : text;
+
+  
   return (
     <div className="flex flex-col h-full">
       {!isUser && !isLoading && (
@@ -41,7 +55,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
             : "text-sm md:text-base"
         )}
       >
-        {isUser || isLoading ? text : <Markdown className={"markdown !whitespace-normal"}>{text as string}</Markdown>}
+        {isUser || isLoading ? text : <Markdown className={"markdown !whitespace-normal markdown-special"} remarkPlugins={[remarkGfm]}>{transformedText as string}</Markdown>}
       </p>
     </div>
   );

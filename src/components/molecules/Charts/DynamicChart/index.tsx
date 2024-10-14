@@ -5,7 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useDynamicChart } from "@/hooks";
 import { ExpenseChart } from "../ExpenseChart";
 import { GroupedBarChart } from "../GroupedBarChart";
-import { SpendingBarChart } from "../SpendingBarChart";
+import { SpendingChart } from "../SpendingBarChart";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
@@ -49,7 +49,7 @@ const DynamicChart: FC<DynamicChartProps> = ({ selectedChartId }) => {
   const chartData = charts[selectedChartId];
   return (
     <div>
-      <SpendingBarChart data={chartData} />
+      <SpendingChart data={chartData} />
     </div>
   );
 };
