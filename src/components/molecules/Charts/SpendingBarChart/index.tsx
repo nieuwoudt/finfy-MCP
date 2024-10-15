@@ -43,43 +43,63 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
 
     if (chartType === 'bar' || chartType === 'pie') {
       if (typeof rawData === 'object' && !Array.isArray(rawData)) {
-        labels = Object.keys(rawData);
-        amounts = Object.values(rawData).map((value: any) => {
+        // Store accumulated amounts for categories
+        const categoryAmounts: { [key: string]: number } = {};
+
+        // Iterate over each primary category and the corresponding subcategories
+        Object.entries(rawData).forEach(([primaryCategory, value]: [string, any]) => {
+          // 1. Handle when the value is a direct number (existing logic)
           if (typeof value === 'number') {
-            return value;
+            labels.push(primaryCategory); // The primary category will be the label
+            amounts.push(value); // Directly push the number amount
+
+            // 2. Handle when the value is an object (subcategories)
           } else if (typeof value === 'object' && !Array.isArray(value)) {
-            return Object.values(value).reduce(
-              (sum: number, item: any) => sum + (typeof item === 'number' ? item : 0), 0
-            );
-          } else if (Array.isArray(value)) {
-            // Handling for arrays of items with detailed categories and amounts
-            const amountByCategory: { [key: string]: number } = {};
-            value.forEach((item) => {
-              if (item.detailed_category && typeof item.amount === 'number') {
-                const category = item.detailed_category;
-                if (!amountByCategory[category]) {
-                  amountByCategory[category] = 0;
-                }
-                amountByCategory[category] += item.amount;
+            // Instead of summing the values, we iterate over subcategories
+            Object.entries(value).forEach(([subcategory, amount]) => {
+              if (typeof amount === 'number') {
+                labels.push(subcategory); // Use the subcategory as the label
+                amounts.push(amount); // Push the corresponding amount
               }
             });
 
-            labels = Object.keys(amountByCategory);
-            amounts = Object.values(amountByCategory);
-
-            return 0;
+            // 3. Handle arrays with `detailed_category` and `amount` (new logic)
+          } else if (Array.isArray(value)) {
+            value.forEach((item) => {
+              if (item.detailed_category && typeof item.amount === 'number') {
+                const category = item.detailed_category;
+                // Accumulate the amounts by `detailed_category`
+                if (!categoryAmounts[category]) {
+                  categoryAmounts[category] = 0;
+                }
+                categoryAmounts[category] += item.amount;
+              }
+            });
           }
-          return 0;
         });
+
+        // If categoryAmounts were populated, merge them with the labels and amounts
+        if (Object.keys(categoryAmounts).length > 0) {
+          labels = [...labels, ...Object.keys(categoryAmounts)];
+          amounts = [...amounts, ...Object.values(categoryAmounts)];
+        }
       }
-    } else if (chartType === 'line') {
-      const groupedData = groupByMonth(rawData);
+    }
+
+    // 4. Handle line charts (unchanged)
+    else if (chartType === 'line') {
+      const groupedData = groupByMonth(rawData); // Assuming groupByMonth is defined elsewhere
       labels = Object.keys(groupedData);
       amounts = Object.values(groupedData);
     }
 
     return { labels, amounts };
   };
+
+
+
+
+
 
   const groupByMonth = (data: { [key: string]: number }) => {
     const groupedData: { [key: string]: number } = {};
@@ -237,13 +257,15 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
 
   return (
     <div className="bg-[#272E48] rounded-lg">
-      {renderChart()}
+      <div className="max-h-[340px] flex justify-center items-center mx-auto w-full">
+        {renderChart()}
+      </div>
       <div className="mt-6">
         <h3 className="text-2xl font-semibold text-white mb-4">
           {title}
         </h3>
         <div
-          className="overflow-y-auto max-h-[300px] custom-scrollbar"
+          className="overflow-y-auto max-h-[300px] min-h-28 custom-scrollbar"
           style={{
             scrollbarWidth: "thin",
             scrollbarColor: "#6B7280 #2D3748",
@@ -264,7 +286,7 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
       </div>
     </div>
   );
-  
+
 };
 
 export { SpendingChart };

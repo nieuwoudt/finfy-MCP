@@ -176,6 +176,11 @@ input:-webkit-autofill:active{
   animation-delay: 0s;
 }
 
+.transition-max-height {
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+}
+
+
 .markdown-special ul,
 .markdown-special ol {
   margin: 16px 0;
