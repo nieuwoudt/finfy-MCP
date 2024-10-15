@@ -80,6 +80,24 @@ const ContentMessage: FC<ContentMessageProps> = ({
         </>
       );
     },
+    // li: ({ children }: any) => {
+    //   const firstChild = children[0];
+    //   const hasImage = firstChild?.props?.node?.tagName === "img"; // Check if the first child is an image
+    
+    //   return (
+    //     <li className={cn("", hasImage ? "flex" : "flex")}> {/* Disable the default bullet point */}
+    //       {hasImage && (
+    //         <img
+    //           src={firstChild.props.src}
+    //           alt={firstChild.props.alt}
+    //           className="inline-block w-6 h-6 mr-2 align-middle"
+    //         />
+    //       )}
+    //       {children.slice(hasImage ? 1 : 0)} {/* Render the rest of the list item after the image */}
+    //     </li>
+    //   );
+    // }
+
   };
 
   return (
@@ -116,7 +134,6 @@ const ContentMessage: FC<ContentMessageProps> = ({
           </Markdown>
         )}
       </p>
-
       {/* Button to toggle table visibility, placed right above the table */}
     </div>
   );

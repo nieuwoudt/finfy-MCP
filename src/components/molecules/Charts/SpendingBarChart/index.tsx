@@ -1,7 +1,7 @@
 'use client';
 
 import React, { FC } from "react";
-import { Bar, Line, Pie } from "react-chartjs-2";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 import annotationPlugin from "chartjs-plugin-annotation";
 import {
   Chart as ChartJS,
@@ -198,30 +198,17 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
     },
   };
 
-  const pieOptions: ChartOptions<"pie"> = {
+  const pieOptions: ChartOptions<"doughnut"> = {
     responsive: true,
+    cutout: '75%', // Adjust this to control the size of the inner circle
     plugins: {
       legend: {
-        position: "top",
-        display: true,
-        labels: {
-          generateLabels: (chart) => {
-            const original = ChartJS.overrides.pie.plugins.legend.labels.generateLabels;
-            const labelsOriginal = original.call(this, chart);
-            const datasetColors = chart.data.datasets.flatMap((dataset) => dataset.backgroundColor);
-
-            labelsOriginal.forEach((label: any) => {
-              label.fillStyle = datasetColors[label.index];
-            });
-
-            return labelsOriginal;
-          }
-        },
+        display: false, // Hide the default legend
       },
       tooltip: {
         callbacks: {
           label: function (context) {
-            let value = context.raw as number;
+            const value = context.raw as number;
             return `$${value.toLocaleString()}`;
           },
         },
@@ -244,13 +231,46 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
     ],
   };
 
+  const centerTextPlugin = {
+    id: "centerText",
+    afterDraw(chart: any) {
+      const { width, height, ctx } = chart;
+      ctx.restore();
+  
+      // Get the total from chart data (replace with correct dataset if necessary)
+      const total = chart.data.datasets[0].data.reduce((sum: number, value: number) => sum + value, 0);
+      const formattedTotal = `$${total.toLocaleString()}`; // Format the total value
+  
+      // Set font properties
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+  
+      // Calculate the center of the chart
+      const centerX = width / 2;
+      const centerY = height / 2;
+  
+      // Set font size for the main text (the total amount)
+      ctx.font = "bold 24px sans-serif"; // You can adjust the font size here
+      ctx.fillStyle = "#fff"; // Main text color (white)
+      ctx.fillText(formattedTotal, centerX, centerY); // Draw the total in the center
+  
+      // Set font size for the subtext
+      ctx.font = "16px sans-serif"; // Adjust font size for subtext
+      ctx.fillStyle = '#9CA3AF'; // Light gray color for subtext
+      ctx.fillText("TOTAL", centerX, centerY - 30); // Draw subtext slightly above the main text
+  
+      ctx.save();
+    },
+  };
+  
+
   const renderChart = () => {
     if (chartType === 'bar') {
       return <Bar data={chartData} options={barAndLineOptions} />;
     } else if (chartType === 'line') {
       return <Line data={chartData} options={barAndLineOptions} />;
     } else if (chartType === 'pie') {
-      return <Pie data={chartData} options={pieOptions} />;
+      return <Doughnut data={chartData} options={pieOptions} plugins={[centerTextPlugin]} />;
     }
     return null;
   };
