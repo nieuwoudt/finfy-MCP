@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/atoms";
 import { useUser } from "@/hooks";
 import { usePathname } from "next/navigation";
 
@@ -89,7 +90,8 @@ const HeaderText = () => {
   }
 
   return (
-    <div className="flex flex-col w-full items-center justify-center pb-5 lg:pb-10">
+  <div>
+    <div className="lg:flex hidden flex-col w-full items-center justify-center pb-5 lg:pb-10">
       {content && (
         <>
           <h1 className="header text-center">{content.title}</h1>
@@ -97,6 +99,11 @@ const HeaderText = () => {
         </>
       )}
     </div>
+    <div className="lg:hidden flex flex-col w-full items-center justify-center pb-5 lg:pb-10">
+      <Icon type="LogoIcon" />
+    </div>
+  </div>
+    
   );
 };
 

@@ -18,13 +18,13 @@ const AssistInput: FC<AssistInputProps> = ({ classes, handleClose, isDark = fals
   return (
     <div
       className={cn(
-        "flex flex-col fixed left-0 right-0 bottom-0 md:left-auto md:right-auto md:bottom-auto md:relative",
+        "flex flex-col fixed lg:left-0 right-2 left-2 lg:right-0 bottom-2 lg:bottom-0 md:left-auto md:right-auto md:bottom-auto md:relative rounded-full lg:rounded-none",
         classes?.wrapper
       )}
     >
       <div
         className={cn(
-          "w-full md:p-2 bottom-0 absolute bg-navy-15 md:bg-transparent",
+          "w-full md:p-2 bottom-0 absolute bg-navy-15 md:bg-transparent rounded-full lg:rounded-none",
           classes?.container
         )}
       >

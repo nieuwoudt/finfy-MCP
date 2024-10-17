@@ -3,10 +3,12 @@
 import { Button, Icon, Textarea } from "@/components/atoms";
 import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
 import { Loader2 } from "lucide-react";
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
+import { ActionButton, ConnectBankAction, FocusAssistantPopover } from "@/components/molecules";
+import { ActionButtonsGroupMobile } from "@/components/organisms/ActionButtonsGroup";
 
 interface ChatMessageInputProps {
   handleClose?: () => void;
@@ -28,7 +30,28 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
   } = useChat();
 
   const [message, setMessage] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to manage Popover
   const textareaRef = useAutoResizeTextArea();
+  const popoverRef = useRef<HTMLDivElement | null>(null);
+
+  const handleOpenPopup = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsPopupOpen(false);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+      setIsPopupOpen(false);
+  };
+
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, []);
 
   const onSubmit = async (formData: FormData) => {
     if (!isLoading) {
@@ -107,13 +130,35 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
   return (
     <form
       action={onSubmit}
-      className="md:rounded-md flex justify-between items-center bg-navy-15 relative border-t border-t-grey-15 md:border-none"
+      className="md:rounded-md mx-2 flex justify-between items-center lg:bg-navy-15 relative lg:border-t lg:border-t-grey-15 md:border-none"
     >
+      <div className="relative">
+        <button
+          type="button"
+          className="w-10 h-10 pl-3 pt-2.5 pb-3 -mr-2 flex lg:hidden"
+          onClick={isPopupOpen ? handleClosePopup : handleOpenPopup}
+        >
+          <Icon type="PlusIcon" className={cn("w-5 h-5", isPopupOpen ? "stroke-purple-15" : " stroke-slate-400")} />
+        </button>
+
+        {isPopupOpen && (
+          <div
+            ref={popoverRef}
+            className="absolute w-max bg-[#272E48] rounded-md px-4 border-[#374061] border-[1px] py-2 bottom-16 left-0 z-50"
+          >
+            <ActionButtonsGroupMobile />
+          </div>
+        )}
+      </div>
+
       <Textarea
         ref={setTextareaRef}
         value={message}
         onChange={handleChange}
-        className={cn("pl-4 h-16 focus:outline-none text-base border-none resize-none text-white py-5 pr-24 lg:pr-48", isDark ? "bg-[#1F263D]" : "bg-navy-15")}
+        className={cn(
+          "lg:pl-4 h-16 focus:outline-none text-base border-none resize-none text-white py-5 pr-24 lg:pr-48",
+          isDark ? "lg:bg-[#1F263D]" : "lg:bg-navy-15"
+        )}
         placeholder="Ask anything..."
         name="message"
         onKeyDown={handleEnter}
