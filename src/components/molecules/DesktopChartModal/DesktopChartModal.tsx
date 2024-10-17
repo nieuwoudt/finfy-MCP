@@ -26,7 +26,7 @@ export const DesktopChartModal: FC<DesktopChartModalProps> = ({
 
   return (
     <div
-      className={`hidden lg:flex w-full max-h-[90vh] h-min max-w-[661px] mb-28 bg-[#272E48] rounded-lg transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+      className={`hidden ml-0  m-4 mt-16 lg:ml-0 lg:m-10 lg:flex w-full max-h-[90vh] h-min  mb-28 bg-[#272E48] rounded-lg transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
     >
       <div
         className="bg-[#272E48] rounded-lg h-min p-8 w-full overflow-y-auto relative max-h-[calc(100vh-100px)] transform transition-transform duration-300"

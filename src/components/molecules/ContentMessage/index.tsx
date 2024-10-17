@@ -67,8 +67,8 @@ const ContentMessage: FC<ContentMessageProps> = ({
           )}
           <div
             className={cn(
-              "transition-all duration-500 ease-in-out overflow-hidden",
-              isTableVisible ? "opacity-100" : "opacity-0"
+              "transition-all duration-500 ease-in-out",
+              isTableVisible ? "opacity-100 overflow-auto" : "opacity-0 overflow-hidden"
             )}
             style={{ maxHeight: isTableVisible ? '10000px' : '0px', transition: 'max-height 0.5s ease, opacity 0.5s ease' }}
           >

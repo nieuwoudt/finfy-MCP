@@ -2,7 +2,7 @@
 
 import { Message, ListChartVisualizeButton } from "@/components/organisms";
 import { useChat, useDynamicChart } from "@/hooks";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { DynamicChart, PaginationScroll } from "@/components/molecules";
 import { MobileChartModal } from "../../molecules/MobileChartModal/MobileChartModal";
 import { DesktopChartModal } from "../../molecules/DesktopChartModal/DesktopChartModal";
@@ -10,42 +10,22 @@ import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
 
-const Conversation = () => {
+interface ConversationProps {
+  handleOpenModal: (id: string, chart: any) => void;
+}
+
+const Conversation: FC<ConversationProps> = ({ handleOpenModal }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { messages, isLoading, chatId } = useChat();
+  const { messages, isLoading } = useChat();
   const suggests = useSelector((state: RootState) => state.chat.suggests);
-  const { addChart, deleteChart, charts } = useDynamicChart();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedChartId, setSelectedChartId] = useState<string | null>(null);
-
-  const handleOpenModal = (id: string, chart: any) => {
-    addChart({ [id]: chart });
-    setSelectedChartId(id);
-    setIsModalOpen(true);
-  };
-
-  const makeTitle = (id: string) => {
-    const titleReplaced = id?.split("_")?.join(" ");
-    const firsLetter = titleReplaced.slice(0, 1)?.toLocaleUpperCase();
-    const restLetters = titleReplaced.slice(1, titleReplaced?.length);
-    return (firsLetter + restLetters) as string;
-  };
-
-  const handleCloseModal = (id: string) => {
-    deleteChart(id);
-    setIsModalOpen(false);
-    setSelectedChartId(null);
-  };
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView();
-    }
-  }, [chatId]);
+    if (scrollRef.current) scrollRef.current.scrollIntoView();
+  }, [messages]);
 
   return (
     <div className="flex-1 overflow-hidden relative flex flex-row gap-8">
-      <div className={`${isModalOpen ? "" : ""} w-full relative pb-32`}>
+      <div className={`w-full relative pb-32`}>
         <div
           className={cn(
             "react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0",
@@ -102,22 +82,6 @@ const Conversation = () => {
           </div>
         </div>
       </div>
-      <DesktopChartModal
-        isOpen={isModalOpen}
-        onClose={
-          selectedChartId ? () => handleCloseModal(selectedChartId) : () => {}
-        }
-        component={<DynamicChart selectedChartId={selectedChartId} />}
-        title={selectedChartId ? makeTitle(selectedChartId) : ""}
-      />
-      <MobileChartModal
-        isOpen={isModalOpen}
-        onClose={
-          selectedChartId ? () => handleCloseModal(selectedChartId) : () => {}
-        }
-        component={<DynamicChart selectedChartId={selectedChartId} />}
-        title={selectedChartId ? makeTitle(selectedChartId) : ""}
-      />
     </div>
   );
 };

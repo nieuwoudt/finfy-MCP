@@ -99,11 +99,11 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
           {Object.keys(groupedContents).length ? (
             Object.entries(groupedContents).map(([group, contents]: any) => (
               <Accordion.Content key={group}>
-                <p className="text-xs my-1">{group}</p>
+                <p className="text-sm lg:text-xs my-1">{group}</p>
                 {contents.map((content: any, index: number) => (
                   <div
                     key={index}
-                    className="flex justify-between hover:bg-navy-25 p-2 rounded-sm"
+                    className="flex justify-between max-w-[calc(90%-50px)] lg:max-w-full hover:bg-navy-25 p-2 rounded-sm"
                   >
                     <button
                       onClick={() =>
@@ -112,7 +112,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                           content.id
                         )
                       }
-                      className="flex flex-col w-[180px]"
+                      className="flex flex-col w-[70%] lg:w-[180px]"
                     >
                       <p className="menu-list-btn max-w-[calc(100%)] text-start m-0 group-hover:text-white text-grey-5">
                         {content.title}

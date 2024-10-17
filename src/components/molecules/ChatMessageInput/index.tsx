@@ -6,12 +6,14 @@ import { Loader2 } from "lucide-react";
 import { ChangeEvent, FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
 interface ChatMessageInputProps {
   handleClose?: () => void;
+  isDark?: boolean;
 }
 
-const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose }) => {
+const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = false }) => {
   const { user } = useUser();
   const router = useRouter();
   const {
@@ -111,7 +113,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose }) => {
         ref={setTextareaRef}
         value={message}
         onChange={handleChange}
-        className="bg-navy-15 pl-4 h-16 focus:outline-none text-base border-none resize-none text-white py-5 pr-24 lg:pr-48"
+        className={cn("pl-4 h-16 focus:outline-none text-base border-none resize-none text-white py-5 pr-24 lg:pr-48", isDark ? "bg-[#1F263D]" : "bg-navy-15")}
         placeholder="Ask anything..."
         name="message"
         onKeyDown={handleEnter}

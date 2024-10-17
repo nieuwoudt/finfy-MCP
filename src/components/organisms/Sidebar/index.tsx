@@ -39,7 +39,7 @@ const Sidebar = () => {
       className={cn(
         "right-sidebar transition-all flex flex-col gap-5 fixed inset-0 z-50 w-full lg:sticky lg:max-w-64",
         open
-          ? "translate-x-0"
+          ? "translate-x-0 w-[calc(100%-38px)] lg:w-full"
           : "-translate-x-full lg:translate-x-0 lg:max-w-14"
       )}
     >

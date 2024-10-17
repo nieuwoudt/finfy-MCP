@@ -213,14 +213,64 @@ input:-webkit-autofill:active{
 .markdown-special h3 {
   margin-top: 24px;
   margin-bottom: 12px;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: 500;
   color: white; /* White color for headers */
 }
 
+/* Make table scrollable on small screens */
+.markdown-special table {
+  width: 100%; /* Full width to fit the container */
+  border-collapse: collapse;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+/* Ensure the table is wrapped in a scrollable container */
+.markdown-special .table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+}
+
+.markdown-special th,
+.markdown-special td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* For larger screens, no scroll needed */
+@media (min-width: 768px) {
+  .markdown-special .table-wrapper {
+    overflow-x: visible;
+  }
+}
+
+
+/* Media query for desktop screens */
+@media (min-width: 1024px) {
+  .markdown-special h1,
+  .markdown-special h2,
+  .markdown-special h3 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    font-weight: bold;
+    color: white; /* White color for headers */  
+  }
+
+    .markdown-special table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+}
 
 .markdown-special table {
-  width: 100%;
+  width: 'max-content';
   border-collapse: collapse;
   margin: 16px 0;
 }

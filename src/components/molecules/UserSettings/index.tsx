@@ -24,7 +24,7 @@ const UserSettings = () => {
   };
   return (
     <div
-      className={cn("menu-button-btn flex space-x-2 items-center", {
+      className={cn("menu-button-btn max-w-[256px] lg:max-w-full mx-auto flex space-x-2 items-center", {
         "lg:!px-1 lg:!py-2 lg:justify-center": !openSidebar,
       })}
     >

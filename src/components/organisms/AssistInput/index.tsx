@@ -11,9 +11,10 @@ interface AssistInputProps {
     wrapper?: string;
   };
   handleClose?: () => void;
+  isDark?: boolean;
 }
 
-const AssistInput: FC<AssistInputProps> = ({ classes, handleClose }) => {
+const AssistInput: FC<AssistInputProps> = ({ classes, handleClose, isDark = false }) => {
   return (
     <div
       className={cn(
@@ -29,7 +30,7 @@ const AssistInput: FC<AssistInputProps> = ({ classes, handleClose }) => {
       >
         <SuggestedQuestions />
         <ActionButtonsGroup />
-        <ChatMessageInput handleClose={handleClose} />
+        <ChatMessageInput isDark={isDark} handleClose={handleClose} />
       </div>
     </div>
   );
