@@ -1,3 +1,4 @@
+'use client'
 import { Button, Icon, SeparatorLine } from "@/components/atoms";
 import {
   ThemeSelector,
@@ -6,9 +7,37 @@ import {
 } from "@/components/molecules";
 import { UserAvatarWithUpload } from "@/components/organisms";
 import { useUser } from "@/hooks";
+import { updatePassword } from "@/lib/supabase/actions";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const ManageProfileTab = () => {
   const { user } = useUser();
+  const [password, setPassword] = useState("");
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
+
+  const handlePasswordChange = async () => {
+    if (password) {
+      try {
+        const formData = new FormData();
+        formData.set("password", password);
+
+        const result = await updatePassword(formData);
+        if (result.errorMessage) {
+          toast.error(result.errorMessage);
+          console.error(result.errorMessage);
+        } else {
+          console.log("Password updated successfully");
+          toast.success("Password updated successfully");
+        }
+        setPassword("")
+        setIsEditingPassword(false);
+      } catch (error) {
+        console.error("Failed to update password:", error);
+      }
+    }
+    setIsEditingPassword(false);
+  };
   return (
     <>
       <p className="my-4">General</p>
@@ -56,6 +85,39 @@ const ManageProfileTab = () => {
           <div className="w-full flex justify-between">
             <p>Email</p>
             <p className="text-grey-5"> {user?.email}</p>
+          </div>
+          <SeparatorLine />
+          <div className="w-full flex justify-between">
+            <p>Password</p>
+            <div className="flex items-center gap-2" style={{ minWidth: "120px" }}>
+              {isEditingPassword ? (
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onBlur={handlePasswordChange}
+                  autoFocus
+                  className="border rounded-md border-none min-h-[28px] max-w-[120px] bg-transparent outline-none w-full"
+                  style={{
+                    letterSpacing: "2px",
+                    caretColor: "white",
+                  }}
+                />
+              ) : (
+                <div
+                  className="flex items-center justify-end w-full"
+                  style={{ letterSpacing: "2px" }}
+                >
+                  <span>**********</span>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setIsEditingPassword(true)}
+                  >
+                    <Icon type="PenIcon" className="h-4 w-4 fill-grey-15" />
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
           <SeparatorLine />
           <div className="flex">
