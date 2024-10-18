@@ -75,11 +75,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/authentication", request.url));
     }
     if (!path.includes("/dashboard")) {
-      const { data } = await supabase
-        .from("users")
-        .select()
-        .eq("email", user?.email)
-        .single();
+      const { data, error } = await supabase
+      .from("users")
+      .select()
+      .ilike("email", `${user?.email}`)
+      .single();
       if (data?.finished_onboarding) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       } else if (!path.includes("/onboarding")) {
