@@ -43,7 +43,6 @@ const CardUpdatePassword = () => {
       const { errorMessage } = await updatePassword(formData);
       if (errorMessage) {
         toast.error(errorMessage);
-        resetCookies();
       } else {
         router.push("/login");
         toast.success("Password successfully updated!");
