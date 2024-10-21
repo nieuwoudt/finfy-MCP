@@ -54,14 +54,14 @@ const ContentMessage: FC<ContentMessageProps> = ({
       const isOpen = openDropdowns[index] || false;
 
       return (
-        <div className="my-4 border border-gray-600 rounded-lg overflow-hidden">
+        <div className="my-4 border border-[#374061] rounded-lg overflow-hidden">
           {children.map((child: any) =>
             child.type === "summary" ? (
               <button
                 key={index}
                 onClick={() => toggleDropdown(index)}
                 className={cn(
-                  "w-full flex justify-between items-center px-4 py-3 text-lg font-semibold text-white border rounded-lg transition-all", isOpen ? " mb-4" : ""
+                  "w-full flex justify-between hover:bg-white hover:bg-opacity-5 duration-300 items-center px-4 py-3 text-lg font-semibold text-white  rounded-lg transition-all", isOpen ? " mb-4" : ""
                 )}
               >
                 <div className="flex items-center gap-4">
