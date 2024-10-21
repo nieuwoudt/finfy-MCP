@@ -16,6 +16,7 @@ import {
   setChatId,
 } from "@/lib/store/features/chat/chatSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
+import { CreateNewChatPop } from "@/components/organisms";
 interface MenuAccordionItemProps {
   item: MenuItem;
   contents: any;
@@ -136,14 +137,24 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
               </Accordion.Content>
             ))
           ) : (
-            <Accordion.Content className="flex justify-between">
-              <Link
-                href={item.link}
-                className="menu-list-btn flex gap-1 ml-1 items-center"
-              >
-                Start a new thread...
-              </Link>
-            </Accordion.Content>
+            <>
+              <Accordion.Content className="flex justify-between">
+                {/* <Link
+                  href={item.link}
+                  className="menu-list-btn flex gap-1 ml-1 items-center"
+                >
+                  Start a new thread...
+                </Link> */}
+                <CreateNewChatPop>
+                  <button
+                    className="menu-list-btn bg-transparent  flex gap-1 ml-1 items-center"
+                  >
+                    Start a new thread...
+                  </button>
+                </CreateNewChatPop>
+              </Accordion.Content>
+
+            </>
           )}
         </>
       )}
