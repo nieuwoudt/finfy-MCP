@@ -6,6 +6,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { FC, ReactNode, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 interface ContentMessageProps {
   text: ReactNode;
@@ -45,59 +46,91 @@ const ContentMessage: FC<ContentMessageProps> = ({
     typeof text === "string" ? transformMarkdownContent(text) : text;
 
   // Custom Markdown component to hide or show table elements based on `isTableVisible` state
-  const renderers = {
-    table: ({ children }: any) => {
-      if (!hasTable) setHasTable(true); // Set hasTable to true when a table is detected
+  // const renderers = {
+  //   table: ({ children }: any) => {
+  //     if (!hasTable) setHasTable(true); // Set hasTable to true when a table is detected
 
-      return (
-        <>
-          {hasTable && (
-            <div>
-              <button
-                className="flex border-[#374061] border-2 px-3 min-h-[61px] text-[24px] py-4 font-semibold !rounded-lg hover:bg-opacity-5 transition-all duration-200 text-base text-white justify-between bg-purple-15 bg-opacity-0 w-full"
-                onClick={toggleTableVisibility}
-              >
-                <div className="flex gap-4">
-                  <IconStart />
-                  <span>{isTableVisible ? "Hide detailed breakdown" : "Detailed breakdown"}</span>
-                </div>
-                {isTableVisible ? <ChevronUpIcon /> : <ChevronDownIcon />}
-              </button>
-            </div>
-          )}
-          <div
-            className={cn(
-              "transition-all duration-500 ease-in-out",
-              isTableVisible ? "opacity-100 overflow-auto" : "opacity-0 overflow-hidden"
-            )}
-            style={{ maxHeight: isTableVisible ? '10000px' : '0px', transition: 'max-height 0.5s ease, opacity 0.5s ease' }}
-          >
-            <table style={{ maxHeight: isTableVisible ? '10000px' : '0px', transition: 'max-height 0.5s ease, opacity 0.5s ease' }}
-              className="table-auto rounded-md w-full text-white border-collapse border border-gray-600 mt-4">
-              {children}
-            </table>
-          </div>
-        </>
-      );
-    },
-    // li: ({ children }: any) => {
-    //   const firstChild = children[0];
-    //   const hasImage = firstChild?.props?.node?.tagName === "img"; // Check if the first child is an image
+  //     return (
+  //       <>
+  //         {hasTable && (
+  //           <div>
+  //             <button
+  //               className="flex border-[#374061] border-2 px-3 min-h-[61px] text-[24px] py-4 font-semibold !rounded-lg hover:bg-opacity-5 transition-all duration-200 text-base text-white justify-between bg-purple-15 bg-opacity-0 w-full"
+  //               onClick={toggleTableVisibility}
+  //             >
+  //               <div className="flex gap-4">
+  //                 <IconStart />
+  //                 <span>{isTableVisible ? "Hide detailed breakdown" : "Detailed breakdown"}</span>
+  //               </div>
+  //               {isTableVisible ? <ChevronUpIcon /> : <ChevronDownIcon />}
+  //             </button>
+  //           </div>
+  //         )}
+  //         <div
+  //           className={cn(
+  //             "transition-all duration-500 ease-in-out",
+  //             isTableVisible ? "opacity-100 overflow-auto" : "opacity-0 overflow-hidden"
+  //           )}
+  //           style={{ maxHeight: isTableVisible ? '10000px' : '0px', transition: 'max-height 0.5s ease, opacity 0.5s ease' }}
+  //         >
+  //           <table style={{ maxHeight: isTableVisible ? '10000px' : '0px', transition: 'max-height 0.5s ease, opacity 0.5s ease' }}
+  //             className="table-auto rounded-md w-full text-white border-collapse border border-gray-600 mt-4">
+  //             {children}
+  //           </table>
+  //         </div>
+  //       </>
+  //     );
+  //   },
+  //   // li: ({ children }: any) => {
+  //   //   const firstChild = children[0];
+  //   //   const hasImage = firstChild?.props?.node?.tagName === "img"; // Check if the first child is an image
     
-    //   return (
-    //     <li className={cn("", hasImage ? "flex" : "flex")}> {/* Disable the default bullet point */}
-    //       {hasImage && (
-    //         <img
-    //           src={firstChild.props.src}
-    //           alt={firstChild.props.alt}
-    //           className="inline-block w-6 h-6 mr-2 align-middle"
-    //         />
-    //       )}
-    //       {children.slice(hasImage ? 1 : 0)} {/* Render the rest of the list item after the image */}
-    //     </li>
-    //   );
-    // }
+  //   //   return (
+  //   //     <li className={cn("", hasImage ? "flex" : "flex")}> {/* Disable the default bullet point */}
+  //   //       {hasImage && (
+  //   //         <img
+  //   //           src={firstChild.props.src}
+  //   //           alt={firstChild.props.alt}
+  //   //           className="inline-block w-6 h-6 mr-2 align-middle"
+  //   //         />
+  //   //       )}
+  //   //       {children.slice(hasImage ? 1 : 0)} {/* Render the rest of the list item after the image */}
+  //   //     </li>
+  //   //   );
+  //   // }
 
+  // };
+
+  const renderers = {
+    details: ({ children }: any) => (
+      <div>
+        <button
+          className="flex border-[#374061] mt-4 border-2 px-3 min-h-[61px] text-[24px] py-4 font-semibold !rounded-lg hover:bg-opacity-5 transition-all duration-200 text-base text-white justify-between bg-purple-15 bg-opacity-0 w-full"
+          onClick={toggleTableVisibility}
+        >
+          <div className="flex gap-4">
+            <IconStart />
+            <span>
+              {isTableVisible ? "Hide detailed breakdown" : "Detailed breakdown"}
+            </span>
+          </div>
+          {isTableVisible ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        </button>
+
+        <div
+          className={cn(
+            "transition-all duration-500 ease-in-out",
+            isTableVisible ? "opacity-100 overflow-auto" : "opacity-0 overflow-hidden"
+          )}
+          style={{
+            maxHeight: isTableVisible ? "10000px" : "0px",
+            transition: "max-height 0.5s ease, opacity 0.5s ease",
+          }}
+        >
+          <div className="mt-4">{children}</div>
+        </div>
+      </div>
+    ),
   };
 
   return (
@@ -128,6 +161,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
           <Markdown
             className={"markdown !whitespace-normal markdown-special"}
             remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
             components={renderers} // Custom renderers for table elements
           >
             {transformedText as string}
