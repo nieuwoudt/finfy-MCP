@@ -21,114 +21,89 @@ const ContentMessage: FC<ContentMessageProps> = ({
   isLoading,
   isLastMessage,
 }) => {
-  const [isTableVisible, setIsTableVisible] = useState(false); // State to handle table visibility
-  const [hasTable, setHasTable] = useState(false); // State to track if there's a table in the content
+  const [openDropdowns, setOpenDropdowns] = useState<Record<number, boolean>>({});
 
-  if (!text) {
-    return null;
-  }
-
-  const toggleTableVisibility = () => {
-    setIsTableVisible(!isTableVisible); // Toggle the table visibility
+  const toggleDropdown = (index: number) => {
+    setOpenDropdowns((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
 
-  const IconStart = () => <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 1.5V5.5M1 3.5H5M4 15.5V19.5M2 17.5H6M11 1.5L13.2857 8.35714L19 10.5L13.2857 12.6429L11 19.5L8.71429 12.6429L3 10.5L8.71429 8.35714L11 1.5Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>
-
-
-  const transformMarkdownContent = (text: string) => {
-    return text.replace(/\(([^)]+)\)\((https?:\/\/[^\s]+)\)/g, "![$1]($2)");
-  };
-
-  // Transform the content if it's a string
-  const transformedText =
-    typeof text === "string" ? transformMarkdownContent(text) : text;
-
-  // Custom Markdown component to hide or show table elements based on `isTableVisible` state
-  // const renderers = {
-  //   table: ({ children }: any) => {
-  //     if (!hasTable) setHasTable(true); // Set hasTable to true when a table is detected
-
-  //     return (
-  //       <>
-  //         {hasTable && (
-  //           <div>
-  //             <button
-  //               className="flex border-[#374061] border-2 px-3 min-h-[61px] text-[24px] py-4 font-semibold !rounded-lg hover:bg-opacity-5 transition-all duration-200 text-base text-white justify-between bg-purple-15 bg-opacity-0 w-full"
-  //               onClick={toggleTableVisibility}
-  //             >
-  //               <div className="flex gap-4">
-  //                 <IconStart />
-  //                 <span>{isTableVisible ? "Hide detailed breakdown" : "Detailed breakdown"}</span>
-  //               </div>
-  //               {isTableVisible ? <ChevronUpIcon /> : <ChevronDownIcon />}
-  //             </button>
-  //           </div>
-  //         )}
-  //         <div
-  //           className={cn(
-  //             "transition-all duration-500 ease-in-out",
-  //             isTableVisible ? "opacity-100 overflow-auto" : "opacity-0 overflow-hidden"
-  //           )}
-  //           style={{ maxHeight: isTableVisible ? '10000px' : '0px', transition: 'max-height 0.5s ease, opacity 0.5s ease' }}
-  //         >
-  //           <table style={{ maxHeight: isTableVisible ? '10000px' : '0px', transition: 'max-height 0.5s ease, opacity 0.5s ease' }}
-  //             className="table-auto rounded-md w-full text-white border-collapse border border-gray-600 mt-4">
-  //             {children}
-  //           </table>
-  //         </div>
-  //       </>
-  //     );
-  //   },
-  //   // li: ({ children }: any) => {
-  //   //   const firstChild = children[0];
-  //   //   const hasImage = firstChild?.props?.node?.tagName === "img"; // Check if the first child is an image
-    
-  //   //   return (
-  //   //     <li className={cn("", hasImage ? "flex" : "flex")}> {/* Disable the default bullet point */}
-  //   //       {hasImage && (
-  //   //         <img
-  //   //           src={firstChild.props.src}
-  //   //           alt={firstChild.props.alt}
-  //   //           className="inline-block w-6 h-6 mr-2 align-middle"
-  //   //         />
-  //   //       )}
-  //   //       {children.slice(hasImage ? 1 : 0)} {/* Render the rest of the list item after the image */}
-  //   //     </li>
-  //   //   );
-  //   // }
-
-  // };
+  const IconStart = () => (
+    <svg
+      width="20"
+      height="21"
+      viewBox="0 0 20 21"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3 1.5V5.5M1 3.5H5M4 15.5V19.5M2 17.5H6M11 1.5L13.2857 8.35714L19 10.5L13.2857 12.6429L11 19.5L8.71429 12.6429L3 10.5L8.71429 8.35714L11 1.5Z"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 
   const renderers = {
-    details: ({ children }: any) => (
-      <div>
-        <button
-          className="flex border-[#374061] mt-4 border-2 px-3 min-h-[61px] text-[24px] py-4 font-semibold !rounded-lg hover:bg-opacity-5 transition-all duration-200 text-base text-white justify-between bg-purple-15 bg-opacity-0 w-full"
-          onClick={toggleTableVisibility}
-        >
-          <div className="flex gap-4">
-            <IconStart />
-            <span>
-              {isTableVisible ? "Hide detailed breakdown" : "Detailed breakdown"}
-            </span>
-          </div>
-          {isTableVisible ? <ChevronUpIcon /> : <ChevronDownIcon />}
-        </button>
+    details: ({ children, node }: any) => {
+      const index = node.position?.start.offset ?? Math.random();
+      const isOpen = openDropdowns[index] || false;
 
-        <div
-          className={cn(
-            "transition-all duration-500 ease-in-out",
-            isTableVisible ? "opacity-100 overflow-auto" : "opacity-0 overflow-hidden"
+      return (
+        <div className="my-4 border border-gray-600 rounded-lg overflow-hidden">
+          {children.map((child: any) =>
+            child.type === "summary" ? (
+              <button
+                key={index}
+                onClick={() => toggleDropdown(index)}
+                className={cn(
+                  "w-full flex justify-between items-center px-4 py-3 text-lg font-semibold text-white border rounded-lg transition-all", isOpen ? " mb-4" : ""
+                )}
+              >
+                <div className="flex items-center gap-4">
+                  <IconStart />
+                  <span>{child.props.children}</span>
+                </div>
+                {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              </button>
+            ) : (
+              <div
+                key={`${index}-content`}
+                className={cn(
+                  "transition-all duration-500 ease-in-out",
+                  isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+                )}
+                style={{
+                  maxHeight: isOpen ? "10000px" : "0px",
+                  overflow: isOpen ? "visible" : "hidden",
+                }}
+              >
+                <div className="px-4">
+                  <div
+                    className="overflow-x-auto"
+                    style={{ maxWidth: "100%" }}
+                  >
+                    {child}
+                  </div>
+                </div>
+              </div>
+            )
           )}
-          style={{
-            maxHeight: isTableVisible ? "10000px" : "0px",
-            transition: "max-height 0.5s ease, opacity 0.5s ease",
-          }}
-        >
-          <div className="mt-4">{children}</div>
         </div>
+      );
+    },
+    table: ({ children }: any) => (
+      <div className="overflow-x-auto w-full">
+        <table
+          className="w-full border-collapse border border-gray-700"
+          style={{ marginBottom: "16px" }}
+        >
+          {children}
+        </table>
       </div>
     ),
   };
@@ -146,7 +121,6 @@ const ContentMessage: FC<ContentMessageProps> = ({
         </div>
       )}
 
-      {/* Render the rest of the Markdown content (excluding the table) */}
       <p
         className={cn(
           "whitespace-pre-line text-white font-normal leading-[14px] md:leading-8",
@@ -162,13 +136,12 @@ const ContentMessage: FC<ContentMessageProps> = ({
             className={"markdown !whitespace-normal markdown-special"}
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
-            components={renderers} // Custom renderers for table elements
+            components={renderers}
           >
-            {transformedText as string}
+            {text as string}
           </Markdown>
         )}
       </p>
-      {/* Button to toggle table visibility, placed right above the table */}
     </div>
   );
 };
