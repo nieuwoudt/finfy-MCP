@@ -27,6 +27,7 @@ export interface User {
   finished_onboarding: boolean;
   plaid_access_token: string;
   plaid_user_token: string;
+  customer_id: string;
   is_connected_bank: boolean;
 }
 

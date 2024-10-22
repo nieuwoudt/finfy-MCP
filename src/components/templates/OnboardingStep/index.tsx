@@ -10,6 +10,7 @@ import {
   CardSetupComplete,
   CardSelectCountry,
 } from "@/components/organisms";
+import { AddStripe } from "@/components/organisms/Cards/AddStripe";
 import { RouteOnboardingValues } from "@/types";
 import { routesOnboarding } from "@/utils/variables";
 import { FC } from "react";
@@ -30,6 +31,7 @@ const stepComponents: {
   [routesOnboarding.selectCountry]: CardSelectCountry,
   [routesOnboarding.connectBank]: CardLinkAccount,
   [routesOnboarding.selectCurrency]: CardSelectCurrency,
+  [routesOnboarding.addStripe]: AddStripe,
   [routesOnboarding.setupComplete]: CardSetupComplete,
 };
 

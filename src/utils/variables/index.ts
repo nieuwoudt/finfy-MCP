@@ -24,6 +24,7 @@ export const routesOnboarding = {
   selectCountry: "select-country",
   connectBank: "connect-bank",
   selectCurrency: "select-currency",
+  addStripe: "add-stripe",
   // selectBank: "select-bank",
   // connectBankAccount: "connect-bank-account",
   // bankCredentials: "bank-credentials",
