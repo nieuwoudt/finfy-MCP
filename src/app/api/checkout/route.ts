@@ -36,8 +36,7 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      customer: customerId || undefined,
-      customer_email: email ? email : undefined,
+      customer: customerId,
       success_url: isOnboardingReturn ? `${process.env.NEXT_PUBLIC_BASE_URL}onboarding/setup-complete?session_id={CHECKOUT_SESSION_ID}` : `${process.env.NEXT_PUBLIC_BASE_URL}dashboard`,
       cancel_url: isOnboardingReturn ? `${process.env.NEXT_PUBLIC_BASE_URL}onboarding/setup-complete` : `${process.env.NEXT_PUBLIC_BASE_URL}dashboard`,
     });
