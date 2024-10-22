@@ -82,7 +82,7 @@ const AddStripe = () => {
           {loading ? (
             <Loader2 className="animate-spin" />
           ) : (
-            "Continue"
+            "Skip"
           )}
         </Button>
       </CardTemplate.Footer>
