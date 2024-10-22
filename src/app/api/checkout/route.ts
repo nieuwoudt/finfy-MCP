@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     const isOnboardingReturn = !!isOnboarding;
 
     console.log("Fetching prices for product:", productId);
+    console.log("User email:", email);
 
     const prices = await stripe.prices.list({
       product: productId,
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
         },
       ],
       customer: customerId || undefined,
-      customer_email: !customerId ? email : undefined,
+      customer_email: email ? email : undefined,
       success_url: isOnboardingReturn ? `${process.env.NEXT_PUBLIC_BASE_URL}onboarding/setup-complete?session_id={CHECKOUT_SESSION_ID}` : `${process.env.NEXT_PUBLIC_BASE_URL}dashboard`,
       cancel_url: isOnboardingReturn ? `${process.env.NEXT_PUBLIC_BASE_URL}onboarding/setup-complete` : `${process.env.NEXT_PUBLIC_BASE_URL}dashboard`,
     });
