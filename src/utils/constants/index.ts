@@ -8,7 +8,7 @@ export const plans: Plan[] = [
       amount: 20,
       currency: "USD",
       billingCycle: "monthly",
-      formattedPrice: "$15 / month",
+      formattedPrice: "$20 / month",
     },
     description: {
       short:
@@ -38,8 +38,8 @@ export const plans: Plan[] = [
     pricing: {
       amount: 25,
       currency: "USD",
-      billingCycle: "monthly",
-      formattedPrice: "$20 / month",
+      billingCycle: "yearly",
+      formattedPrice: "$15 / month",
     },
     description: {
       short:
