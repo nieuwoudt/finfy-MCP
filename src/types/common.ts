@@ -21,6 +21,7 @@ export interface User {
   email: string;
   created_at: string;
   plan: string;
+  subscribe_plan: string;
   selected_currency: string;
   selected_country: string;
   phone: string;
@@ -185,7 +186,7 @@ export type FileType = {
 
 
 export interface Plan {
-  id: number;
+  id: string;
   name: string;
   pricing: {
     amount: number;

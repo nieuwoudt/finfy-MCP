@@ -2,7 +2,7 @@ import { Plan } from "@/types";
 
 export const plans: Plan[] = [
   {
-    id: 0,
+    id: "prod_Qy3piK9enavVK3",
     name: "Plus",
     pricing: {
       amount: 20,
@@ -33,7 +33,7 @@ export const plans: Plan[] = [
     },
   },
   {
-    id: 1,
+    id: "prod_Qy6ifkcyqiKiwT",
     name: "Team",
     pricing: {
       amount: 25,

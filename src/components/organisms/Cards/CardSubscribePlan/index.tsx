@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
 import { Plan } from "@/types";
 import { FC } from "react";
@@ -10,29 +11,39 @@ interface CardSubscribePlanProps {
 
 const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan }) => {
   return (
-    <CardTemplate>
-      <CardTemplate.Content>
-        <div
-          style={{ border: "1px solid #ccc", padding: "20px", margin: "20px" }}
-        >
-          <h2>{plan.name}</h2>
-          <p>{plan.pricing.formattedPrice}</p>
-          <p>{plan.description.short}</p>
-          <ul>
+    <CardTemplate className="mx-auto">
+      <CardTemplate.Content className="relative">
+        <div className="bg-navy-25 mx-auto rounded-xl p-6 max-w-sm text-white">
+          <div className="flex absolute -top-8 left-0 right-0 items-center justify-center gap-2 mb-6">
+            <span className="text-gray-400 text-sm cursor-pointer hover:text-white">
+              Monthly
+            </span>
+            <span className="text-gray-400 text-sm cursor-pointer hover:text-white">
+              Annually
+            </span>
+          </div>
+
+          <h2 className="text-3xl font-bold mb-2">{plan.name}</h2>
+          <p className="text-2xl font-semibold mb-1">
+            {plan.pricing.formattedPrice}
+          </p>
+          <p className="text-sm text-gray-400 mb-4">{plan.description.short}</p>
+
+          <ul className="space-y-2 mb-6">
             {plan.features.highlighted.map((feature, index) => (
-              <li key={index}>{feature}</li>
+              <li key={index} className="flex items-center text-gray-400 gap-2 text-sm">
+                <span><Icon type="CheckIcon"/></span> {feature}
+              </li>
             ))}
           </ul>
+
           <button
             disabled={plan.ctaButton.isDisabled}
-            style={{
-              backgroundColor: plan.ctaButton.isDisabled ? "#ddd" : "#0070f3",
-              color: "#fff",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: plan.ctaButton.isDisabled ? "not-allowed" : "pointer",
-            }}
+            className={`w-full py-3 rounded-lg font-semibold transition-colors ${
+              plan.ctaButton.isDisabled
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
           >
             {plan.ctaButton.label}
           </button>
