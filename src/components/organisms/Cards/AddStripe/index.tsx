@@ -21,10 +21,10 @@ const AddStripe = () => {
 
   useEffect(() => {
     const registerStripeCustomer = async () => {
-      toast.success("Creating new customer");
-      setLoading(true)
       try {
         if (user?.id && user?.email && !user?.customer_id) {
+          toast.success("Waite! Creating new customer...");
+          setLoading(true)
           const customerId = await createStripeCustomer(user.email);
           console.log("Customer ID:", customerId);
 
