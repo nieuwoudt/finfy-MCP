@@ -139,7 +139,7 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
     plugins: {
       legend: {
         position: "top",
-        display: chartType !== 'pie',
+        display: false,
       },
       tooltip: {
         callbacks: {
@@ -193,6 +193,7 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
         ticks: {
           color: "#D1D5DB",
           maxRotation: 0,
+          display: false
         },
       },
     },
@@ -216,13 +217,17 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
     },
   };
 
+  const prepareLabels = (labels: any) => {
+    return labels.map((item: string) => formatLabel(item))
+  }
+
   const chartData = {
-    labels,
+    labels: prepareLabels(labels),
     datasets: [
       {
         label: title,
         data: amounts,
-        backgroundColor: chartType === 'pie' ? ["#0EA5E9", "#515AD9", "#6870DA", "#9CA3AF", "#374061"] : "#515AD9",
+        backgroundColor: (chartType === 'pie' || chartType === 'bar') ? ["#0EA5E9", "#515AD9", "#6870DA", "#9CA3AF", "#374061"] : "#515AD9",
         borderColor: "rgb(81, 90, 217)",
         hoverBackgroundColor: "#6870DA",
         borderWidth: 1,

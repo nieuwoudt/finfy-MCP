@@ -22,7 +22,7 @@ const ListChartVisualizeButton: FC<ListChartVisualizeButtonProps> = ({ data, han
           <ChartVisualizeButton
             key={key}
             id={key}
-            text={formatSnakeCaseToTitleCase(key)}
+            text={chart?.name || formatSnakeCaseToTitleCase(key)}
             chart={chart}
             onClick={() => handleOpenModal(key, chart)}
           />
