@@ -16,7 +16,10 @@ const FocusAssistantOption: FC<FocusAssistantOptionProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const handleClick = () => {
-    dispatch(setSuggest(suggest));
+    dispatch(setSuggest([]));
+    setTimeout(() => {
+      dispatch(setSuggest(suggest.slice(0, 6)));
+    }, 0);
   };
   return (
     <button
