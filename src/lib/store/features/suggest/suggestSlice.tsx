@@ -16,16 +16,27 @@ const initialState: SuggestState = {
 
 function adaptApiDataToMock(apiData: any) {
   const categoryIcons: any = {
-    spending: "🛍️",
-    budgetting: "📊",
-    goals: "🎯",
-    cash_forcast: "🌤️",
-    credit_card_usage: "💳",
-    investment_holdings: "🏠",
-    net_worth: "📈",
-    cashflow: "💰",
-    recent_transactions: "💸"
+    spending: "",
+    budgetting: "",
+    goals: "",
+    cash_forcast: "",
+    credit_card_usage: "",
+    investment_holdings: "",
+    net_worth: "",
+    cashflow: "",
+    recent_transactions: ""
   };
+  // const categoryIcons: any = {
+  //   spending: "🛍️",
+  //   budgetting: "📊",
+  //   goals: "🎯",
+  //   cash_forcast: "🌤️",
+  //   credit_card_usage: "💳",
+  //   investment_holdings: "🏠",
+  //   net_worth: "📈",
+  //   cashflow: "💰",
+  //   recent_transactions: "💸"
+  // };
 
   const descriptions: any = {
     spending: "Monitor and analyze spending habits.",
@@ -57,7 +68,7 @@ function adaptApiDataToMock(apiData: any) {
     suggest: Object.values(questions).map(question => ({
       label: labels[category] || "Financial Update",
       content: question,
-      icon: categoryIcons[category] || "📂",
+      icon: categoryIcons[category] || "",
       category: category
     }))
   }));
