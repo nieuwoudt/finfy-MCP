@@ -52,8 +52,11 @@ const Sidebar = () => {
           <button onClick={handleClick}>
             {open ? (
               <Image
+                style={{
+                  maxHeight: "30px"
+                }}
                 src="/icons/full-logo.svg"
-                height={100}
+                height={30}
                 width={100}
                 alt="logo"
                 className="cursor-pointer"
