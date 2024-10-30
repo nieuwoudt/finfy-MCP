@@ -5,8 +5,14 @@ interface SidebarState {
   open: boolean;
 }
 
+const isDesktop = () => typeof window !== "undefined" && window.innerWidth >= 1024;
+
+
 const initialState: SidebarState = {
-  open: (getCookie(cookiesKeys.sidebar) as any) === "true",
+  // On desktop, expand the sidebar. On mobile, use cookie or default collapsed.
+  open: isDesktop() 
+    ? true 
+    : (getCookie(cookiesKeys.sidebar) as any) === "true",
 };
 
 export const sidebarSlice = createSlice({
