@@ -151,12 +151,12 @@ const Sidebar = () => {
             "lg:!p-2": !open,
           })}
         >
-          <SubscribePop>
+          {/* <SubscribePop>
             <Button full className="!rounded-sm gap-1.5 h-7 p-0 text-nowrap">
               <Icon type="ExtLinkIcon" className="size-4 text-grey-15" />
               <span className={cn({ "lg:hidden": !open })}>Try pro</span>
             </Button>
-          </SubscribePop>
+          </SubscribePop> */}
         </div>
       </div>
     </aside>

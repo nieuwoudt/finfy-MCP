@@ -42,7 +42,7 @@ const UserSettings = () => {
             {user?.name}
           </Accordion.Trigger>
           <Accordion.Content className="mt-5 justify-start">
-            <p className="text-grey-15 text-xs mb-2">Appearance</p>
+            {/* <p className="text-grey-15 text-xs mb-2">Appearance</p>
             <ThemeButtons />
             <p className="text-grey-15 text-xs my-2">Quick settings</p>
             <div className="flex items-center cursor-pointer group hover:text-grey-5 mb-1">
@@ -51,7 +51,7 @@ const UserSettings = () => {
                 className="w-4 h-4 stroke-white group-hover:stroke-grey-5 mr-1"
               />
               <PersonalizePop />
-            </div>
+            </div> */}
             <Link
               href="/dashboard/settings"
               className="flex items-center  text-sm cursor-pointer group hover:text-grey-5 mb-1"
