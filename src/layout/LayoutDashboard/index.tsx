@@ -38,7 +38,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   };
 
   return (
-    <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-10 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen" )}>
+    <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-10 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto" )}>
       <Header />
       {messages.length ? (
         <Conversation handleOpenModal={handleOpenModal} />
