@@ -72,7 +72,8 @@
   }
 
   .home-assist-btn {
-    @apply flex items-center gap-1 cursor-pointer hover:bg-purple-15 hover:text-white px-2 rounded-full;
+    @apply flex items-center gap-1 cursor-pointer hover:bg-[#374061]
+    hover:text-white px-2 rounded-full;
   }
 
   .co-pilot-btn {
