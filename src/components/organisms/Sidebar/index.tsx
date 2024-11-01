@@ -17,7 +17,7 @@ import { CreateNewChatPop } from "../CreateNewChatPop";
 
 const Sidebar = () => {
   const router = useRouter();
-  const { handleResetChat } = useChat();
+  const { handleResetChat, setSuggestQuestions } = useChat();
   const { open, handleToggle } = useSidebar();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -27,6 +27,7 @@ const Sidebar = () => {
 
   const handleClick = () => {
     handleResetChat();
+    setSuggestQuestions(null);
     router.push("/dashboard");
   };
 

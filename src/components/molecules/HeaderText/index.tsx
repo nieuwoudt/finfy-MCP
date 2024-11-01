@@ -2,6 +2,8 @@
 import { Icon } from "@/components/atoms";
 import { useUser } from "@/hooks";
 import { usePathname } from "next/navigation";
+import { FocusAssistantPopover } from "../Popovers";
+import { ActionButton } from "../ActionButton";
 
 const HeaderText = () => {
   const { user } = useUser();
@@ -90,20 +92,20 @@ const HeaderText = () => {
   }
 
   return (
-  <div>
-    <div className="lg:flex hidden flex-col w-full items-center justify-center pb-5 lg:pb-10">
-      {content && (
-        <>
-          <h1 className="header text-center">{content.title}</h1>
-          {content.cta}
-        </>
-      )}
+    <div>
+      <div className="lg:flex hidden flex-col w-full items-center justify-center pb-5 lg:pb-10">
+        {content && (
+          <>
+            <h1 className="header text-center">{content.title}</h1>
+            {content.cta}
+          </>
+        )}
+      </div>
+      <div className="lg:hidden flex flex-col h-[calc(100vh-150px)] opacity-35 w-full items-center justify-center pb-5 lg:pb-10">
+        <Icon type="LogoIcon" />
+      </div>
     </div>
-    <div className="lg:hidden flex flex-col w-full items-center justify-center pb-5 lg:pb-10">
-      <Icon type="LogoIcon" />
-    </div>
-  </div>
-    
+
   );
 };
 

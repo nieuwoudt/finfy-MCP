@@ -2,6 +2,7 @@
 
 import { SuggestedQuestion } from "@/components/molecules";
 import { RootState } from "@/lib/store";
+import { useAppSelector } from "@/lib/store/hooks";
 import { useSelector } from "react-redux";
 
 const SuggestedQuestions = () => {
@@ -22,7 +23,6 @@ const SuggestedQuestions = () => {
 //     ]
 // };
   const suggests = useSelector((state: RootState) => state.chat.suggests);
-  console.log(suggests, "suggests")
   if (!suggests) {
     return null;
   }

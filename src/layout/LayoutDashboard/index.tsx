@@ -8,6 +8,7 @@ import { useChat, useDynamicChart, useUser } from "@/hooks";
 import { DesktopChartModal } from "@/components/molecules/DesktopChartModal/DesktopChartModal";
 import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/lib/store/hooks";
 
 interface LayoutDashboardProps extends PropsWithChildren { }
 
@@ -15,6 +16,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   const { messages } = useChat();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChartId, setSelectedChartId] = useState<string | null>(null);
+  const suggest = useAppSelector((state) => state.suggest.suggest);
 
   const { addChart, deleteChart, charts } = useDynamicChart();
 
@@ -38,24 +40,36 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   };
 
   return (
-    <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-10 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto" )}>
+    <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-10 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto")}>
       <Header />
       {messages.length ? (
         <Conversation handleOpenModal={handleOpenModal} />
       ) : (
         <>
           <HeaderText />
-          <div className="flex flex-1 flex-col">
-            <div className="flex items-center h-fit text-grey-15">
-              <Icon type="LightningBolt" className="text-grey-15" />
-              <p className="text-base">Suggested</p>
-            </div>
+          <div className="hidden lg:flex flex-1 flex-col">
+            {!!suggest?.length && <>
+              <div className="flex items-center h-fit text-grey-15">
+                <Icon type="LightningBolt" className="text-grey-15" />
+                <p className="text-base">Suggested</p>
+              </div>
+            </>}
+
             <HomeSuggestBoxes />
+          </div>
+          <div className="flex absolute bottom-[86px] h-[154px] left-0 right-0 lg:hidden flex-col">
+            {!!suggest?.length && <>
+              <div className="flex items-center h-fit text-grey-15">
+                <Icon type="LightningBolt" className="text-grey-15" />
+                <p className="text-base">Suggested</p>
+              </div>
+            </>}
+            <HomeSuggestBoxes isMobile={true} />
           </div>
         </>
       )}
       <div className="bg-[#1F263D]">
-      <AssistInput isDark={!!selectedChartId} />
+        <AssistInput isDark={!!selectedChartId} />
 
       </div>
     </div>
