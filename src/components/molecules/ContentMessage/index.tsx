@@ -106,6 +106,24 @@ const ContentMessage: FC<ContentMessageProps> = ({
         </table>
       </div>
     ),
+    li: ({ children }: any) => {
+      const hasIcon = typeof children[0] === "object" && children[0]?.props?.src;
+  
+      return hasIcon ? (
+        <li className="flex items-center gap-2 my-2">
+          {hasIcon && (
+            <img
+              src={children[0].props.src}
+              alt={children[0].props.alt || ""}
+              className="h-5 w-5 mr-2"
+            />
+          )}
+          <span className="flex-1">{hasIcon ? children.slice(1) : children}</span>
+        </li>
+      ) : (
+        <li>{children}</li>
+      );
+    },
   };
 
   return (
