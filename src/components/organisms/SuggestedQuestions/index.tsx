@@ -22,6 +22,7 @@ const SuggestedQuestions = () => {
 //         "Reflecting on my recent transactions, do I notice any patterns that could indicate overspending or under-budgeting in certain categories?"
 //     ]
 // };
+
   const suggests = useSelector((state: RootState) => state.chat.suggests);
   if (!suggests) {
     return null;
