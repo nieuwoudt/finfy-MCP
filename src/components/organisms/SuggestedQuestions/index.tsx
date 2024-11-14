@@ -27,6 +27,10 @@ const SuggestedQuestions = () => {
     return null;
   }
   const { simple, open_ended } = suggests;
+
+  if (!simple?.length || !open_ended?.length) {
+    return null;
+  }
   return (
     <div className="absolute w-full px-3 bottom-[110%] md:bottom-[105%]">
       <h4 className="text-white font-semibold text-2xl mb-4">Related</h4>
