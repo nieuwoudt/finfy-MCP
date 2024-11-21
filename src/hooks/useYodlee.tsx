@@ -135,13 +135,14 @@ const useYodlee = () => {
           transform: "translate(-50%, -50%)",
           width: "max-contend",
           height: "max-contend",
+          maxHeight: "60%",
           maxWidth: "750px",
           minHeight: "300px",
           backgroundColor: "#fff",
           zIndex: "1000",
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
           borderRadius: "8px",
-          overflow: "hidden",
+          overflow: "auto",
         });
   
         document.body.appendChild(container);
