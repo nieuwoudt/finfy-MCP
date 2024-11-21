@@ -54,10 +54,10 @@ const useYodlee = () => {
         console.error("Error creating link token", error);
       }
     };
-    if (user?.is_connected_bank === false && user.selected_country === "ZA") {
+    if (user?.is_connected_bank === false && user?.selected_country === "ZA") {
       createAccessToken();
     }
-  }, [user?.is_connected_bank]);
+  }, [user?.is_connected_bank, user?.selected_country]);
 
   const fetchTransactions = async (token: string, accountIds: string) => {
     try {
@@ -117,21 +117,74 @@ const useYodlee = () => {
 
   const handleOpenYodlee = useCallback(async () => {
     try {
-      setOpenModal(true);
       await loadYodleeFastLinkScript();
       if (!window.fastlink) {
         throw new Error("FastLink script not loaded properly");
       }
+  
+      let container = document.getElementById("container-fastlink");
+      if (!container) {
+        container = document.createElement("div");
+        container.id = "container-fastlink";
+  
+        Object.assign(container.style, {
+          position: "fixed",
+          padding: "20px",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "max-contend",
+          height: "max-contend",
+          maxWidth: "750px",
+          minHeight: "300px",
+          backgroundColor: "#fff",
+          zIndex: "1000",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+          borderRadius: "8px",
+          overflow: "hidden",
+        });
+  
+        document.body.appendChild(container);
+  
+        const overlay = document.createElement("div");
+        overlay.id = "modal-overlay";
+        Object.assign(overlay.style, {
+          position: "fixed",
+          top: "0",
+          left: "0",
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: "999",
+        });
+        overlay.onclick = () => {
+          if (container) {
+            container.remove(); 
+            overlay.remove();
+          }
+        };
+        document.body.appendChild(overlay);
+      }
+  
       window.fastlink.open(
         {
           fastLinkURL: process.env.NEXT_PUBLIC_YODLEE_FASTLINK_URL,
           accessToken: `Bearer ${accessToken}`,
           params: {
-            configName: "Verification",
+            configName: "LiveConfiguration",
+            // configName: "Verification",
           },
           onSuccess,
           onClose: () => {
+            let container = document.getElementById("container-fastlink");
             setOpenModal(false);
+            if (container) {
+              container.remove(); 
+            }
+            let overlay = document.getElementById("modal-overlay");
+            if (overlay) {
+              overlay.remove();
+            }
           },
         },
         "container-fastlink"
