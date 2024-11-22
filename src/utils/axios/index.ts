@@ -18,22 +18,13 @@ const getBaseURL = (isExternal: boolean): string => {
 };
 
 const createAxiosInstance = (isExternal: boolean) => {
-  if (isExternal) {
     return axios.create({
       baseURL: getBaseURL(isExternal),
       headers: {
         "Content-Type": "application/json",
       },
     });
-  } else {
-    return axios.create({
-      baseURL: "https://app.finfy.ai",
-      headers: {
-        "Content-Type": "application/json",
-      },
 
-    })
-  };
 }
 
 export const axiosExternal = createAxiosInstance(true);
