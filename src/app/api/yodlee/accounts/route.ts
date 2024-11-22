@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
       params: {
         providerAccountId,
         requestId,
-        include: "fullAccountNumber, fullAccountNumberList",
+        // include: "fullAccountNumber, fullAccountNumberList",
       },
     });
 
