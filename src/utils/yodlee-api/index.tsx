@@ -112,7 +112,7 @@ export const saveAccountYodlee = async (
       bank_transfer_code_type: account.bankTransferCode[0]?.type,
       full_account_number: account.fullAccountNumber,
       payment_account_number:
-        account.fullAccountNumberList.paymentAccountNumber,
+        account.fullAccountNumberList?.paymentAccountNumber || "",
       user_id: `${userId}`,
     }));
     const { error } = await supabase
