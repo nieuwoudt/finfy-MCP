@@ -9,6 +9,7 @@ import { useUser } from "./useUser";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { axiosYodleeInternal } from "@/utils/yodlee-api";
 import { axiosInternal } from "@/utils/axios";
+import { updateUser } from "@/lib/store/features/user/userSlice";
 
 declare global {
   interface Window {
@@ -40,6 +41,7 @@ const useYodlee = () => {
   const [isLinkReady, setIsLinkReady] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [transactions, setTransactions] = useState<any[]>([]);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const createAccessToken = async () => {
@@ -67,7 +69,6 @@ const useYodlee = () => {
           accountIds,
         },
       });
-      console.log(data, "data");
       if (user?.id) {
         await saveTransactionsYodlee(data.transactions, user.id);
       }
@@ -93,6 +94,11 @@ const useYodlee = () => {
       });
       if (user?.id) {
         await saveAccountYodlee(data.accounts, user.id);
+        await dispatch(
+          updateUser({
+            is_connected_bank: true,
+          })
+        );
       }
       return data.accounts;
     } catch (error) {
@@ -121,12 +127,10 @@ const useYodlee = () => {
       if (!window.fastlink) {
         throw new Error("FastLink script not loaded properly");
       }
-  
       let container = document.getElementById("container-fastlink");
       if (!container) {
         container = document.createElement("div");
         container.id = "container-fastlink";
-  
         Object.assign(container.style, {
           position: "fixed",
           padding: "20px",
@@ -135,7 +139,7 @@ const useYodlee = () => {
           transform: "translate(-50%, -50%)",
           width: "max-contend",
           height: "max-contend",
-          maxHeight: "60%",
+          maxHeight: "80%",
           maxWidth: "750px",
           minHeight: "300px",
           backgroundColor: "#fff",
@@ -144,9 +148,9 @@ const useYodlee = () => {
           borderRadius: "8px",
           overflow: "auto",
         });
-  
+
         document.body.appendChild(container);
-  
+
         const overlay = document.createElement("div");
         overlay.id = "modal-overlay";
         Object.assign(overlay.style, {
@@ -160,13 +164,13 @@ const useYodlee = () => {
         });
         overlay.onclick = () => {
           if (container) {
-            container.remove(); 
+            container.remove();
             overlay.remove();
           }
         };
         document.body.appendChild(overlay);
       }
-  
+
       window.fastlink.open(
         {
           fastLinkURL: process.env.NEXT_PUBLIC_YODLEE_FASTLINK_URL,
@@ -180,7 +184,7 @@ const useYodlee = () => {
             let container = document.getElementById("container-fastlink");
             setOpenModal(false);
             if (container) {
-              container.remove(); 
+              container.remove();
             }
             let overlay = document.getElementById("modal-overlay");
             if (overlay) {
