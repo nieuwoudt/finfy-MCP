@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const accessToken = searchParams.get("accessToken");
     const accountIds = searchParams.get("accountIds");
     const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 36);
+    startDate.setFullYear(startDate.getFullYear() - 2);
     const formattedStartDate = startDate.toISOString().split("T")[0];
 
     const endDate = new Date();
