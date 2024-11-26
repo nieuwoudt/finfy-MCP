@@ -49,7 +49,8 @@ const useYodlee = () => {
         const { data } = await axiosYodleeInternal(
           "/api/yodlee/create-access-token"
         );
-        setAccessToken(data.accessToken);
+        setAccessToken(data.accessToken)
+        console.log("accessToken:", data.accessToken)
         setIsLinkReady(true);
       } catch (error) {
         Sentry.captureException(error);
