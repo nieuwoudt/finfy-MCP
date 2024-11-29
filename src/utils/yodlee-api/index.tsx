@@ -68,6 +68,7 @@ export const saveTransactionsYodlee = async (
       description: typeof transaction?.description === "string" ? transaction.description : null,
     }));
 
+    // Insert transactions into the database
     const { error: transactionError } = await supabase
       .from("transactions_yodlee")
       .insert(formattedTransactions);
@@ -76,7 +77,37 @@ export const saveTransactionsYodlee = async (
       throw transactionError;
     }
 
-    return { errorMessage: null };
+    // Call the API to trigger ingestion
+    const apiPayload = {
+      user_id: `${userId}`,
+      provider: "yodlee",
+    };
+
+    const apiResponse = await axios.post(
+      "https://finify-ai-137495399237.us-central1.run.app/insert_data",
+      apiPayload
+    );
+
+    if (apiResponse.data) {
+      const { message, job_id } = apiResponse.data;
+
+      // Save the job_id into the `transaction_status` table
+      const { error: statusError } = await supabase
+        .from("transaction_status")
+        .insert({
+          job_id,
+          user_id: userId,
+          status: false, // Initial status set to false
+        });
+
+      if (statusError) {
+        throw statusError;
+      }
+
+      console.log(message);
+
+      return { errorMessage: null };
+    }
   } catch (error) {
     console.error("Error saving Yodlee transactions:", error);
     return {
