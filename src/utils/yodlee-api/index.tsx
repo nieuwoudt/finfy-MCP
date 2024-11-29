@@ -92,19 +92,19 @@ export const saveTransactionsYodlee = async (
       const { message, job_id } = apiResponse.data;
 
       // Save the job_id into the `transaction_status` table
-      const { error: statusError } = await supabase
-        .from("transaction_status")
-        .insert({
-          job_id,
-          user_id: userId,
-          status: false, // Initial status set to false
-        });
+      // const { error: statusError } = await supabase
+      //   .from("transaction_status")
+      //   .insert({
+      //     job_id,
+      //     user_id: userId,
+      //     status: false, // Initial status set to false
+      //   });
 
-      if (statusError) {
-        throw statusError;
-      }
+      // if (statusError) {
+      //   throw statusError;
+      // }
 
-      console.log(message);
+      // console.log(message);
 
       return { errorMessage: null };
     }
