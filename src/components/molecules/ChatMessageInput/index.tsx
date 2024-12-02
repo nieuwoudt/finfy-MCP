@@ -82,7 +82,8 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
             `${userId}`,
             currentChatId,
             history,
-            value
+            value,
+            user?.selected_country === "ZA" ? "yodlee" : "plaid"
           );
           if (data?.error) {
             toast.error(data.error.message);

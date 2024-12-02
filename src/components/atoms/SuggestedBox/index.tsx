@@ -46,7 +46,8 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
             `${userId}`,
             currentChatId,
             history,
-            value
+            value,
+            user?.selected_country === "ZA" ? "yodlee" : "plaid"
           );
 
           if (data?.error) {
