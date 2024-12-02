@@ -18,6 +18,7 @@ interface ChatState {
   chats: any[];
   messages: any[];
   suggests: any;
+  provider?: string;
 }
 
 interface ChatResponse {
@@ -45,13 +46,14 @@ export const sendChatQuery = createAsyncThunk<
   Partial<ChatState>
 >(
   "chat/sendChatQuery",
-  async ({ user_id, chat_id, history, user_query }, { rejectWithValue }) => {
+  async ({ user_id, chat_id, history, user_query, provider }, { rejectWithValue }) => {
     try {
       const response = await axiosExternal.post(`/chat` as string, {
         user_id: user_id || "",
         chat_id: chat_id || "",
         history: history || [],
         user_query: user_query || "",
+        provider: provider || "",
       });
       if (response.data.error) {
         return rejectWithValue(response.data.error || "Something went wrong");

@@ -65,7 +65,8 @@ export const useChat = () => {
       user_id: string,
       chat_id: string,
       history: string[],
-      user_query: string
+      user_query: string,
+      provider?: string,
     ) => {
       const data = await dispatch(
         sendChatQuery({
@@ -73,6 +74,7 @@ export const useChat = () => {
           chat_id,
           history,
           user_query,
+          provider
         })
       );
       return data;
