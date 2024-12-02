@@ -76,9 +76,9 @@ const UserSettings = () => {
           </Accordion.Content>
         </Accordion.Item>
       </Accordion>
-      <UserAvatar
+      <UserAvatar src={user?.avatar_url}
         className={cn(
-          "rounded-sm hidden !ml-0 !border-none !w-auto !h-auto justify-center items-center",
+          "hidden justify-center items-center !border-none w-9 h-9 rounded-md !ml-0",
           {
             "lg:flex": !openSidebar,
           }
