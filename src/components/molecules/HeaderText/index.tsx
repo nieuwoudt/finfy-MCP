@@ -97,7 +97,7 @@ const HeaderText = () => {
         {content && (
           <>
             <h1 className="header text-center">{content.title}</h1>
-            {content.cta}
+            {/* {content.cta} */}
           </>
         )}
       </div>
