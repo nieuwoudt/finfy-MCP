@@ -9,6 +9,7 @@ import { DesktopChartModal } from "@/components/molecules/DesktopChartModal/Desk
 import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/lib/store/hooks";
+import { HeaderFocus } from "@/components/molecules/Header";
 
 interface LayoutDashboardProps extends PropsWithChildren { }
 
@@ -40,7 +41,8 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   };
 
   return (
-    <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-10 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto")}>
+    <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-6 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto")}>
+      <HeaderFocus />
       <Header />
       {messages.length ? (
         <Conversation handleOpenModal={handleOpenModal} />

@@ -48,6 +48,7 @@ import ToggleSidebarIcon from "./toggle-sidebar.svg";
 import LightningIcon from "./lightning.svg";
 import InfinityIcon from "./infinity.svg";
 import SmallLogo from "./small-logo.svg";
+import ChrIcon from "./chr-icon.svg";
 
 export default {
   SmallLogo,
@@ -100,4 +101,5 @@ export default {
   QuestionMarkCircle,
   PlusCircle,
   ToggleSidebarIcon,
+  ChrIcon
 };
