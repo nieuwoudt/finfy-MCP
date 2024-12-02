@@ -39,7 +39,7 @@ const ActionButtonsGroup: FC = () => {
 
 const ActionButtonsGroupMobile: FC = () => {
   return (
-    <nav className="lg:hidden flex flex-col min-w-[156px]  text-grey-15 ">
+    <nav className="lg:hidden flex flex-col  text-grey-15 ">
       {/* <FocusAssistantPopover>
         <ActionButton
           Icon={
