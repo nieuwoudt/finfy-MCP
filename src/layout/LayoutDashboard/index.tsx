@@ -3,13 +3,14 @@
 import { AssistInput, Conversation } from "@/components/organisms";
 import { Button, Icon } from "@/components/atoms";
 import { DynamicChart, Header, HeaderText, HomeSuggestBoxes } from "@/components/molecules";
-import { FC, PropsWithChildren, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { useChat, useDynamicChart, useUser } from "@/hooks";
 import { DesktopChartModal } from "@/components/molecules/DesktopChartModal/DesktopChartModal";
 import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
 import { cn } from "@/lib/utils";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { HeaderFocus } from "@/components/molecules/Header";
+import { fetchFocusSuggests, setSuggest } from "@/lib/store/features/suggest/suggestSlice";
 
 interface LayoutDashboardProps extends PropsWithChildren { }
 
@@ -18,6 +19,8 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChartId, setSelectedChartId] = useState<string | null>(null);
   const suggest = useAppSelector((state) => state.suggest.suggest);
+  const focusData = useAppSelector((state) => state.suggest.focusSuggests);
+  const dispatch = useAppDispatch();
 
   const { addChart, deleteChart, charts } = useDynamicChart();
 
@@ -40,6 +43,16 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
     return firstLetter + restLetters;
   };
 
+  useEffect(() => {
+    dispatch(fetchFocusSuggests());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (focusData.length && focusData[0].suggest) {
+      dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
+    }
+  },[focusData])
+
   return (
     <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-6 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto")}>
       <HeaderFocus />
@@ -49,15 +62,14 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
       ) : (
         <>
           <HeaderText />
-          <div className="hidden lg:flex flex-1 flex-col">
+          <div className="hidden lg:flex flex-1 flex-col items-center">
             {!!suggest?.length && <>
-              <div className="flex items-center h-fit text-grey-15">
+              <div className="w-full justify-start flex items-center h-fit text-grey-15">
                 <Icon type="LightningBolt" className="text-grey-15" />
                 <p className="text-base">Suggested</p>
               </div>
             </>}
-
-            <HomeSuggestBoxes />
+            {!!suggest?.length && <HomeSuggestBoxes />}
           </div>
           <div className="flex absolute bottom-[86px] h-[154px] left-0 right-0 lg:hidden flex-col">
             {!!suggest?.length && <>
