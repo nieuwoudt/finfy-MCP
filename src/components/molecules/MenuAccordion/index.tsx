@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import { MenuItem } from "@/types";
 import { menuItems } from "./index.constants";
 import { useChat, useSidebar } from "@/hooks";
-import { extractDate } from "@/utils/helpers";
+import { extractDate, removeEmojis } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import {
   fetchMessagesForChat,
@@ -116,7 +116,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                       className="flex flex-col w-[70%] lg:w-[180px]"
                     >
                       <p className="menu-list-btn max-w-[calc(100%)] text-start m-0 group-hover:text-white text-grey-5">
-                        {content.title}
+                        {removeEmojis(content.title)}
                       </p>
                     </button>
                     {content.id && (
