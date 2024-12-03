@@ -53,17 +53,17 @@ const HomeSuggestBoxes = ({ isMobile = false }: { isMobile?: boolean }) => {
       </div>
       <div
         className={cn(
-          "w-full mt-3 flex gap-3 xl:hidden flex-row overflow-x-auto min-h-[230px] overflow-y-hidden whitespace-nowrap"
+          "w-full mt-3 xl:hidden flex gap-3",
+          isMobile
+            ? "flex-row overflow-x-auto min-h-[230px] overflow-y-hidden whitespace-nowrap"
+            : "flex-wrap overflow-y-auto max-h-[calc(100vh-350px)]"
         )}
         style={{
           maxHeight: isMobile ? "calc(100vh - 150px)" : undefined,
         }}
       >
         {suggest.map((item: any) => (
-          <div
-            key={item.label}
-            className={cn("flex-shrink-0 min-h-[136px]", isMobile ? "" : "")}
-          >
+          <div key={item.label} className={cn("flex-shrink-0", isMobile ? "min-h-[136px]" : "")}>
             <SuggestedBox
               content={item.content}
               icon={item.icon}
