@@ -77,7 +77,11 @@ const SettingsSection = () => {
       </div>
       <footer className="flex gap-5 items-center justify-center text-sm text-grey-15 py-4">
         <div className="flex gap-5 my-5">
-          <Dialog.Root>
+          <Dialog.Root onOpenChange={(isOpen) => {
+            if (!isOpen) {
+              setActiveTab(null);
+            }
+          }}>
             <Dialog.Trigger asChild onClick={() => setActiveTab("tos")}>
               <p className="hover:text-white cursor-pointer">
                 Terms of Service
