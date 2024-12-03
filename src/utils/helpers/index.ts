@@ -6,3 +6,4 @@ export { resetCookies } from "./resetCookies";
 export { formatSnakeCaseToTitleCase } from "./formatSnakeCaseToTitleCase";
 export { randomNumber } from "./randomNumber";
 export { isObject } from "./isObject";
+export { removeEmojis } from "./removeEmojis";
