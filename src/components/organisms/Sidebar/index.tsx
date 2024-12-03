@@ -63,7 +63,13 @@ const Sidebar = () => {
                 className="cursor-pointer"
               />
             ) : (
-              <Icon type="LogoIcon" />
+              <Image
+                src="/icons/menu-navigation-collapsed-icon.svg"
+                height={100}
+                width={100}
+                alt="logo"
+                className="cursor-pointer"
+              />
             )}
           </button>
           <Button onClick={handleToggle} variant="ghost">
