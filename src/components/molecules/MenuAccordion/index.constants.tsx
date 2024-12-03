@@ -47,20 +47,20 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  {
-    value: "payments",
-    icon: () => (
-      <Icon
-        type="CreditCardIcon"
-        className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
-      />
-    ),
-    isHideChevron: true,
-    title: "Payments",
-    link: "/payments",
-    href: "/dashboard",
-    contents: [],
-  },
+  // {
+  //   value: "payments",
+  //   icon: () => (
+  //     <Icon
+  //       type="CreditCardIcon"
+  //       className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
+  //     />
+  //   ),
+  //   isHideChevron: true,
+  //   title: "Payments",
+  //   link: "/payments",
+  //   href: "/dashboard",
+  //   contents: [],
+  // },
   {
     value: "discover",
     icon: () => (
@@ -94,37 +94,37 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  {
-    value: "advisor",
-    icon: () => (
-      <Icon
-        type="UsersIcon"
-        className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
-      />
-    ),
-    title: "Advisors",
-    link: "/advisors",
-    isHideChevron: true,
-    href: "/dashboard",
-    contents: [
-      {
-        title: "🗂️ Manage, track, and review accounts.",
-        date: "2024-01-31",
-        chatId: "12345",
-        category: "advisor",
-      },
-      {
-        title: "🧑‍ Expert guidance on financial strategies.",
-        date: "2024-09-09",
-        chatId: "54321",
-        category: "advisor",
-      },
-      {
-        title: "🛒 Explore and compare financial offerings.",
-        date: "2024-07-23",
-        chatId: "96732",
-        category: "advisor",
-      },
-    ],
-  },
+  // {
+  //   value: "advisor",
+  //   icon: () => (
+  //     <Icon
+  //       type="UsersIcon"
+  //       className="w-6 h-6 stroke-grey-15 group-hover:stroke-white"
+  //     />
+  //   ),
+  //   title: "Advisors",
+  //   link: "/advisors",
+  //   isHideChevron: true,
+  //   href: "/dashboard",
+  //   contents: [
+  //     {
+  //       title: "🗂️ Manage, track, and review accounts.",
+  //       date: "2024-01-31",
+  //       chatId: "12345",
+  //       category: "advisor",
+  //     },
+  //     {
+  //       title: "🧑‍ Expert guidance on financial strategies.",
+  //       date: "2024-09-09",
+  //       chatId: "54321",
+  //       category: "advisor",
+  //     },
+  //     {
+  //       title: "🛒 Explore and compare financial offerings.",
+  //       date: "2024-07-23",
+  //       chatId: "96732",
+  //       category: "advisor",
+  //     },
+  //   ],
+  // },
 ];
