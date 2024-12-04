@@ -131,7 +131,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
   return (
     <form
       action={onSubmit}
-      className="md:rounded-md mx-2 flex justify-between items-center lg:bg-navy-15 relative lg:border-t lg:border-t-grey-15 md:border-none"
+      className="rounded-full mx-2 flex justify-between items-center lg:bg-navy-15 relative lg:border lg:border-[#374061]"
     >
       <div className="relative">
         <button
