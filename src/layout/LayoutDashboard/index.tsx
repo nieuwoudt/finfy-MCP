@@ -83,7 +83,12 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
         </>
       )}
       <div className="bg-[#1F263D]">
-        <AssistInput isDark={!!selectedChartId} />
+        <AssistInput 
+          isDark={!!selectedChartId} 
+          classes={{
+            container: messages.length ? "xl:bottom-0": "",
+          }}
+        />
 
       </div>
     </div>

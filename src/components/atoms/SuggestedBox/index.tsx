@@ -67,12 +67,12 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
     }
   };
   return (
-    <button onClick={handleClick} className="suggest-box min-h-[112px] flex flex-col items-start block-suggest">
-      <p className="text-white mb-1 text-start">
+    <button onClick={handleClick} className="suggest-box h-[112px] flex flex-col items-start block-suggest overflow-hidden truncate">
+      <p className="text-white mb-1 text-start truncate w-full">
         {icon} {label}
       </p>
-      <div className="relative text-grey-15">
-        <p className="pr-6 text-wrap text-start">
+      <div className="relative text-grey-15 w-full h-full overflow-hidden truncate">
+        <p className="pr-6 text-wrap text-start truncate w-full">
           {content}
         </p>
         {/* <Icon

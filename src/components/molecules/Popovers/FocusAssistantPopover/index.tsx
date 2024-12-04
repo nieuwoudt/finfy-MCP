@@ -20,7 +20,7 @@ const FocusAssistantPopover: FC<FocusAssistantPopoverProps> = ({
     dispatch(fetchFocusSuggests());
   }, [dispatch]);
 
-  if (loading) return <div><Loader2 className="animate-spin w-3 h-3" />Focus</div>;
+  // if (loading) return <div><Loader2 className="animate-spin w-3 h-3" />Focus</div>;
   if (error) return <div></div>;
   return (
     <Popover> 
