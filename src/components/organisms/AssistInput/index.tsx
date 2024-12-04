@@ -29,7 +29,7 @@ const AssistInput: FC<AssistInputProps> = ({ classes, handleClose, isDark = fals
         )}
       >
         <SuggestedQuestions />
-        <ActionButtonsGroup />
+        {/* <ActionButtonsGroup /> */}
         <ChatMessageInput isDark={isDark} handleClose={handleClose} />
       </div>
     </div>

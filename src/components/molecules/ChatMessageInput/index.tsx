@@ -136,7 +136,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
       <div className="relative">
         <button
           type="button"
-          className="w-10 h-10 pl-3 pt-2.5 pb-3 -mr-2 flex lg:hidden"
+          className="w-10 h-10 pl-3 pt-2.5 pb-3 -mr-2 flex"
           onClick={isPopupOpen ? handleClosePopup : handleOpenPopup}
         >
           <Icon type="PlusIcon" className={cn("w-5 h-5", isPopupOpen ? "stroke-purple-15" : " stroke-slate-400")} />
@@ -145,7 +145,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
         {isPopupOpen && (
           <div
             ref={popoverRef}
-            className="absolute lg:hidden w-max bg-[#272E48] rounded-md px-4 border-[#374061] border-[1px] py-2 bottom-16 left-0 z-50"
+            className="absolute w-max bg-[#272E48] rounded-md px-4 border-[#374061] border-[1px] py-2 bottom-16 left-0 z-50"
           >
             <ActionButtonsGroupMobile />
           </div>
