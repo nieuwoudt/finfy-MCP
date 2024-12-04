@@ -83,7 +83,8 @@ const useYodlee = () => {
   const fetchAccounts = async (
     token: string,
     providerAccountId: string,
-    requestId: string
+    requestId: string,
+    providerId: string,
   ) => {
     try {
       const { data } = await axiosInternal("/api/yodlee/accounts", {
@@ -93,8 +94,16 @@ const useYodlee = () => {
           requestId,
         },
       });
+
+      const { data: provider } = await axiosInternal("/api/yodlee/providers", {
+        params: {
+          accessToken: token,
+          providerId
+        },
+      });
+
       if (user?.id) {
-        await saveAccountYodlee(data.accounts, user.id);
+        await saveAccountYodlee(data.accounts, user.id, provider.provider[0]);
         await dispatch(
           updateUser({
             is_connected_bank: true,
@@ -114,7 +123,8 @@ const useYodlee = () => {
       const accounts = await fetchAccounts(
         accessToken,
         data.providerAccountId,
-        data.requestId
+        data.requestId,
+        data.providerId
       );
       const accountIds = accounts.map((item: any) => item.id).join();
       await fetchTransactions(accessToken, accountIds);
