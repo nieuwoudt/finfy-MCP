@@ -87,30 +87,34 @@ const useYodlee = () => {
     providerId: string,
   ) => {
     try {
-      const { data } = await axiosInternal("/api/yodlee/accounts", {
-        params: {
-          accessToken: token,
-          providerAccountId,
-          requestId,
-        },
-      });
+      const [accountsResponse, providerResponse] = await Promise.all([
+        axiosInternal("/api/yodlee/accounts", {
+          params: {
+            accessToken: token,
+            providerAccountId,
+            requestId,
+          },
+        }),
+        axiosInternal("/api/yodlee/providers", {
+          params: {
+            accessToken: token,
+            providerId,
+          },
+        }),
+      ]);
 
-      const { data: provider } = await axiosInternal("/api/yodlee/providers", {
-        params: {
-          accessToken: token,
-          providerId
-        },
-      });
+      const accounts = accountsResponse.data;
+      const provider = providerResponse.data;
 
       if (user?.id) {
-        await saveAccountYodlee(data.accounts, user.id, provider.provider[0]);
+        await saveAccountYodlee(accounts.accounts, user.id, provider.provider[0]);
         await dispatch(
           updateUser({
             is_connected_bank: true,
           })
         );
       }
-      return data.accounts;
+      return accounts.accounts;
     } catch (error) {
       Sentry.captureException(error);
       toast.error(`Error fetching accounts: ${getErrorMessage(error)}`);
