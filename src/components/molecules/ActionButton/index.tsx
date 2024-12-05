@@ -3,7 +3,7 @@
 import { ComponentProps, FC } from "react";
 
 interface ButtonProps extends ComponentProps<"button"> {
-  Icon: JSX.Element;
+  Icon?: JSX.Element;
   SecondIcon?: JSX.Element;
   text: string;
 }

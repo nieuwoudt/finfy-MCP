@@ -4,6 +4,7 @@ import {
   ThemeSelector,
   SwitchTemplate,
   ThemeButtons,
+  ConnectBankAction,
 } from "@/components/molecules";
 import { UserAvatarWithUpload } from "@/components/organisms";
 import { useAccounts, useUser } from "@/hooks";
@@ -148,7 +149,10 @@ const ManageProfileTab = () => {
           <SeparatorLine />
           <div className="flex">
           <div className="w-full">
-            <p className="mb-2 text-lg font-semibold">Connected Accounts</p>
+            <div className="w-full flex justify-between items-center">
+              <p className="mb-2 text-lg font-semibold">Connected Accounts</p>
+              <ConnectBankAction />
+            </div>
             {accounts && accounts.length > 0 && (
               <div className="flex flex-wrap gap-3">
                 {accounts.map((account) => {
