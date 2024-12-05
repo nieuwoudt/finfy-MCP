@@ -16,7 +16,7 @@ const ManageProfileTab = () => {
   const { user } = useUser();
   const [password, setPassword] = useState("");
   const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const { accounts, fetchAccountsByUserId } = useAccounts();
+  const { accounts, fetchAccountsByUserId, deleteAccount } = useAccounts();
 
   useEffect(() => {
     const fetchBankAccounts = async () => {
@@ -172,7 +172,7 @@ const ManageProfileTab = () => {
                           <p className="text-sm font-medium opacity-70">{account.account_name}</p>
                         </div>
                       </div>
-                      <Icon type="DeleteIcon" className="h-4 w-4 fill-grey-15 cursor-pointer" />
+                      <Icon type="DeleteIcon" className="h-4 w-4 fill-grey-15 cursor-pointer" onClick={() => deleteAccount(account.account_id)}/>
                     </div>
                   );
                 })}

@@ -196,7 +196,7 @@ const accountSlice = createSlice({
         deleteAccount.fulfilled,
         (state, action: PayloadAction<string>) => {
           state.accounts = state.accounts.filter(
-            (account) => account.id !== action.payload
+            (account) => account.account_id !== action.payload
           );
         }
       )
