@@ -76,6 +76,39 @@ const usePlaid = () => {
     }
   };
 
+  const fetchUserItems = async () => {
+    try {
+      const userToken = user?.plaid_user_token;
+      const response = await fetch("/api/plaid/user-items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_token: userToken }),
+      });
+      const { items } = await response.json();
+      
+      return items;
+    } catch (error) {
+      Sentry.captureException(error);
+      toast.error(`Error fetching items: ${getErrorMessage(error)}`);
+    }
+  };
+
+  const fetcUserInstitution = async (institutionID: string, countryCode: string) => {
+    try {
+      const response = await fetch("/api/plaid/institution", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ institutionID, countryCode }),
+      });
+      const { institution } = await response.json();
+      
+      return institution;
+    } catch (error) {
+      Sentry.captureException(error);
+      toast.error(`Error fetching institution: ${getErrorMessage(error)}`);
+    }
+  };
+
   const fetchBalances = async (token: string) => {
     try {
       const response = await fetch("/api/plaid/balance", {
