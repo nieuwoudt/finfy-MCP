@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import darkModeReducer from "./features/darkMode/darkModeSlice";
 import userReducer from "./features/user/userSlice";
+import accountsReducer from "./features/accounts/accountsSlice";
 import sidebarReducer from "./features/sidebar/sidebarSlice";
 import chatReducer from "./features/chat/chatSlice";
 import suggestReducer from "./features/suggest/suggestSlice";
@@ -14,7 +15,8 @@ export const makeStore = () => {
       sidebar: sidebarReducer,
       chat: chatReducer,
       suggest: suggestReducer,
-      dynamicChart: dynamicChartReducer
+      dynamicChart: dynamicChartReducer,
+      accounts: accountsReducer
     },
   });
 };

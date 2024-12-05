@@ -39,6 +39,21 @@ export const fetchAccountById = createAsyncThunk<Account, string>(
   }
 );
 
+export const fetchAccountsByUserId = createAsyncThunk<Account[], { userId: string, prefix: string }>(
+  "accounts/fetchById",
+  async ({ userId, prefix }) => {
+    const { data, error } = await supabase
+      .from("accounts" + prefix)
+      .select("*")
+      .eq("user_id", userId)
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+    return data as Account[];
+  }
+);
+
 export const createAccount = createAsyncThunk<Account, Omit<Account, "id">>(
   "accounts/create",
   async (newAccount) => {
@@ -71,13 +86,23 @@ export const updateAccount = createAsyncThunk<Account, Partial<Account>>(
   }
 );
 
-export const deleteAccount = createAsyncThunk<string, string>(
+export const deleteAccount = createAsyncThunk<string, { accountId: string, prefix: string }>(
   "accounts/delete",
-  async (accountId) => {
-    const { error } = await supabase
-      .from("accounts")
+  async ({ accountId, prefix }) => {
+    const { error: transactionError } = await supabase
+      .from("transactions" + prefix)
       .delete()
-      .eq("id", accountId);
+      .eq("account_id", accountId);
+
+    const { error } = await supabase
+      .from("accounts" + prefix)
+      .delete()
+      .eq("account_id", accountId);
+
+    if (transactionError) {
+      Sentry.captureException(error);
+      throw transactionError;
+    }
     if (error) {
       Sentry.captureException(error);
       throw error;
