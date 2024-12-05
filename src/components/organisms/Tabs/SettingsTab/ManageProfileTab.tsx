@@ -150,7 +150,7 @@ const ManageProfileTab = () => {
           <div className="flex">
           <div className="w-full flex flex-col gap-2">
             <div className="w-full flex justify-between items-center">
-              <p className="mb-2 text-lg font-semibold">Connected Accounts</p>
+              <p className="">Connected Accounts</p>
               <ConnectBankAction />
             </div>
             {accounts && accounts.length > 0 && (
@@ -161,7 +161,7 @@ const ManageProfileTab = () => {
                       key={account.account_id}
                       className="w-[calc(50%-0.75rem)] h-[68px] flex items-start justify-between border border-[#374061] rounded-xl p-3 bg-[#272E48] shadow-sm"
                     >
-                      <div className="flex gap-3">
+                      <div className="flex items-center md:items-start gap-3">
                         <div className="w-10 h-10 rounded-full overflow-hidden border border-[#374061]">
                           <Image
                             src={account.provider_logo as string}
@@ -172,8 +172,8 @@ const ManageProfileTab = () => {
                           />
                         </div>
                         <div className="flex flex-col gap-2">
-                          <p className="text-sm font-medium">{account.provider_name}</p>
-                          <p className="text-sm font-medium opacity-70">{account.account_name}</p>
+                          <p className="text-xs font-medium">{account.provider_name}</p>
+                          <p className="hidden md:block text-xs font-medium opacity-70">{account.account_name}</p>
                         </div>
                       </div>
                       <Icon type="DeleteIcon" className="h-4 w-4 fill-grey-15 cursor-pointer" onClick={() => deleteAccount(account.account_id)}/>
