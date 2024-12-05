@@ -148,7 +148,7 @@ const ManageProfileTab = () => {
           </div>
           <SeparatorLine />
           <div className="flex">
-          <div className="w-full">
+          <div className="w-full flex flex-col gap-2">
             <div className="w-full flex justify-between items-center">
               <p className="mb-2 text-lg font-semibold">Connected Accounts</p>
               <ConnectBankAction />

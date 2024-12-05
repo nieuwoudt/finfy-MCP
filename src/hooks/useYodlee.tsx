@@ -108,11 +108,11 @@ const useYodlee = () => {
 
       if (user?.id) {
         await saveAccountYodlee(accounts.accounts, user.id, provider.provider[0]);
-        await dispatch(
-          updateUser({
-            is_connected_bank: true,
-          })
-        );
+        // await dispatch(
+        //   updateUser({
+        //     is_connected_bank: true,
+        //   })
+        // );
       }
       return accounts.accounts;
     } catch (error) {

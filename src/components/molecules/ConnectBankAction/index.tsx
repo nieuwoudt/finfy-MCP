@@ -7,9 +7,9 @@ import { Icon } from "@/components/atoms";
 
 const ConnectBankAction = ({ inputMenu }: { inputMenu?: boolean }) => {
   const { open, isLinkReady, isLoading, isAlreadyConnected } = useConnectBank();
-  if (isAlreadyConnected) {
-    return null;
-  }
+  // if (isAlreadyConnected) {
+  //   return null;
+  // }
 
   if ( inputMenu ) {
     return (
