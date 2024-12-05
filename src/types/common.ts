@@ -135,6 +135,7 @@ export interface Account {
   id?: string;
   account_id: string;
   account_owner: string | null;
+  account_name: string;
   user_id?: string;
   balance: number;
   created_at?: string;
@@ -142,6 +143,9 @@ export interface Account {
   iso_currency_code: string;
   status: string;
   type: string;
+  provider_id: string;
+  provider_name: string;
+  provider_logo: string | null;
 }
 
 export type OptionsType = {

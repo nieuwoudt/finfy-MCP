@@ -23,6 +23,12 @@ const nextConfig = {
 
     return config;
   },
+
+  images: {
+    domains: ["yodlee-1.hs.llnwd.net"], // Add allowed domains for next/image
+    dangerouslyAllowSVG: true, // Allow SVGs to be rendered by next/image
+    contentSecurityPolicy: "default-src 'self'; img-src 'self' data: https:;", // Add a basic CSP rule
+  },
 };
 
 export default withSentryConfig(withSentryConfig(nextConfig, {

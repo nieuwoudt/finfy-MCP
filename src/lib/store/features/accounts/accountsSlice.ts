@@ -40,7 +40,7 @@ export const fetchAccountById = createAsyncThunk<Account, string>(
 );
 
 export const fetchAccountsByUserId = createAsyncThunk<Account[], { userId: string, prefix: string }>(
-  "accounts/fetchById",
+  "accounts/fetchAccountsByUserId",
   async ({ userId, prefix }) => {
     const { data, error } = await supabase
       .from("accounts" + prefix)
@@ -128,6 +128,20 @@ const accountSlice = createSlice({
         }
       )
       .addCase(fetchAccounts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = getErrorMessage(action.error) || null;
+      })
+      .addCase(fetchAccountsByUserId.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchAccountsByUserId.fulfilled,
+        (state, action: PayloadAction<Account[]>) => {
+          state.status = "succeeded";
+          state.accounts = action.payload;
+        }
+      )
+      .addCase(fetchAccountsByUserId.rejected, (state, action) => {
         state.status = "failed";
         state.error = getErrorMessage(action.error) || null;
       })

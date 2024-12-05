@@ -6,15 +6,27 @@ import {
   ThemeButtons,
 } from "@/components/molecules";
 import { UserAvatarWithUpload } from "@/components/organisms";
-import { useUser } from "@/hooks";
+import { useAccounts, useUser } from "@/hooks";
 import { updatePassword } from "@/lib/supabase/actions";
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const ManageProfileTab = () => {
   const { user } = useUser();
   const [password, setPassword] = useState("");
   const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const { accounts, fetchAccountsByUserId } = useAccounts();
+
+  useEffect(() => {
+    const fetchBankAccounts = async () => {
+      await fetchAccountsByUserId(user?.id as string);
+    }
+
+    if (user) {
+      fetchBankAccounts();
+    }
+  },[user]);
 
   const handlePasswordChange = async () => {
     if (password) {
@@ -132,6 +144,41 @@ const ManageProfileTab = () => {
             <div className="flex items-center text-white">
               <SwitchTemplate />
             </div>
+          </div>
+          <SeparatorLine />
+          <div className="flex">
+          <div className="w-full">
+            <p className="mb-2 text-lg font-semibold">Connected Accounts</p>
+            {accounts && accounts.length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {accounts.map((account) => {
+                  return (
+                    <div
+                      key={account.account_id}
+                      className="w-[calc(50%-0.75rem)] h-[68px] flex items-start justify-between border border-[#374061] rounded-xl p-3 bg-[#272E48] shadow-sm"
+                    >
+                      <div className="flex gap-3">
+                        <div className="w-10 h-10 rounded-full overflow-hidden border border-[#374061]">
+                          <Image
+                            src={account.provider_logo as string}
+                            alt="provider_logo"
+                            height={512}
+                            width={512}
+                            className="object-fill w-full h-full"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <p className="text-sm font-medium">{account.provider_name}</p>
+                          <p className="text-sm font-medium opacity-70">{account.account_name}</p>
+                        </div>
+                      </div>
+                      <Icon type="DeleteIcon" className="h-4 w-4 fill-grey-15 cursor-pointer" />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
           </div>
         </div>
       </div>
