@@ -6,6 +6,7 @@ import {
   saveInvestmentTransactions,
   saveLiabilities,
   saveBankIncome,
+  saveAccounts,
 } from "@/lib/supabase/actions";
 import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
@@ -15,6 +16,7 @@ import { usePlaidLink } from "react-plaid-link";
 import { useUser } from "./useUser";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
+import { IdentityGetResponseExtended } from "@/types";
 
 const usePlaid = () => {
   const { user } = useUser();
@@ -73,6 +75,26 @@ const usePlaid = () => {
     } catch (error) {
       Sentry.captureException(error);
       toast.error(`Error fetching transactions: ${getErrorMessage(error)}`);
+    }
+  };
+
+  const fetchUserIdentity = async (token: string) => {
+    try {
+      const response = await fetch("/api/plaid/identity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_token: token }),
+      });
+      const { identity } = await response.json();
+
+      if (user?.id) {
+        await saveAccounts(identity, user.id);
+      }
+      
+      return identity as IdentityGetResponseExtended;
+    } catch (error) {
+      Sentry.captureException(error);
+      toast.error(`Error fetching items: ${getErrorMessage(error)}`);
     }
   };
 
@@ -212,6 +234,7 @@ const usePlaid = () => {
             plaid_access_token: token,
           })
         );
+        await fetchUserIdentity(token);
         await fetchTransactions(token);
         await fetchInvestments(token);
         await fetchLiabilities(token);

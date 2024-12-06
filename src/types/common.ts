@@ -1,4 +1,5 @@
 import { routesOnboarding, THEMES } from "@/utils/variables";
+import { AccountIdentity, Item } from "plaid";
 import { FC, ReactNode } from "react";
 
 export type Classes = {
@@ -212,4 +213,11 @@ export interface Plan {
     type: string;
     link: string | null;
   };
+}
+
+type ItemExtended = Item & { institution_name: string }
+export interface IdentityGetResponseExtended {
+  accounts: Array<AccountIdentity>;
+  item: ItemExtended;
+  request_id: string;
 }
