@@ -9,6 +9,7 @@ import {
 import { UserAvatarWithUpload } from "@/components/organisms";
 import { useAccounts, useUser } from "@/hooks";
 import { updatePassword } from "@/lib/supabase/actions";
+import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -162,18 +163,18 @@ const ManageProfileTab = () => {
                       className="w-[calc(50%-0.75rem)] flex items-start justify-between border border-[#374061] rounded-xl p-3 bg-[#272E48] shadow-sm"
                     >
                       <div className="flex items-center md:items-start gap-2 md:gap-3">
-                        <div className="w-10 h-10 rounded-full overflow-hidden border border-[#374061]">
-                          <Image
-                            src={account.provider_logo as string}
+                        <div className={clsx("w-10 h-10 rounded-full overflow-hidden border border-[#374061]", {"bg-[#374061]": !account.provider_logo})}>
+                          {account.provider_logo && <Image
+                            src={account.provider_logo}
                             alt="provider_logo"
                             height={512}
                             width={512}
                             className="object-fill w-full h-full"
-                          />
+                          />}
                         </div>
                         <div className="flex flex-col gap-1.5">
-                          <p className="text-xs font-medium">{account.provider_name}</p>
-                          <p className="hidden md:block text-xs font-medium opacity-70">{account.account_name}</p>
+                          {account.provider_name ? <p className="text-xs font-medium">{account.provider_name}</p> : <div className="h-3 w-16 bg-[#374061] rounded"></div>}
+                          {account.account_name ? <p className="hidden md:block text-xs font-medium opacity-70">{account.account_name}</p> : <div className="hidden md:block h-3 w-24 bg-[#374061] rounded"></div>}
                         </div>
                       </div>
                       <Icon type="DeleteIcon" className="h-4 w-4  cursor-pointer" onClick={() => deleteAccount(account.account_id)}/>
