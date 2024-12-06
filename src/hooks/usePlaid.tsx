@@ -17,6 +17,7 @@ import { useUser } from "./useUser";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
 import { IdentityGetResponseExtended } from "@/types";
+import { Institution } from "plaid";
 
 const usePlaid = () => {
   const { user } = useUser();
@@ -85,13 +86,19 @@ const usePlaid = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ access_token: token }),
       });
-      const { identity } = await response.json();
+      const responseJSON = await response.json();
+      const identity: IdentityGetResponseExtended  = responseJSON.identity;
+      let institutionData: Institution | undefined = undefined;
 
-      if (user?.id) {
-        await saveAccounts(identity, user.id);
+      if (identity && identity.item && identity.item.institution_id) {
+        institutionData = await fetcUserInstitution(identity.item.institution_id);
       }
       
-      return identity as IdentityGetResponseExtended;
+      if (user?.id) {
+        await saveAccounts(identity, user.id, institutionData);
+      }
+      
+      return identity;
     } catch (error) {
       Sentry.captureException(error);
       toast.error(`Error fetching items: ${getErrorMessage(error)}`);
@@ -115,16 +122,16 @@ const usePlaid = () => {
     }
   };
 
-  const fetcUserInstitution = async (institutionID: string, countryCode: string) => {
+  const fetcUserInstitution = async (institutionID: string) => {
     try {
       const response = await fetch("/api/plaid/institution", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ institutionID, countryCode }),
+        body: JSON.stringify({ institutionID }),
       });
       const { institution } = await response.json();
       
-      return institution;
+      return institution as Institution;
     } catch (error) {
       Sentry.captureException(error);
       toast.error(`Error fetching institution: ${getErrorMessage(error)}`);

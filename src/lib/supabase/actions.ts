@@ -6,6 +6,7 @@ import { getErrorMessage } from "@/utils/helpers";
 import { Account, Transaction, IdentityGetResponseExtended } from "@/types";
 import * as Sentry from "@sentry/nextjs";
 import { config } from "@/config/env";
+import { Institution } from "plaid";
 
 export const createAccountAction = async (formData: FormData) => {
   try {
@@ -175,7 +176,7 @@ export const resendCodeOTP = async (phone: string) => {
   }
 };
 
-export const saveAccounts = async (identity: IdentityGetResponseExtended, userId: string) => {
+export const saveAccounts = async (identity: IdentityGetResponseExtended, userId: string, institutionData?: Institution) => {
   try {
     const uniqueAccounts = identity.accounts.map((account) => {
       return {
@@ -189,7 +190,8 @@ export const saveAccounts = async (identity: IdentityGetResponseExtended, userId
         user_id: `${userId}`,
         provider_id: identity.item.institution_id,
         provider_name: identity.item.institution_name,
-        provider_account_id: identity.item.item_id
+        provider_account_id: identity.item.item_id,
+        ...(institutionData && institutionData.logo && { provider_logo: institutionData.logo })
       }
     })
 
