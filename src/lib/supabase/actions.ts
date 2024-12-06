@@ -3,9 +3,10 @@
 import { createSupabaseClient } from "@/lib/supabase/server";
 import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "@/utils/helpers";
-import { Account, Transaction } from "@/types";
+import { Account, Transaction, IdentityGetResponseExtended } from "@/types";
 import * as Sentry from "@sentry/nextjs";
 import { config } from "@/config/env";
+import { Institution } from "plaid";
 
 export const createAccountAction = async (formData: FormData) => {
   try {
@@ -175,32 +176,24 @@ export const resendCodeOTP = async (phone: string) => {
   }
 };
 
-export const saveTransactionsAndAccounts = async (
-  transactions: Transaction[],
-  userId: string
-) => {
+export const saveAccounts = async (identity: IdentityGetResponseExtended, userId: string, institutionData?: Institution) => {
   try {
-    const uniqueAccounts = transactions.reduce(
-      (acc: Account[], transaction) => {
-        if (
-          !acc.some((account) => account.account_id === transaction.account_id)
-        ) {
-
-          const account: Account = {
-            account_id: transaction.account_id,
-            account_owner: transaction.account_owner,
-            iso_currency_code: transaction.iso_currency_code,
-            balance: 0,
-            status: "active",
-            type: "default",
-            user_id: `${userId}`,
-          };
-          acc.push(account);
-        }
-        return acc;
-      },
-      []
-    );
+    const uniqueAccounts = identity.accounts.map((account) => {
+      return {
+        account_id: account.account_id,
+        account_owner: account.owners[0].names[0],
+        account_name: account.name,
+        iso_currency_code: account.balances.iso_currency_code,
+        balance: account.balances.available,
+        status: "active",
+        type: account.type,
+        user_id: `${userId}`,
+        provider_id: identity.item.institution_id,
+        provider_name: identity.item.institution_name,
+        provider_account_id: identity.item.item_id,
+        ...(institutionData && institutionData.logo && { provider_logo: institutionData.logo })
+      }
+    })
 
     const { error: accountError } = await supabase
       .from("accounts")
@@ -211,8 +204,19 @@ export const saveTransactionsAndAccounts = async (
       throw accountError;
     }
 
+    return { errorMessage: null };
+  } catch (error) {
+    return {
+      errorMessage: getErrorMessage(error),
+    };
+  }
+} 
 
-
+export const saveTransactionsAndAccounts = async (
+  transactions: Transaction[],
+  userId: string
+) => {
+  try {
     const formattedTransactions = transactions.map((transaction) => ({
       account_id: transaction.account_id,
       amount: transaction.amount,

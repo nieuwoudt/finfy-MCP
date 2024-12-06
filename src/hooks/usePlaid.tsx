@@ -6,6 +6,7 @@ import {
   saveInvestmentTransactions,
   saveLiabilities,
   saveBankIncome,
+  saveAccounts,
 } from "@/lib/supabase/actions";
 import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
@@ -15,6 +16,8 @@ import { usePlaidLink } from "react-plaid-link";
 import { useUser } from "./useUser";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
+import { IdentityGetResponseExtended } from "@/types";
+import { Institution } from "plaid";
 
 const usePlaid = () => {
   const { user } = useUser();
@@ -76,6 +79,41 @@ const usePlaid = () => {
     }
   };
 
+  const fetchUserIdentity = async (token: string) => {
+    try {
+      const identity = await fetchIdentityData(token);
+      if (!identity) return;
+
+      const institutionId = identity?.item?.institution_id;
+      const institutionData = institutionId ? await fetchUserInstitution(institutionId) : undefined;
+  
+      if (user?.id) {
+        await saveAccounts(identity, user.id, institutionData);
+      }
+  
+      return identity;
+    } catch (error) {
+      Sentry.captureException(error);
+      toast.error(`Error fetching identity: ${getErrorMessage(error)}`);
+    }
+  };
+
+  const fetchIdentityData = async (token: string): Promise<IdentityGetResponseExtended | null> => {
+    const response = await fetch("/api/plaid/identity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ access_token: token }),
+    });
+  
+    if (!response.ok) {
+      throw new Error(`Failed to fetch identity: ${response.statusText}`);
+    }
+  
+    const { identity } = await response.json();
+
+    return identity;
+  };
+
   const fetchUserItems = async () => {
     try {
       const userToken = user?.plaid_user_token;
@@ -93,20 +131,20 @@ const usePlaid = () => {
     }
   };
 
-  const fetcUserInstitution = async (institutionID: string, countryCode: string) => {
-    try {
+  const fetchUserInstitution = async (institutionID: string): Promise<Institution | undefined> => {
       const response = await fetch("/api/plaid/institution", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ institutionID, countryCode }),
+        body: JSON.stringify({ institutionID }),
       });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch institution: ${response.statusText}`);
+      }
+
       const { institution } = await response.json();
       
       return institution;
-    } catch (error) {
-      Sentry.captureException(error);
-      toast.error(`Error fetching institution: ${getErrorMessage(error)}`);
-    }
   };
 
   const fetchBalances = async (token: string) => {
@@ -212,6 +250,7 @@ const usePlaid = () => {
             plaid_access_token: token,
           })
         );
+        await fetchUserIdentity(token);
         await fetchTransactions(token);
         await fetchInvestments(token);
         await fetchLiabilities(token);
