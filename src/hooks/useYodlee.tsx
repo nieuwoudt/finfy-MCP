@@ -83,25 +83,38 @@ const useYodlee = () => {
   const fetchAccounts = async (
     token: string,
     providerAccountId: string,
-    requestId: string
+    requestId: string,
+    providerId: string,
   ) => {
     try {
-      const { data } = await axiosInternal("/api/yodlee/accounts", {
-        params: {
-          accessToken: token,
-          providerAccountId,
-          requestId,
-        },
-      });
+      const [accountsResponse, providerResponse] = await Promise.all([
+        axiosInternal("/api/yodlee/accounts", {
+          params: {
+            accessToken: token,
+            providerAccountId,
+            requestId,
+          },
+        }),
+        axiosInternal("/api/yodlee/providers", {
+          params: {
+            accessToken: token,
+            providerId,
+          },
+        }),
+      ]);
+
+      const accounts = accountsResponse.data;
+      const provider = providerResponse.data;
+
       if (user?.id) {
-        await saveAccountYodlee(data.accounts, user.id);
-        await dispatch(
-          updateUser({
-            is_connected_bank: true,
-          })
-        );
+        await saveAccountYodlee(accounts.accounts, user.id, provider.provider[0]);
+        // await dispatch(
+        //   updateUser({
+        //     is_connected_bank: true,
+        //   })
+        // );
       }
-      return data.accounts;
+      return accounts.accounts;
     } catch (error) {
       Sentry.captureException(error);
       toast.error(`Error fetching accounts: ${getErrorMessage(error)}`);
@@ -114,7 +127,8 @@ const useYodlee = () => {
       const accounts = await fetchAccounts(
         accessToken,
         data.providerAccountId,
-        data.requestId
+        data.requestId,
+        data.providerId
       );
       const accountIds = accounts.map((item: any) => item.id).join();
       await fetchTransactions(accessToken, accountIds);

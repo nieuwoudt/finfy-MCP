@@ -118,7 +118,8 @@ export const saveTransactionsYodlee = async (
 
 export const saveAccountYodlee = async (
   accounts: AccountYodlee[],
-  userId: string
+  userId: string,
+  provider: any
 ) => {
   try {
     const formattedAccounts = accounts.map((account) => {
@@ -137,6 +138,7 @@ export const saveAccountYodlee = async (
         include_in_net_worth: typeof account?.includeInNetWorth === "boolean" ? account.includeInNetWorth : null,
         provider_id: typeof account?.providerId === "string" ? account.providerId : null,
         provider_name: typeof account?.providerName === "string" ? account.providerName : null,
+        provider_logo: typeof provider.logo === "string" ? provider.logo : null,
         is_manual: typeof account?.isManual === "boolean" ? account.isManual : null,
         available_balance_amount: typeof account?.availableBalance?.amount === "number" ? account.availableBalance.amount : null,
         available_balance_currency: typeof account?.availableBalance?.currency === "string" ? account.availableBalance.currency : null,

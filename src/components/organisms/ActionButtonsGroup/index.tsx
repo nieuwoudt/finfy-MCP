@@ -23,7 +23,7 @@ const ActionButtonsGroup: FC = () => {
           text={"Focus"}
         />
       </FocusAssistantPopover>
-      <ConnectBankAction />
+      <ConnectBankAction inputMenu />
       <ActionButton
         Icon={
           <Icon
@@ -51,7 +51,7 @@ const ActionButtonsGroupMobile: FC = () => {
           text={"Focus"}
         />
       </FocusAssistantPopover> */}
-      <ConnectBankAction />
+      <ConnectBankAction inputMenu />
       <ActionButton
         Icon={
           <Icon

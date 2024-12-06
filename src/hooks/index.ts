@@ -9,3 +9,4 @@ export { useChat } from "./useChat";
 export { useYodlee } from "./useYodlee";
 export { useConnectBank } from "./useConnectBank";
 export { useDynamicChart } from "./useDynamicChart";
+export { useAccounts } from "./useAccounts";

@@ -39,6 +39,21 @@ export const fetchAccountById = createAsyncThunk<Account, string>(
   }
 );
 
+export const fetchAccountsByUserId = createAsyncThunk<Account[], { userId: string, prefix: string }>(
+  "accounts/fetchAccountsByUserId",
+  async ({ userId, prefix }) => {
+    const { data, error } = await supabase
+      .from("accounts" + prefix)
+      .select("*")
+      .eq("user_id", userId)
+    if (error) {
+      Sentry.captureException(error);
+      throw error;
+    }
+    return data as Account[];
+  }
+);
+
 export const createAccount = createAsyncThunk<Account, Omit<Account, "id">>(
   "accounts/create",
   async (newAccount) => {
@@ -71,13 +86,23 @@ export const updateAccount = createAsyncThunk<Account, Partial<Account>>(
   }
 );
 
-export const deleteAccount = createAsyncThunk<string, string>(
+export const deleteAccount = createAsyncThunk<string, { accountId: string, prefix: string }>(
   "accounts/delete",
-  async (accountId) => {
-    const { error } = await supabase
-      .from("accounts")
+  async ({ accountId, prefix }) => {
+    const { error: transactionError } = await supabase
+      .from("transactions" + prefix)
       .delete()
-      .eq("id", accountId);
+      .eq("account_id", accountId);
+
+    const { error } = await supabase
+      .from("accounts" + prefix)
+      .delete()
+      .eq("account_id", accountId);
+
+    if (transactionError) {
+      Sentry.captureException(error);
+      throw transactionError;
+    }
     if (error) {
       Sentry.captureException(error);
       throw error;
@@ -103,6 +128,20 @@ const accountSlice = createSlice({
         }
       )
       .addCase(fetchAccounts.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = getErrorMessage(action.error) || null;
+      })
+      .addCase(fetchAccountsByUserId.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchAccountsByUserId.fulfilled,
+        (state, action: PayloadAction<Account[]>) => {
+          state.status = "succeeded";
+          state.accounts = action.payload;
+        }
+      )
+      .addCase(fetchAccountsByUserId.rejected, (state, action) => {
         state.status = "failed";
         state.error = getErrorMessage(action.error) || null;
       })
@@ -157,7 +196,7 @@ const accountSlice = createSlice({
         deleteAccount.fulfilled,
         (state, action: PayloadAction<string>) => {
           state.accounts = state.accounts.filter(
-            (account) => account.id !== action.payload
+            (account) => account.account_id !== action.payload
           );
         }
       )
