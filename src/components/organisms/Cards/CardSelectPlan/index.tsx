@@ -15,6 +15,7 @@ const buttonData = [
     title: "For personal use",
     case: "personal",
     description: "Refine ideas, analyze data, summarize documents, and more.",
+    disabled: false,
   },
   {
     icon: <Icon type="UserGroupIcon" className="h-8 text-grey-15" />,
@@ -22,12 +23,14 @@ const buttonData = [
     case: "team",
     description:
       "Get higher usage limits and early access to collaborative features.",
+    disabled: true,
   },
   {
     icon: <Icon type={"DollarBankIcon"} className="h-10 w-10 text-grey-15" />,
     title: "For my business",
     case: "business",
     description: "Refine ideas, analyze data, summarize documents, and more.",
+    disabled: true,
   },
 ];
 
@@ -66,7 +69,7 @@ const CardSelectPlan = () => {
               key={index}
               icon={button.icon}
               title={button.title}
-              disabled={status === "loading"}
+              disabled={status === "loading" || button.disabled}
               description={button.description}
               onClick={() => handleCodeChange(button.case)}
             />
