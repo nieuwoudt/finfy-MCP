@@ -7,6 +7,14 @@ import { OptionsType } from "@/types";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 
+const getEmojiFlag = (countryCode: string) => {
+  return countryCode
+    .toUpperCase()
+    .split('')
+    .map(char => String.fromCodePoint(127397 + char.charCodeAt(0)))
+    .join('');
+};
+
 interface CountryData {
   name: {
     common: string;
@@ -35,13 +43,20 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onChange }) => {
           label: country.name.common,
           content: country.name.common,
         }));
-        const defaultValue = countryOptions.find(
+        const updatedCountryOptionsWithEmojiFlags = countryOptions
+        .sort((a, b) => a.label.localeCompare(b.label))
+        .map(country => ({
+          ...country,
+          content: `${getEmojiFlag(country.value)} ${country.label}`,
+          label: `${getEmojiFlag(country.value)} ${country.label}`
+        }));
+        const defaultValue = updatedCountryOptionsWithEmojiFlags.find(
           (count) => count.value === user?.selected_country
         );
         if (defaultValue && onChange) {
           onChange(defaultValue);
         }
-        setCountries(countryOptions);
+        setCountries(updatedCountryOptionsWithEmojiFlags);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching countries:", error);
