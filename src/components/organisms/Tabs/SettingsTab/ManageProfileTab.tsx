@@ -56,7 +56,7 @@ const ManageProfileTab = () => {
     <>
       <p className="my-4">General</p>
       <div className="p-3 border rounded-md bg-navy-15 border-navy-5">
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <div className="">
             <p className="text-white mb-2">Appearance</p>
             <p className="text-xs">Set your preferred theme for Perplexity</p>
@@ -64,8 +64,8 @@ const ManageProfileTab = () => {
           <div className="text-white">
             <ThemeButtons />
           </div>
-        </div>
-        <SeparatorLine />
+        </div> */}
+        {/* <SeparatorLine /> */}
         <div className="flex items-center justify-between">
           <div className="w-full">
             <p className="text-white mb-2">Language</p>
