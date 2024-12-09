@@ -37,7 +37,7 @@ const CardFinalUserPolicy = () => {
                 <Icon type="SwitchArrowsIcon" />
               </div>
               <p>
-                Imaili&apos;s may occasionally generate incorrect or misleading
+                Finfy&apos;s may occasionally generate incorrect or misleading
                 information, or produce offensive or biased content.
               </p>
             </div>
@@ -46,7 +46,7 @@ const CardFinalUserPolicy = () => {
                 <Icon type="GradHatIcon" />
               </div>
               <p>
-                Imali is not intended to give advice, including legal,
+                Finfy is not intended to give advice, including legal,
                 financial, & medical advice. Don&apos;t rely on our conversation
                 alone without doing your own independent research.
               </p>
@@ -59,7 +59,7 @@ const CardFinalUserPolicy = () => {
                 />
               </div>
               <p>
-                Imali may change usage limits, functionality, or policies as we
+                Finfy may change usage limits, functionality, or policies as we
                 learn more. You cfv upgrade your plan to get more access to
                 Claude&apos;s features.
               </p>

@@ -56,7 +56,7 @@ const CardSelectPlan = () => {
 
   return (
     <CardTemplate
-      title="How are you planning to use Imali?"
+      title="How are you planning to use Finfy?"
       classes={{
         cardTitle: "text-center",
         card: "max-w-xl",

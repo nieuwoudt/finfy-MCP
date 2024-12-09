@@ -46,7 +46,7 @@ const CardSetupComplete = () => {
         cardHeader: "flex flex-col justify-center items-center",
         cardDescription: "text-center",
       }}
-      description="Thank you! Your bank account was connected to Imali"
+      description="Thank you! Your bank account was connected to Finfy"
     >
       <CardTemplate.Footer className="flex justify-between flex-col w-full gap-3 items-center mt-6">
         <Button
