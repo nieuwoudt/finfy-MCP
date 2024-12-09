@@ -12,7 +12,7 @@ const HomeSuggestBoxes = ({ isMobile = false }: { isMobile?: boolean }) => {
 
   return (
     <div className="w-full relative max-w-[95%] mt-3">
-      <div className="hidden xl:block w-full">
+      <div className="hidden lg:block w-full">
         <Swiper
           className="max-w-[calc(100vw-400px)] max-h-[112px]"
           spaceBetween={16}
@@ -53,7 +53,7 @@ const HomeSuggestBoxes = ({ isMobile = false }: { isMobile?: boolean }) => {
       </div>
       <div
         className={cn(
-          "w-full mt-3 xl:hidden flex gap-3",
+          "w-full mt-3 lg:hidden flex gap-3",
           isMobile
             ? "flex-row overflow-x-auto min-h-[230px] overflow-y-hidden whitespace-nowrap"
             : "flex-wrap overflow-y-auto max-h-[calc(100vh-350px)]"
