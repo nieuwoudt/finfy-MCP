@@ -32,7 +32,7 @@ const CardUserPolicy = () => {
                 <Icon type="HandIcon" />
               </div>
               <p>
-                Imali&apos;s Acceptable Use Policy prohibits using Claude for
+                Finfy&apos;s Acceptable Use Policy prohibits using Claude for
                 harm, like producing violent, abusive, or deceptive content.
               </p>
             </div>
@@ -41,7 +41,7 @@ const CardUserPolicy = () => {
                 <Icon type="ShieldIcon" />
               </div>
               <p>
-                Imali&apos;s regularly reviews conversations flagged by our
+                Finfy&apos;s regularly reviews conversations flagged by our
                 automated abuse detection, and may use them to improve our.
               </p>
             </div>
@@ -50,7 +50,7 @@ const CardUserPolicy = () => {
                 <Icon type="GradHatIcon" />
               </div>
               <p>
-                Imali is not intended to give advice, including legal,
+                Finfy is not intended to give advice, including legal,
                 financial, & medical advise. Don&apos;t rely on our conversation
                 alone without doing your own independent research.
               </p>
