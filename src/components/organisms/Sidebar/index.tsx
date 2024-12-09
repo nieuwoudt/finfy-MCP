@@ -82,7 +82,7 @@ const Sidebar = () => {
         <CreateNewChatPop>
           <Button
             variant="ghost"
-            className="flex gap-2 bg-navy-25 group text-nowrap border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
+            className="flex gap-2 bg-navy-25 group text-nowrap border-navy-25 hover:border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
           >
             <Icon
               type="PlusSolidIcon"
