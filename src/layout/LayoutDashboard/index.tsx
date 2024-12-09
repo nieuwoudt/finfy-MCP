@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { HeaderFocus } from "@/components/molecules/Header";
 import { fetchFocusSuggests, setSuggest } from "@/lib/store/features/suggest/suggestSlice";
+import clsx from "clsx";
 
 interface LayoutDashboardProps extends PropsWithChildren { }
 
@@ -60,7 +61,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
       {messages.length ? (
         <Conversation handleOpenModal={handleOpenModal} />
       ) : (
-        <>
+        <div className="lg:px-40 lg:pt-20 lg:pb-12">
           <HeaderText />
           <div className="hidden lg:flex flex-1 flex-col items-center">
             {!!suggest?.length && <>
@@ -80,9 +81,9 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
             </>}
             <HomeSuggestBoxes isMobile={true} />
           </div>
-        </>
+        </div>
       )}
-      <div className="bg-[#1F263D]">
+      <div className={clsx("bg-[#1F263D] ", {"lg:py-20 lg:px-40": !messages.length })}>
         <AssistInput 
           isDark={!!selectedChartId} 
           classes={{
