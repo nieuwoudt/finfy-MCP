@@ -7,6 +7,7 @@ import { FC, ReactNode, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import clsx from "clsx";
 
 interface ContentMessageProps {
   text: ReactNode;
@@ -127,25 +128,26 @@ const ContentMessage: FC<ContentMessageProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className={clsx("flex items-start gap-6 h-full", {"bg-[#272E48] rounded-lg p-8 w-fit": isUser})}>
       {!isUser && !isLoading && (
-        <div className="flex items-end gap-4 mb-4">
+        <div className="flex items-end gap-4 mt-1">
           <span className="w-4 h-4">
             <Icon type="SmallLogo" />
           </span>
-          <span className="text-white text-2xl leading-3 font-medium">
+          {/* <span className="text-white text-2xl leading-3 font-medium">
             {isLastMessage ? "Answer" : "Finfy"}
-          </span>
+          </span> */}
         </div>
       )}
 
       <p
         className={cn(
-          "whitespace-pre-line text-white font-normal leading-[14px] md:leading-8",
+          "whitespace-pre-line text-white font-normal text-base leading-5",
           isUser
-            ? "text-2xl md:text-4xl font-bold flex gap-2.5 items-center"
-            : "text-sm md:text-base"
+            ? "flex gap-2.5 items-center"
+            : ""
         )}
+        style={{ letterSpacing: '-0.3px', lineHeight: '140%' }}
       >
         {isUser || isLoading ? (
           text
