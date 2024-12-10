@@ -27,7 +27,7 @@ export const HeaderFocus = () => {
   }
 
   return (<div className="w-full flex items-center z-[500] pr-2.5 justify-between" style={{
-    zIndex: 200
+    zIndex: 40
   }}>
     {true &&
       (<>

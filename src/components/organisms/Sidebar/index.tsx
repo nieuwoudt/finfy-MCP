@@ -79,10 +79,11 @@ const Sidebar = () => {
             />
           </Button>
         </div>
-        <CreateNewChatPop>
+        {/* <CreateNewChatPop> */}
           <Button
             variant="ghost"
             className="flex gap-2 bg-navy-25 group text-nowrap border-navy-25 hover:border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
+            onClick={handleClick}
           >
             <Icon
               type="PlusSolidIcon"
@@ -97,7 +98,7 @@ const Sidebar = () => {
               New Thread
             </span>
           </Button>
-        </CreateNewChatPop>
+        {/* </CreateNewChatPop> */}
       </div>
       <ScrollableArea className="px-2">
         <MenuAccordion />
