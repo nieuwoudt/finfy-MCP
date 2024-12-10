@@ -83,7 +83,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
           </div>
         </div>
       )}
-      <div className={clsx("bg-[#1F263D]  lg:px-40", {"lg:py-20": !messages.length })}>
+      <div className={clsx("bg-[#1F263D] lg:px-40", {"lg:py-20": !messages.length })}>
         <AssistInput 
           isDark={!!selectedChartId} 
           classes={{
