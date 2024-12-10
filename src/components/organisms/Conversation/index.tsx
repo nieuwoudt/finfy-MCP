@@ -24,7 +24,7 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal }) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-hidden relative flex flex-row gap-8">
+    <div className="flex-1 overflow-hidden relative flex flex-row gap-8 lg:px-40 lg:pt-20 lg:pb-12" >
       <div className={`w-full relative pb-32`}>
         <div
           className={cn(
