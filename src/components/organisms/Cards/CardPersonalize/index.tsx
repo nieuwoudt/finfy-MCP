@@ -33,7 +33,7 @@ const CardPersonalize = () => {
   return (
     <CardTemplate
       title="Hello, I’m Finfy"
-      description="I’m your AI-powered financial assistant, here to help you manage your money smarter. With me, you can track your spending, set savings goals, and plan your financial future—all securely and accurately. Let’s get started!"
+      description="I’m your AI-powered financial assistant, here to help you manage your money smarter. With me, you can track your spending, set savings goals, and plan your financial future — all securely and accurately. Let’s get started!"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardTemplate.Content>
