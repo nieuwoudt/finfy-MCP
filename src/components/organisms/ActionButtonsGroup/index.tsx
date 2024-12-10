@@ -52,7 +52,7 @@ const ActionButtonsGroupMobile: FC = () => {
         />
       </FocusAssistantPopover> */}
       <ConnectBankAction inputMenu />
-      <ActionButton
+      {/* <ActionButton
         Icon={
           <Icon
             type="PaperClipIcon"
@@ -60,7 +60,7 @@ const ActionButtonsGroupMobile: FC = () => {
           />
         }
         text={"Attach"}
-      />
+      /> */}
     </nav>
   );
 };
