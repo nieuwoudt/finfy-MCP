@@ -19,7 +19,7 @@ const CustomButtonIcon = ({
     <button
       disabled={disabled}
       onClick={onClick}
-      className="flex h-auto md:min-h-[172px]  w-full md:w-[157px] flex-col items-center justify-center rounded-xl border border-navy-5 py-3 md:py-1 px-[5px] shadow-lg hover:bg-navy-15 disabled:opacity-50"
+      className="flex h-auto md:min-h-[172px]  w-full md:w-[157px] flex-col items-center justify-center rounded-xl border border-navy-5 py-3 md:py-1 px-[5px] shadow-lg hover:bg-navy-15 disabled:hover:bg-inherit disabled:opacity-50"
     >
       {icon}
       <p className="mt-3 text-sm font-semibold text-white">{title}</p>
