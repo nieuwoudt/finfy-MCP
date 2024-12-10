@@ -26,7 +26,7 @@ const Message: FC<MessageProps> = (props) => {
           <div
             className={cn(
               "message relative inline-block text-white rounded-md px-4 py-1 md:px-5 md:py-2",
-              "w-full md:w-auto"
+              "md:w-auto"
             )}
           >
             <ContentMessage

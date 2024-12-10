@@ -68,7 +68,7 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal }) => {
                       <span className="w-4 h-4">
                         <div className="small-loader" />
                       </span>
-                      <span className="text-white text-2xl leading-3 font-medium">
+                      <span className="text-base font-normal leading-5 tracking-tight">
                         Answer
                       </span>
                     </div>

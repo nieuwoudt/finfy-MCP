@@ -128,25 +128,26 @@ const ContentMessage: FC<ContentMessageProps> = ({
   };
 
   return (
-    <div className={clsx("flex flex-col h-full", {"bg-[#272E48] rounded-lg p-8 w-fit": isUser})}>
+    <div className={clsx("flex items-start gap-6 h-full", {"bg-[#272E48] rounded-lg p-8 w-fit": isUser})}>
       {!isUser && !isLoading && (
-        <div className="flex items-end gap-4 mb-4">
+        <div className="flex items-end gap-4 mt-1">
           <span className="w-4 h-4">
             <Icon type="SmallLogo" />
           </span>
-          <span className="text-white text-2xl leading-3 font-medium">
+          {/* <span className="text-white text-2xl leading-3 font-medium">
             {isLastMessage ? "Answer" : "Finfy"}
-          </span>
+          </span> */}
         </div>
       )}
 
       <p
         className={cn(
-          "whitespace-pre-line text-white font-normal ",
+          "whitespace-pre-line text-white font-normal text-base leading-5",
           isUser
-            ? "text-base font-normal leading-5 tracking-tight flex gap-2.5 items-center"
-            : "text-sm md:text-base leading-[14px] md:leading-8"
+            ? "flex gap-2.5 items-center"
+            : ""
         )}
+        style={{ letterSpacing: '-0.3px', lineHeight: '140%' }}
       >
         {isUser || isLoading ? (
           text
