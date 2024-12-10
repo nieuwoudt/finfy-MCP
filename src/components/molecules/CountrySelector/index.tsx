@@ -30,6 +30,7 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onChange }) => {
   const [countries, setCountries] = useState<OptionsType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const user = useSelector((state: RootState) => state.user.user);
+  const [hasRetried, setHasRetried] = useState(false);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -44,12 +45,12 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onChange }) => {
           content: country.name.common,
         }));
         const updatedCountryOptionsWithEmojiFlags = countryOptions
-        .sort((a, b) => a.label.localeCompare(b.label))
-        .map(country => ({
-          ...country,
-          content: `${getEmojiFlag(country.value)} ${country.label}`,
-          label: `${getEmojiFlag(country.value)} ${country.label}`
-        }));
+          .sort((a, b) => a.label.localeCompare(b.label))
+          .map((country) => ({
+            ...country,
+            content: `${getEmojiFlag(country.value)} ${country.label}`,
+            label: `${getEmojiFlag(country.value)} ${country.label}`,
+          }));
         const defaultValue = updatedCountryOptionsWithEmojiFlags.find(
           (count) => count.value === user?.selected_country
         );
@@ -60,10 +61,15 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onChange }) => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching countries:", error);
-        setLoading(false);
+        if (!hasRetried) {
+          setHasRetried(true);
+          fetchCountries();
+        } else {
+          setLoading(false);
+        }
       }
     };
-
+  
     fetchCountries();
   }, []);
 
