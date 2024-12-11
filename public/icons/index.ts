@@ -49,6 +49,15 @@ import LightningIcon from "./lightning.svg";
 import InfinityIcon from "./infinity.svg";
 import SmallLogo from "./small-logo.svg";
 import ChrIcon from "./chr-icon.svg";
+import ShoppingBag from "./shopping-bag.svg";
+import CurrencyDollar from "./currensy-dollar.svg";
+import Flag from "./flag.svg";
+import Home from "./home.svg";
+import PresentationChartLine from "./presentation-chart-line.svg";
+import Income from "./income.svg";
+import Refresh from "./refresh.svg";
+import CreditCardUsage from "./credit-card-usage.svg";
+import Sun from "./sun-icon.svg";
 
 export default {
   SmallLogo,
@@ -101,5 +110,14 @@ export default {
   QuestionMarkCircle,
   PlusCircle,
   ToggleSidebarIcon,
-  ChrIcon
+  ChrIcon,
+  ShoppingBag,
+  CurrencyDollar,
+  Flag,
+  Home,
+  PresentationChartLine,
+  Income,
+  Refresh,
+  CreditCardUsage,
+  Sun
 };
