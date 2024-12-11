@@ -28,6 +28,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
     history,
     isLoading,
     setIsLoadingSendQuery,
+    chatCategory
   } = useChat();
 
   const [message, setMessage] = useState("");
@@ -63,6 +64,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
       const userId = user?.id;
       if (value && userId) {
         let currentChatId = chatId;
+        let currentChatCategory = chatCategory;
         if (handleClose) {
           handleResetChat();
         }
@@ -85,7 +87,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
             history,
             value,
             user?.selected_country === "ZA" ? "yodlee" : "plaid",
-            category
+            currentChatCategory ? currentChatCategory : category
           );
           if (data?.error) {
             toast.error(data.error.message);

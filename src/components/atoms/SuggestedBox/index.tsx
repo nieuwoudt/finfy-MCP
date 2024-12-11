@@ -20,6 +20,7 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
     history,
     isLoading,
     setIsLoadingSendQuery,
+    chatCategory
   } = useChat();
 
   const handleClick = async () => {
@@ -29,9 +30,11 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
       const userId = user?.id;
       if (value && userId) {
         let currentChatId = chatId;
+        let chatCategory = undefined;
         if (!currentChatId) {
           const chat = await createChat(userId, value);
           currentChatId = chat.payload.id;
+          chatCategory = chat.payload.category;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
         if (currentChatId) {
@@ -47,7 +50,8 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
             currentChatId,
             history,
             value,
-            user?.selected_country === "ZA" ? "yodlee" : "plaid"
+            user?.selected_country === "ZA" ? "yodlee" : "plaid",
+            chatCategory
           );
 
           if (data?.error) {

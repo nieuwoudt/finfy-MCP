@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/store";
 import {
@@ -106,6 +106,14 @@ export const useChat = () => {
     [dispatch]
   );
 
+  const chatData = useMemo(() => {
+    if (chatState.chats.length > 0 && chatState.chat_id) {
+      return chatState.chats.find((chat) => chat.id === chatState.chat_id);
+    }
+    
+    return undefined;
+  },[chatState]);
+
   return {
     isLoading: chatState.loadingSendMessage,
     chats: chatState.chats,
@@ -113,6 +121,7 @@ export const useChat = () => {
     loading: chatState.loading,
     error: chatState.error,
     chatId: chatState.chat_id,
+    chatCategory: chatData ? chatData.category : undefined,
     setSuggestQuestions: handleSetSuggestQuestions,
     history: chatState.history,
     fetchChats: fetchChatsCallback,
