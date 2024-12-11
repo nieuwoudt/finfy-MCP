@@ -13,9 +13,10 @@ import { ActionButtonsGroupMobile } from "@/components/organisms/ActionButtonsGr
 interface ChatMessageInputProps {
   handleClose?: () => void;
   isDark?: boolean;
+  category?: string;
 }
 
-const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = false }) => {
+const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = false, category }) => {
   const { user } = useUser();
   const router = useRouter();
   const {
@@ -66,7 +67,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
           handleResetChat();
         }
         if (!currentChatId || handleClose) {
-          const chat = await createChat(userId, value);
+          const chat = await createChat(userId, value, category);
           currentChatId = chat.payload.id;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
@@ -83,7 +84,8 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
             currentChatId,
             history,
             value,
-            user?.selected_country === "ZA" ? "yodlee" : "plaid"
+            user?.selected_country === "ZA" ? "yodlee" : "plaid",
+            category
           );
           if (data?.error) {
             toast.error(data.error.message);

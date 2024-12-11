@@ -145,7 +145,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                 >
                   Start a new thread...
                 </Link> */}
-                <CreateNewChatPop>
+                <CreateNewChatPop category={item.value} >
                   <button
                     className="menu-list-btn bg-transparent  flex gap-1 ml-1 items-center"
                   >

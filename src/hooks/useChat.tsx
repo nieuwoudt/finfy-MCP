@@ -67,6 +67,7 @@ export const useChat = () => {
       history: string[],
       user_query: string,
       provider?: string,
+      category?: string
     ) => {
       const data = await dispatch(
         sendChatQuery({
@@ -74,7 +75,8 @@ export const useChat = () => {
           chat_id,
           history,
           user_query,
-          provider
+          provider,
+          category
         })
       );
       return data;
@@ -83,8 +85,8 @@ export const useChat = () => {
   );
 
   const createChatCallback = useCallback(
-    async (userId: string, title: string) => {
-      const data = await dispatch(createChat({ userId, title }));
+    async (userId: string, title: string, category?: string) => {
+      const data = await dispatch(createChat({ userId, title, category }));
       return data;
     },
     [dispatch]
