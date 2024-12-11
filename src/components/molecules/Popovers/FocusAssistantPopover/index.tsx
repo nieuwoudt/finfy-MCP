@@ -37,6 +37,7 @@ const FocusAssistantPopover: FC<FocusAssistantPopoverProps> = ({
                 text={item.text}
                 key={index}
                 suggest={item.suggest}
+                icon={item.icon}
               />
             );
           })}

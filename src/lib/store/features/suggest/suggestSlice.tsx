@@ -1,3 +1,4 @@
+import { Icon } from "@/components/atoms";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface SuggestState {
@@ -28,15 +29,27 @@ function adaptApiDataToMock(apiData: any) {
   };
   // const categoryIcons: any = {
   //   spending: "🛍️",
-  //   budgetting: "📊",
+  //   budgeting: "📊",
   //   goals: "🎯",
-  //   cash_forcast: "🌤️",
+  //   cash_forecast: "🌤️",
   //   credit_card_usage: "💳",
   //   investment_holdings: "🏠",
   //   net_worth: "📈",
   //   cashflow: "💰",
   //   recent_transactions: "💸"
   // };
+
+  const categoryIconTypes: any = {
+    spending: "ShoppingBag",
+    budgeting: "CurrencyDollar",
+    goals: "Flag",
+    cash_forecast: "Sun",
+    credit_card_usage: "CreditCardUsage",
+    investment_holdings: "Home",
+    net_worth: "PresentationChartLine",
+    cashflow: "Income",
+    recent_transactions: "Refresh"
+  };
 
   const descriptions: any = {
     spending: "Monitor and analyze spending habits.",
@@ -63,8 +76,9 @@ function adaptApiDataToMock(apiData: any) {
   };
 
   return Object.entries(apiData).map(([category, questions]: any) => ({
-    title: `${categoryIcons[category] || ""} ${capitalizeWords(category.replace('_', ' '))}`,
+    title: `${capitalizeWords(category.replace('_', ' '))}`,
     text: descriptions[category] || "Manage your finances efficiently.",
+    icon: categoryIconTypes[category] ? <Icon type={categoryIconTypes[category]} /> : "",
     suggest: Object.values(questions).map(question => ({
       label: labels[category] || "Financial Update",
       content: question,
