@@ -16,7 +16,7 @@ export const menuItems: MenuItem[] = [
     contents: [],
   },
   {
-    value: "goals",
+    value: "budget",
     icon: () => (
       <Icon
         type="GoalsIcon"
@@ -24,27 +24,27 @@ export const menuItems: MenuItem[] = [
       />
     ),
     title: "Budget",
-    link: "/goals",
+    link: "/dashboard/chat",
     href: "/dashboard",
     contents: [
-      {
-        title: "🗂️ Manage, track, and review accounts.",
-        date: "2024-03-18",
-        chatId: "12345",
-        category: "goals",
-      },
-      {
-        title: "🧑‍ Expert guidance on financial strategies.",
-        date: "2024-10-23",
-        chatId: "54321",
-        category: "goals",
-      },
-      {
-        title: "🛒 Explore and compare financial offerings.",
-        date: "2024-01-01",
-        chatId: "96732",
-        category: "goals",
-      },
+      // {
+      //   title: "🗂️ Manage, track, and review accounts.",
+      //   date: "2024-03-18",
+      //   chatId: "12345",
+      //   category: "goals",
+      // },
+      // {
+      //   title: "🧑‍ Expert guidance on financial strategies.",
+      //   date: "2024-10-23",
+      //   chatId: "54321",
+      //   category: "goals",
+      // },
+      // {
+      //   title: "🛒 Explore and compare financial offerings.",
+      //   date: "2024-01-01",
+      //   chatId: "96732",
+      //   category: "goals",
+      // },
     ],
   },
   // {

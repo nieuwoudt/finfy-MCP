@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Accordion, Button, Icon as IconComponent } from "@/components/atoms";
 import { DropDownModal } from "@/components/molecules";
 import Link from "next/link";
@@ -166,6 +166,23 @@ const MenuAccordion: FC = () => {
   const { chats, handleResetChat } = useChat();
   const { handleOpen } = useSidebar();
 
+  const groupedChats = useMemo(() => {
+    if (!chats.length) {
+      return {};
+    }
+
+    const categorizedChats = chats.reduce((acc, chat) => {
+      const { category } = chat;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(chat);
+      return acc;
+    }, {});
+
+    return categorizedChats;
+  },[chats]);
+
   return (
     <Accordion
       type="single"
@@ -176,7 +193,7 @@ const MenuAccordion: FC = () => {
         <MenuAccordionItem
           key={item.value}
           item={item}
-          contents={item.value === "assistant" ? chats : item.contents}
+          contents={Object.keys(groupedChats).length > 0 && groupedChats.hasOwnProperty(item.value) ? groupedChats[item.value] : []}
           handleOpen={handleOpen}
           isHideChevron={item.isHideChevron}
           onClick={handleResetChat}
