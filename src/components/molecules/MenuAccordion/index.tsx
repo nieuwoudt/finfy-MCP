@@ -41,6 +41,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const { setCategory } = useCategory();
+  const { handleResetChat } = useChat();
   const Icon = item.icon;
   // Sort contents by date in descending order
   const sortedContents = [...contents].sort(
@@ -148,13 +149,18 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                 >
                   Start a new thread...
                 </Link> */}
-                <CreateNewChatPop category={item.value} >
+                {/* <CreateNewChatPop category={item.value} > */}
                   <button
                     className="menu-list-btn bg-transparent  flex gap-1 ml-1 items-center"
+                    onClick={() => {
+                      setCategory(item.value);
+                      handleResetChat();
+                      router.push("/dashboard");
+                    }}
                   >
                     Start a new thread...
                   </button>
-                </CreateNewChatPop>
+                {/* </CreateNewChatPop> */}
               </Accordion.Content>
 
             </>
