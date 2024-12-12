@@ -100,7 +100,8 @@ export const fetchFocusSuggests = createAsyncThunk(
       "https://finify-ai-137495399237.us-central1.run.app/get_suggested_question_bank"
     );
     const data = await response.json();
-    console.log(adaptApiDataToMock(data), "kghfghfghghjjfhg")
+    // console.log('CHECK data', data)
+    // console.log(adaptApiDataToMock(data), "kghfghfghghjjfhg")
     return adaptApiDataToMock(data);
   }
 );
