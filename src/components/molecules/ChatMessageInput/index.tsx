@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Icon, Textarea } from "@/components/atoms";
-import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
+import { useAutoResizeTextArea, useCategory, useChat, useUser } from "@/hooks";
 import { Loader2 } from "lucide-react";
 import { ChangeEvent, FC, useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ interface ChatMessageInputProps {
   category?: string;
 }
 
-const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = false, category }) => {
+const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = false }) => {
   const { user } = useUser();
   const router = useRouter();
   const {
@@ -30,6 +30,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
     setIsLoadingSendQuery,
     chatCategory
   } = useChat();
+  const { category } = useCategory();
 
   const [message, setMessage] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false); // State to manage Popover
@@ -69,7 +70,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
           handleResetChat();
         }
         if (!currentChatId || handleClose) {
-          const chat = await createChat(userId, value, category);
+          const chat = await createChat(userId, value, category ? category : 'assistant');
           currentChatId = chat.payload.id;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
@@ -87,7 +88,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
             history,
             value,
             user?.selected_country === "ZA" ? "yodlee" : "plaid",
-            currentChatCategory ? currentChatCategory : category
+            category ? category : 'assistant'
           );
           if (data?.error) {
             toast.error(data.error.message);
