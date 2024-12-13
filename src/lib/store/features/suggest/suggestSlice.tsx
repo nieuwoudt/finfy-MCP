@@ -53,7 +53,7 @@ function adaptApiDataToMock(apiData: any) {
 
   const descriptions: any = {
     spending: "Monitor and analyze spending habits.",
-    budgetting: "Create and adjust financial budgets.",
+    budgeting: "Create and adjust financial budgets.",
     goals: "Set and pursue financial targets.",
     cash_forcast: "Predict future financial status.",
     credit_card_usage: "Optimize and track card benefits.",
@@ -65,7 +65,7 @@ function adaptApiDataToMock(apiData: any) {
 
   const labels: any = {
     spending: "Spending Question",
-    budgetting: "Budget Insight",
+    budgeting: "Budget Insight",
     goals: "Goal Progress",
     cash_forcast: "Cash Forecast",
     credit_card_usage: "Credit Card Tip",
