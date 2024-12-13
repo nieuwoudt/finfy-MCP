@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { ActionButton, ConnectBankAction, FocusAssistantPopover } from "@/components/molecules";
 import { ActionButtonsGroupMobile } from "@/components/organisms/ActionButtonsGroup";
+import { Category } from "@/lib/store/features/category/categorySlice";
 
 interface ChatMessageInputProps {
   handleClose?: () => void;
@@ -70,7 +71,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
           handleResetChat();
         }
         if (!currentChatId || handleClose) {
-          const chat = await createChat(userId, value, category ? category : 'assistant');
+          const chat = await createChat(userId, value, category ? category : Category.ASSISTANT);
           currentChatId = chat.payload.id;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
@@ -88,7 +89,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
             history,
             value,
             user?.selected_country === "ZA" ? "yodlee" : "plaid",
-            category ? category : 'assistant'
+            category ? category : Category.ASSISTANT
           );
           if (data?.error) {
             toast.error(data.error.message);

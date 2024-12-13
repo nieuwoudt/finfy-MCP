@@ -14,6 +14,7 @@ import { useCategory, useChat, useSidebar } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CreateNewChatPop } from "../CreateNewChatPop";
+import { Category } from "@/lib/store/features/category/categorySlice";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -85,7 +86,7 @@ const Sidebar = () => {
             variant="ghost"
             className="flex gap-2 bg-navy-25 group text-nowrap border-navy-25 hover:border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
             onClick={() => {
-              setCategory('assistant');
+              setCategory(Category.ASSISTANT);
               handleClick();
             }}
           >

@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export enum Category {
+    ASSISTANT = 'assistant',
+    BUDGET = 'budget'
+}
 interface CategoryState {
-  category: string | null;
+  category: Category | null;
 }
 
 const initialState: CategoryState = {

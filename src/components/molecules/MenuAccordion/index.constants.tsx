@@ -1,9 +1,10 @@
 import { MenuItem } from "@/types";
 import { Icon } from "@/components/atoms";
+import { Category } from "@/lib/store/features/category/categorySlice";
 
 export const menuItems: MenuItem[] = [
   {
-    value: "assistant",
+    value: Category.ASSISTANT,
     icon: () => (
       <Icon
         type="SparkleIcon"
@@ -16,7 +17,7 @@ export const menuItems: MenuItem[] = [
     contents: [],
   },
   {
-    value: "budget",
+    value: Category.BUDGET,
     icon: () => (
       <Icon
         type="GoalsIcon"

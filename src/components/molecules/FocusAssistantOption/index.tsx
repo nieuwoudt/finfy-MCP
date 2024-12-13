@@ -4,6 +4,7 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { FC, ReactNode } from "react";
 import { setSuggest } from "@/lib/store/features/suggest/suggestSlice";
 import { useCategory } from "@/hooks";
+import { Category } from "@/lib/store/features/category/categorySlice";
 interface FocusAssistantOptionProps {
   title: string;
   text: string;
@@ -25,7 +26,7 @@ const FocusAssistantOption: FC<FocusAssistantOptionProps> = ({
     if (suggest.length > 0 && suggest[0].category === 'budgeting') {
       setCategory('budget');
     } else {
-      setCategory('assistant');
+      setCategory(Category.ASSISTANT);
     }
     setTimeout(() => {
       dispatch(setSuggest(suggest.slice(0, 6)));
