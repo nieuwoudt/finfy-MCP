@@ -82,7 +82,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
           "bg-navy-25": isActive,
         })}
       >
-        <div className={"flex justify-between w-full items-center"}>
+        <div className={"flex gap-3 w-full items-center"}>
           <Link
             href={href}
             onClick={onClick}
@@ -94,7 +94,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
             <span>{item.title}</span>
           </Link>
           {isHideChevron && (
-            <span className="text-[10px] font-normal">Coming Soon</span>
+            <span className="text-[10px] font-normal">coming soon</span>
           )}
         </div>
       </Accordion.Trigger>
