@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ScrollableArea } from "@/components/molecules";
 import { cn } from "@/lib/utils";
-import { useChat, useSidebar } from "@/hooks";
+import { useCategory, useChat, useSidebar } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CreateNewChatPop } from "../CreateNewChatPop";
@@ -20,6 +20,7 @@ const Sidebar = () => {
   const { handleResetChat, setSuggestQuestions } = useChat();
   const { open, handleToggle } = useSidebar();
   const [isMounted, setIsMounted] = useState(false);
+  const { setCategory } = useCategory();
 
   useEffect(() => {
     setIsMounted(true);
@@ -83,7 +84,10 @@ const Sidebar = () => {
           <Button
             variant="ghost"
             className="flex gap-2 bg-navy-25 group text-nowrap border-navy-25 hover:border-purple-15 justify-start px-2 items-center border w-full !rounded-sm"
-            onClick={handleClick}
+            onClick={() => {
+              setCategory('assistant');
+              handleClick();
+            }}
           >
             <Icon
               type="PlusSolidIcon"
