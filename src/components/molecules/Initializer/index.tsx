@@ -10,13 +10,16 @@ import {
   setChatId,
   resetChat,
 } from "@/lib/store/features/chat/chatSlice";
+import { setCategory } from "@/lib/store/features/category/categorySlice";
 import { useParams } from "next/navigation";
+import { useChat } from "@/hooks";
 
 interface InitializerProps {}
 
 const Initializer: FC<InitializerProps> = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
+  const { chats } = useChat();
 
   useEffect(() => {
     (async () => {
@@ -38,6 +41,17 @@ const Initializer: FC<InitializerProps> = () => {
       }
     })();
   }, [dispatch]);
+
+  useEffect(() => {
+    (async () => {
+      if (params.id && chats.length > 0) {
+        const chatData = chats.find((chat) => chat.id === params.id);
+        if (chatData) {
+          dispatch(setCategory(chatData.category));
+        }
+      }
+    })()
+  },[dispatch, chats, params])
 
   return (
     <ProgressBar

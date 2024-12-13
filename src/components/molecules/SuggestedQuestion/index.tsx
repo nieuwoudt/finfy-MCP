@@ -1,6 +1,7 @@
 "use client";
 
-import { useChat, useUser } from "@/hooks";
+import { useCategory, useChat, useUser } from "@/hooks";
+import { Category } from "@/lib/store/features/category/categorySlice";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 import toast from "react-hot-toast";
@@ -22,6 +23,8 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
     setIsLoadingSendQuery,
     setSuggestQuestions,
   } = useChat();
+  const { category } = useCategory();
+
   const handleClick = async () => {
     if (!isLoading) {
       setIsLoadingSendQuery(true);
@@ -29,9 +32,11 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
       const userId = user?.id;
       if (value && userId) {
         let currentChatId = chatId;
+        let chatCategory = undefined;
         if (!currentChatId) {
-          const chat = await createChat(userId, value);
+          const chat = await createChat(userId, value, category ? category : Category.ASSISTANT);
           currentChatId = chat.payload.id;
+          chatCategory = chat.payload.category;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
         if (currentChatId) {
@@ -48,7 +53,8 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
             currentChatId,
             history,
             value,
-            user?.selected_country === "ZA" ? "yodlee" : "plaid"
+            user?.selected_country === "ZA" ? "yodlee" : "plaid",
+            category ? category : Category.ASSISTANT
           );
 
           if (data?.error) {

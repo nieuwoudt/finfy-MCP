@@ -1,17 +1,19 @@
 "use client";
 import { Icon } from "@/components/atoms";
-import { useUser } from "@/hooks";
+import { useCategory, useUser } from "@/hooks";
 import { usePathname } from "next/navigation";
 import { FocusAssistantPopover } from "../Popovers";
 import { ActionButton } from "../ActionButton";
+import { useMemo } from "react";
 
 const HeaderText = () => {
   const { user } = useUser();
+  const { category } = useCategory();
   const pathname = usePathname();
   const firstName = "Nieve";
 
   const headerText = {
-    home: {
+    assistant: {
       title: (
         <>
           <span className="text-purple-15">Hey {user?.name}!</span> I&apos;m
@@ -76,20 +78,39 @@ const HeaderText = () => {
         </p>
       ),
     },
+    budget: {
+      title: (
+        <>
+          {user?.name}, let’s set some 
+          <span className="text-purple-15">&nbsp;budgets</span>
+          .
+        </>
+      ),
+      cta: (
+        <p className="text-grey-15 text-lg mt-2">
+          Tell me about your financial goals to get started.
+        </p>
+      ),
+    },
   };
 
-  let content;
-  if (pathname.includes("payments")) {
-    content = headerText.payments;
-  } else if (pathname.includes("discover")) {
-    content = headerText.discover;
-  } else if (pathname.includes("advisors")) {
-    content = headerText.advisors;
-  } else if (pathname.includes("goals")) {
-    content = headerText.goals;
-  } else {
-    content = headerText.home;
-  }
+  const content = useMemo(() => {
+    if (pathname.includes("payments")) {
+      return headerText.payments;
+    } else if (pathname.includes("discover")) {
+      return headerText.discover;
+    } else if (pathname.includes("advisors")) {
+      return headerText.advisors;
+    } else if (pathname.includes("goals")) {
+      return headerText.goals;
+    } else {
+      if (category) {
+        return headerText[category as keyof typeof headerText];
+      } else {
+        return headerText.assistant
+      }
+    }
+  },[category])  
 
   return (
     <div>

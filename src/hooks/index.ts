@@ -10,3 +10,4 @@ export { useYodlee } from "./useYodlee";
 export { useConnectBank } from "./useConnectBank";
 export { useDynamicChart } from "./useDynamicChart";
 export { useAccounts } from "./useAccounts";
+export { useCategory } from "./useCategory";

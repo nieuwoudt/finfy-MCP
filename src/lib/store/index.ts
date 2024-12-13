@@ -6,6 +6,7 @@ import sidebarReducer from "./features/sidebar/sidebarSlice";
 import chatReducer from "./features/chat/chatSlice";
 import suggestReducer from "./features/suggest/suggestSlice";
 import dynamicChartReducer from "./features/dynamicChart/dynamicChartSlice";
+import categoryReducer from "./features/category/categorySlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -16,7 +17,8 @@ export const makeStore = () => {
       chat: chatReducer,
       suggest: suggestReducer,
       dynamicChart: dynamicChartReducer,
-      accounts: accountsReducer
+      accounts: accountsReducer,
+      category: categoryReducer,
     },
   });
 };

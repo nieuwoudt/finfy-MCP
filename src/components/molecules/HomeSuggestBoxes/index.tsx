@@ -14,6 +14,7 @@ const HomeSuggestBoxes = ({ isMobile = false }: { isMobile?: boolean }) => {
     <div className="w-full relative max-w-[95%] mt-3">
       <div className="hidden lg:block w-full">
         <Swiper
+          key={JSON.stringify(suggest)}
           className="max-w-[calc(100vw-400px)] max-h-[116px]"
           spaceBetween={16}
           slidesPerView={isLgScreen ? 4 : 3}

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Accordion, Button, Icon as IconComponent } from "@/components/atoms";
 import { DropDownModal } from "@/components/molecules";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { categorizeDate, cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { MenuItem } from "@/types";
 import { menuItems } from "./index.constants";
-import { useChat, useSidebar } from "@/hooks";
+import { useCategory, useChat, useSidebar } from "@/hooks";
 import { extractDate, removeEmojis } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import {
@@ -24,6 +24,7 @@ interface MenuAccordionItemProps {
   isHideChevron?: boolean;
   href: string;
   onClick: () => void;
+  isActive?: boolean;
 }
 
 const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
@@ -33,11 +34,14 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
   handleOpen,
   href,
   onClick,
+  isActive
 }) => {
   const { open } = useSidebar();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pathname = usePathname();
+  const { setCategory } = useCategory();
+  const { handleResetChat } = useChat();
   const Icon = item.icon;
   // Sort contents by date in descending order
   const sortedContents = [...contents].sort(
@@ -65,9 +69,8 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
       dispatch(setChatId(chatId as string));
     }
   };
-
-  const isActive =
-    pathname === item.link || pathname.startsWith(`${item.link}/`);
+  // const isActive =
+  //   pathname === item.link || pathname.startsWith(`${item.link}/`);
 
   return (
     <Accordion.Item className="flex flex-col gap-0.5" value={item.value}>
@@ -107,12 +110,13 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                     className="flex justify-between max-w-[calc(90%-50px)] lg:max-w-full hover:bg-navy-25 p-2 rounded-sm"
                   >
                     <button
-                      onClick={() =>
+                      onClick={() => {
                         handleClick(
                           content.id ? `${item.link}/${content.id}` : item.link,
                           content.id
                         )
-                      }
+                        setCategory(content.category)
+                      }}
                       className="flex flex-col w-[70%] lg:w-[180px]"
                     >
                       <p className="menu-list-btn max-w-[calc(100%)] text-start m-0 group-hover:text-white text-grey-5">
@@ -145,13 +149,18 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                 >
                   Start a new thread...
                 </Link> */}
-                <CreateNewChatPop>
+                {/* <CreateNewChatPop category={item.value} > */}
                   <button
                     className="menu-list-btn bg-transparent  flex gap-1 ml-1 items-center"
+                    onClick={() => {
+                      setCategory(item.value);
+                      handleResetChat();
+                      router.push("/dashboard");
+                    }}
                   >
                     Start a new thread...
                   </button>
-                </CreateNewChatPop>
+                {/* </CreateNewChatPop> */}
               </Accordion.Content>
 
             </>
@@ -165,6 +174,24 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
 const MenuAccordion: FC = () => {
   const { chats, handleResetChat } = useChat();
   const { handleOpen } = useSidebar();
+  const { category, setCategory } = useCategory();
+
+  const groupedChats = useMemo(() => {
+    if (!chats.length) {
+      return {};
+    }
+
+    const categorizedChats = chats.reduce((acc, chat) => {
+      const { category } = chat;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(chat);
+      return acc;
+    }, {});
+
+    return categorizedChats;
+  },[chats]);
 
   return (
     <Accordion
@@ -176,11 +203,15 @@ const MenuAccordion: FC = () => {
         <MenuAccordionItem
           key={item.value}
           item={item}
-          contents={item.value === "assistant" ? chats : item.contents}
+          contents={Object.keys(groupedChats).length > 0 && groupedChats.hasOwnProperty(item.value) ? groupedChats[item.value] : []}
           handleOpen={handleOpen}
           isHideChevron={item.isHideChevron}
-          onClick={handleResetChat}
+          onClick={() => {
+            setCategory(item.value);
+            handleResetChat()
+          }}
           href={item.href}
+          isActive={category === item.value}
         />
       ))}
     </Accordion>

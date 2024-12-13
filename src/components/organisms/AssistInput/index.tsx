@@ -12,9 +12,10 @@ interface AssistInputProps {
   };
   handleClose?: () => void;
   isDark?: boolean;
+  category?: string
 }
 
-const AssistInput: FC<AssistInputProps> = ({ classes, handleClose, isDark = false }) => {
+const AssistInput: FC<AssistInputProps> = ({ classes, handleClose, isDark = false, category }) => {
   return (
     <div
       className={cn(
@@ -30,7 +31,7 @@ const AssistInput: FC<AssistInputProps> = ({ classes, handleClose, isDark = fals
       >
         <SuggestedQuestions />
         {/* <ActionButtonsGroup /> */}
-        <ChatMessageInput isDark={isDark} handleClose={handleClose} />
+        <ChatMessageInput isDark={isDark} handleClose={handleClose} category={category} />
       </div>
     </div>
   );

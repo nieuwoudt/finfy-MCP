@@ -1,4 +1,5 @@
-import { useChat, useUser } from "@/hooks";
+import { useCategory, useChat, useUser } from "@/hooks";
+import { Category } from "@/lib/store/features/category/categorySlice";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 import toast from "react-hot-toast";
@@ -21,6 +22,7 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
     isLoading,
     setIsLoadingSendQuery,
   } = useChat();
+  const { category } = useCategory();
 
   const handleClick = async () => {
     if (!isLoading) {
@@ -29,9 +31,11 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
       const userId = user?.id;
       if (value && userId) {
         let currentChatId = chatId;
+        let chatCategory = undefined;
         if (!currentChatId) {
-          const chat = await createChat(userId, value);
+          const chat = await createChat(userId, value, category ? category : Category.ASSISTANT);
           currentChatId = chat.payload.id;
+          chatCategory = chat.payload.category;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
         if (currentChatId) {
@@ -47,7 +51,8 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
             currentChatId,
             history,
             value,
-            user?.selected_country === "ZA" ? "yodlee" : "plaid"
+            user?.selected_country === "ZA" ? "yodlee" : "plaid",
+            category ? category : Category.ASSISTANT
           );
 
           if (data?.error) {

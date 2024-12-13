@@ -4,7 +4,7 @@ import { AssistInput, Conversation } from "@/components/organisms";
 import { Button, Icon } from "@/components/atoms";
 import { DynamicChart, Header, HeaderText, HomeSuggestBoxes } from "@/components/molecules";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
-import { useChat, useDynamicChart, useUser } from "@/hooks";
+import { useCategory, useChat, useDynamicChart } from "@/hooks";
 import { DesktopChartModal } from "@/components/molecules/DesktopChartModal/DesktopChartModal";
 import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   const suggest = useAppSelector((state) => state.suggest.suggest);
   const focusData = useAppSelector((state) => state.suggest.focusSuggests);
   const dispatch = useAppDispatch();
+  const { category } = useCategory();
 
   const { addChart, deleteChart, charts } = useDynamicChart();
 
@@ -49,10 +50,17 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (focusData.length && focusData[0].suggest) {
-      dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
+    if (focusData.length) {
+      if (!category) {
+        dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
+      }
+      if (category === 'budget') {
+        dispatch(setSuggest(focusData[1].suggest.slice(0, 6)));
+      } else {
+        dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
+      }
     }
-  },[focusData])
+  },[focusData, category])
 
   return (
     <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-6 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto")}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Icon, Textarea } from "@/components/atoms";
-import { useAutoResizeTextArea, useChat, useUser } from "@/hooks";
+import { useAutoResizeTextArea, useCategory, useChat, useUser } from "@/hooks";
 import { Loader2 } from "lucide-react";
 import { ChangeEvent, FC, useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -9,10 +9,12 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { ActionButton, ConnectBankAction, FocusAssistantPopover } from "@/components/molecules";
 import { ActionButtonsGroupMobile } from "@/components/organisms/ActionButtonsGroup";
+import { Category } from "@/lib/store/features/category/categorySlice";
 
 interface ChatMessageInputProps {
   handleClose?: () => void;
   isDark?: boolean;
+  category?: string;
 }
 
 const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = false }) => {
@@ -27,7 +29,9 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
     history,
     isLoading,
     setIsLoadingSendQuery,
+    chatCategory
   } = useChat();
+  const { category } = useCategory();
 
   const [message, setMessage] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false); // State to manage Popover
@@ -62,11 +66,12 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
       const userId = user?.id;
       if (value && userId) {
         let currentChatId = chatId;
+        let currentChatCategory = chatCategory;
         if (handleClose) {
           handleResetChat();
         }
         if (!currentChatId || handleClose) {
-          const chat = await createChat(userId, value);
+          const chat = await createChat(userId, value, category ? category : Category.ASSISTANT);
           currentChatId = chat.payload.id;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
@@ -83,7 +88,8 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
             currentChatId,
             history,
             value,
-            user?.selected_country === "ZA" ? "yodlee" : "plaid"
+            user?.selected_country === "ZA" ? "yodlee" : "plaid",
+            category ? category : Category.ASSISTANT
           );
           if (data?.error) {
             toast.error(data.error.message);

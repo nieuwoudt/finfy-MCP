@@ -4,6 +4,7 @@ import { getErrorMessage, randomNumber } from "@/utils/helpers";
 import { supabase } from "@/lib/supabase/client";
 import * as Sentry from "@sentry/nextjs";
 import { emojis } from "@/utils/variables";
+import { Category } from "../category/categorySlice";
 
 interface ChatState {
   user_id: string;
@@ -19,6 +20,7 @@ interface ChatState {
   messages: any[];
   suggests: any;
   provider?: string;
+  category?: string;
 }
 
 interface ChatResponse {
@@ -46,9 +48,9 @@ export const sendChatQuery = createAsyncThunk<
   Partial<ChatState>
 >(
   "chat/sendChatQuery",
-  async ({ user_id, chat_id, history, user_query, provider }, { rejectWithValue }) => {
+  async ({ user_id, chat_id, history, user_query, provider, category }, { rejectWithValue }) => {
     try {
-      const response = await axiosExternal.post(`/chat` as string, {
+      const response = await axiosExternal.post(`/${category && category !== Category.ASSISTANT ? category : 'chat'}` as string, {
         user_id: user_id || "",
         chat_id: chat_id || "",
         history: history || [],
@@ -90,12 +92,12 @@ export const createMessage = createAsyncThunk(
 
 export const createChat = createAsyncThunk(
   "chat/createChat",
-  async ({ userId, title }: any) => {
+  async ({ userId, title, category }: any) => {
     const index = randomNumber(1, emojis.length);
 
     const { data, error } = await supabase
       .from("chats")
-      .insert([{ user_id: userId, title: `${emojis[index]} ${title}` }])
+      .insert([{ user_id: userId, title: `${emojis[index]} ${title}`, category: category ? category : Category.ASSISTANT }])
       .select();
     if (error) {
       Sentry.captureException(error);

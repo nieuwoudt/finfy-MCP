@@ -5,9 +5,11 @@ import { FC, PropsWithChildren, useState } from "react";
 import { AssistInput } from "@/components/organisms";
 import { useSidebar } from "@/hooks";
 
-interface CreateNewChatPopProps extends PropsWithChildren {}
+interface CreateNewChatPopProps extends PropsWithChildren {
+  category?: string
+}
 
-const CreateNewChatPop: FC<CreateNewChatPopProps> = ({ children }) => {
+const CreateNewChatPop: FC<CreateNewChatPopProps> = ({ children, category }) => {
   const { handleClose: handleCloseSidebar } = useSidebar();
   const [open, setOpen] = useState(false);
   const handleOpenChange = (value: boolean) => {
@@ -37,6 +39,7 @@ const CreateNewChatPop: FC<CreateNewChatPopProps> = ({ children }) => {
             container: "top-1/2 -translate-y-1/2 bottom-auto",
             wrapper: "!absolute !top-1/2 -translate-y-1/2 w-full !right-auto !left-1/2 -translate-x-1/2 z-50",
           }}
+          category={category}
         />
       </Dialog.Content>
     </Dialog>
