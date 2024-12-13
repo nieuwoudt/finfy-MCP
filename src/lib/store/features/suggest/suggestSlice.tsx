@@ -75,17 +75,63 @@ function adaptApiDataToMock(apiData: any) {
     recent_transactions: "Recent Transaction"
   };
 
-  return Object.entries(apiData).map(([category, questions]: any) => ({
-    title: `${capitalizeWords(category.replace('_', ' '))}`,
-    text: descriptions[category] || "Manage your finances efficiently.",
-    icon: categoryIconTypes[category] ? <Icon type={categoryIconTypes[category]} /> : "",
-    suggest: Object.values(questions).map(question => ({
+  const budgetSuggestData = [
+    {
+        "label": "Set Up Budget:",
+        "content": "Can you help me set up my budget for this month using the 70/20/10 rule?",
+        "icon": "",
+        "category": "budgeting"
+    },
+    {
+        "label": "Income Allocation:",
+        "content": "How much of my income should go towards 'Needs,' 'Wants,' and 'Savings'?",
+        "icon": "",
+        "category": "budgeting"
+    },
+    {
+        "label": "How 70/20/10 Works:",
+        "content": "How does the 70/20/10 rule work for my spending?",
+        "icon": "",
+        "category": "budgeting"
+    },
+    {
+        "label": "Allocate Income:",
+        "content": "What’s the best way to allocate my income using the 70/20/10 budget?",
+        "icon": "",
+        "category": "budgeting"
+    },
+    {
+        "label": "Increase Savings:",
+        "content": "How can I adjust my budget to start saving more?",
+        "icon": "",
+        "category": "budgeting"
+    },
+    {
+        "label": "Wants Budget:",
+        "content": "What’s my recommended budget for 'Wants' based on my income?",
+        "icon": "",
+        "category": "budgeting"
+    }
+]
+
+  return Object.entries(apiData).map(([category, questions]: any) => {
+    let suggestQuestionsAdapted = Object.values(questions).map(question => ({
       label: labels[category] || "Financial Update",
       content: question,
       icon: categoryIcons[category] || "",
       category: category
-    }))
-  }));
+    }));
+
+    if (category === 'budgeting') {
+      suggestQuestionsAdapted = [...budgetSuggestData, ...suggestQuestionsAdapted]
+    }
+
+    return {
+    title: `${capitalizeWords(category.replace('_', ' '))}`,
+    text: descriptions[category] || "Manage your finances efficiently.",
+    icon: categoryIconTypes[category] ? <Icon type={categoryIconTypes[category]} /> : "",
+    suggest: suggestQuestionsAdapted
+  }});
 
   function capitalizeWords(str: string) {
     return str.replace(/\b\w/g, (char: string) => char.toUpperCase());
@@ -101,7 +147,7 @@ export const fetchFocusSuggests = createAsyncThunk(
     );
     const data = await response.json();
     // console.log('CHECK data', data)
-    // console.log(adaptApiDataToMock(data), "kghfghfghghjjfhg")
+    console.log(adaptApiDataToMock(data), "kghfghfghghjjfhg")
     return adaptApiDataToMock(data);
   }
 );
