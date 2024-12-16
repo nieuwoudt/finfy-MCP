@@ -151,7 +151,7 @@ const SubscriptionTab = () => {
           <div className="w-full flex gap-2 text-lg font-semibold text-white justify-center">
             Upgrade your plan
           </div>
-          <div className="flex items-center justify-center ">
+          <div className="flex items-center justify-center mb-8">
               <div className={clsx("p-1 h-fit flex items-center gap-3 rounded-full border border-[#374061]")}>
                   <button
                       className={clsx('w-1/2 rounded-full p-2 font-medium text-sm', {"bg-[#515AD9] text-white" : planType === PlanType.PERSONAL})}
@@ -167,7 +167,7 @@ const SubscriptionTab = () => {
                   </button>
               </div>
           </div>
-          <div className="mx-auto">
+          <div className="mx-auto rounded-xl !border !border-[#374061]">
             {plan ? (
               <CardSubscribePlan plan={plan as Plan} billingCycle={planType === PlanType.PERSONAL ? billingCycle : undefined} setBillingCycle={planType === PlanType.PERSONAL ? setBillingCycle : undefined} />
             ) : (
