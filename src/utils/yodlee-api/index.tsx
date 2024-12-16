@@ -26,7 +26,7 @@ const createAxiosInstance = (isExternal: boolean) => {
     headers: {
       "Api-Version": config.YODLEE_API_VERSION || "1.1",
       "Content-Type": "application/x-www-form-urlencoded",
-      loginName: config.YODLEE_LOGIN_NAME as string, //live_dev
+      loginName: "a8aadd0d-75f6-4a35-939b-ec4465656e74_ADMIN" as string, //live_dev
       // loginName: "dcd2c5dc-a36a-46e5-845b-c6ce2ed646ac_ADMIN" as string, //sun_dev
     },
   });

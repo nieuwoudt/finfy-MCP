@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Api-Version": process.env.YODLEE_API_VERSION || "1.1",
-        "loginName": process.env.YODLEE_LOGIN_NAME as string, // loginName in header
+        "loginName": "sbMemk6s4a3914f7601" as string, // loginName in header
       },
       body: new URLSearchParams({
         clientId: process.env.YODLEE_CLIENT_ID as string,
