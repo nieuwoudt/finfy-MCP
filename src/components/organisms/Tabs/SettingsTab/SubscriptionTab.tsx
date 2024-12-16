@@ -14,13 +14,14 @@ function transformStripeProduct(stripeProduct: any): Plan[] {
   const { id, name, prices } = stripeProduct;
 
   const transformedPrices = prices.map((price: any) => {
-    const { unit_amount, currency, recurring, metadata } = price;
+    const { unit_amount, currency, recurring, metadata, id: priceId } = price;
     const billingCycle = recurring?.interval === "month" ? BillingCycle.MONTHLY : BillingCycle.ANNUALLY;
 
     return {
       id,
       name,
       pricing: {
+        id: priceId,
         amount: unit_amount / 100,
         currency: currency.toUpperCase(),
         billingCycle,

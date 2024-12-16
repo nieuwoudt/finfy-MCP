@@ -19,10 +19,10 @@ const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan, billingCycle, set
       <CardTemplate.Content className="relative">
         <div className="bg-navy-25 mx-auto rounded-xl p-6 max-w-sm text-white">
           <div className="flex absolute -top-8 left-0 right-0 items-center justify-center gap-2 mb-6">
-            <span className={clsx("text-gray-400 text-sm cursor-pointer hover:text-white", {"text-[#515AD9]" : billingCycle === BillingCycle.MONTHLY})} onClick={() => setBillingCycle(BillingCycle.MONTHLY)}>
+            <span className={clsx("text-gray-400 text-sm cursor-pointer hover:text-white", {"!text-[#515AD9]" : billingCycle === BillingCycle.MONTHLY})} onClick={() => setBillingCycle(BillingCycle.MONTHLY)}>
               Monthly
             </span>
-            <span className={clsx("text-gray-400 text-sm cursor-pointer hover:text-white", {"text-[#515AD9]": billingCycle === BillingCycle.ANNUALLY})} onClick={() => setBillingCycle(BillingCycle.ANNUALLY)}>
+            <span className={clsx("text-gray-400 text-sm cursor-pointer hover:text-white", {"!text-[#515AD9]": billingCycle === BillingCycle.ANNUALLY})} onClick={() => setBillingCycle(BillingCycle.ANNUALLY)}>
               Annually
             </span>
           </div>

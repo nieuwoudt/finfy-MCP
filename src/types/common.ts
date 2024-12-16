@@ -195,6 +195,7 @@ export interface Plan {
   id: string;
   name: string;
   pricing: {
+    id: string;
     amount: number;
     formattedPrice: string;
     currency: string;
