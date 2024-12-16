@@ -3,11 +3,53 @@ import { plans } from "@/utils/constants";
 import { CardSubscribePlan } from "@/components/organisms";
 import { Plan } from "@/types";
 import { useUser } from "@/hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export enum BillingCycle {
   MONTHLY = 'monthly',
   ANNUALLY = 'annually'
+}
+
+function transformStripeProduct(stripeProduct: any): Plan[] {
+  const { id, name, prices } = stripeProduct;
+
+  const transformedPrices = prices.map((price: any) => {
+    const { unit_amount, currency, recurring, metadata } = price;
+    const billingCycle = recurring?.interval === "month" ? BillingCycle.MONTHLY : BillingCycle.ANNUALLY;
+
+    return {
+      id,
+      name,
+      pricing: {
+        amount: unit_amount / 100,
+        currency: currency.toUpperCase(),
+        billingCycle,
+        formattedPrice: `$${(unit_amount / 100).toLocaleString()} / ${
+          billingCycle === "monthly" ? "month" : "year"
+        }`,
+      },
+      description: {
+        short: metadata.description,
+        detailed: `Features include: ${Object.keys(metadata)
+          .filter((key) => key.startsWith("feature"))
+          .map((key) => metadata[key])
+          .join(", ")}.`,
+      },
+      features: {
+        highlighted: Object.keys(metadata)
+          .filter((key) => key.startsWith("feature"))
+          .map((key) => metadata[key]),
+      },
+      ctaButton: {
+        label: `Choose ${billingCycle} plan`,
+        isDisabled: false,
+        type: "primary",
+        link: null,
+      },
+    };
+  });
+
+  return transformedPrices;
 }
 
 const SubscriptionTab = () => {
@@ -17,6 +59,7 @@ const SubscriptionTab = () => {
   const [currentPlanId, setCurrentPlanId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState<BillingCycle>(BillingCycle.MONTHLY);
+  const [stripePlans, setStripePlans] = useState<Plan[]>([]);
 
   useEffect(() => {
     const fetchCurrentPlan = async () => {
@@ -56,6 +99,11 @@ const SubscriptionTab = () => {
         }
 
         const products = await response.json();
+
+        if (products.length > 0) {
+          const formattedProducts = transformStripeProduct(products[0]);
+          setStripePlans(formattedProducts);
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -66,7 +114,10 @@ const SubscriptionTab = () => {
     fetchStripeProducts();
   }, []);
 
-  const plan = plans.find(({ id }) => id === currentPlanId);
+  const plan  = useMemo(() => {
+      return stripePlans.find((stripePlan) => stripePlan.pricing.billingCycle === billingCycle)
+  },[billingCycle, stripePlans])
+
 
   console.log(plan, currentPlanId, plans);
 
