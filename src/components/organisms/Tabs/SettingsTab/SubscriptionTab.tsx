@@ -4,10 +4,16 @@ import { CardSubscribePlan } from "@/components/organisms";
 import { Plan } from "@/types";
 import { useUser } from "@/hooks";
 import { useEffect, useMemo, useState } from "react";
+import clsx from "clsx";
 
 export enum BillingCycle {
   MONTHLY = 'monthly',
   ANNUALLY = 'annually'
+}
+
+export enum PlanType {
+  PERSONAL = 'personal',
+  BUSINESS = 'business'
 }
 
 function transformStripeProduct(stripeProduct: any): Plan[] {
@@ -61,6 +67,7 @@ const SubscriptionTab = () => {
   const [loading, setLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState<BillingCycle>(BillingCycle.MONTHLY);
   const [stripePlans, setStripePlans] = useState<Plan[]>([]);
+  const [planType, setPlanType] = useState<PlanType>(PlanType.PERSONAL)
 
   useEffect(() => {
     const fetchCurrentPlan = async () => {
@@ -137,6 +144,25 @@ const SubscriptionTab = () => {
             />
             Subscriptions
           </h3>
+          <div className="w-full flex gap-2 text-lg font-semibold text-white justify-center">
+            Upgrade your plan
+          </div>
+          <div className="flex items-center justify-center ">
+              <div className={clsx("p-1 h-fit flex items-center gap-3 rounded-full border border-[#374061]")}>
+                  <button
+                      className={clsx('w-1/2 rounded-full p-2 font-medium text-sm', {"bg-[#515AD9] text-white" : planType === PlanType.PERSONAL})}
+                      onClick={() => setPlanType(PlanType.PERSONAL)}
+                  >
+                      Personal
+                  </button>
+                  <button
+                      className={clsx('w-1/2 rounded-full p-2 font-medium text-sm ', {"bg-[#515AD9] text-white" : planType === PlanType.BUSINESS})}
+                      onClick={() => setPlanType(PlanType.BUSINESS)}
+                  >
+                      Business
+                  </button>
+              </div>
+          </div>
           <div className="mx-auto">
             {plan ? (
               <CardSubscribePlan plan={plan as Plan} billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
