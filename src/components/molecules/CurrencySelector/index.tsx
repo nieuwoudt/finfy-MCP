@@ -15,6 +15,11 @@ interface CurrencyData {
   };
 }
 
+const  currencyFilter =  {
+  'US': 'USD',
+  'ZA': 'ZAR'
+} as const;
+
 interface CurrencySelectorProps {
   onChange?: (options: OptionsType) => void;
 }
@@ -49,7 +54,11 @@ const CurrencySelector: React.FC<CurrencySelectorProps> = ({ onChange }) => {
         if (defaultValue && onChange) {
           onChange(defaultValue);
         }
-        setCurrencies(currencyOptions);
+        let filteredCurrencyOptions = currencyOptions;
+        if (user?.selected_country && user.selected_country in currencyFilter) {
+          filteredCurrencyOptions = currencyOptions.filter((option) => option.value === currencyFilter[user.selected_country as keyof typeof currencyFilter])
+        }
+        setCurrencies(filteredCurrencyOptions);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching currencies:", error);
