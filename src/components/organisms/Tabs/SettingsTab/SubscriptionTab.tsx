@@ -5,12 +5,18 @@ import { Plan } from "@/types";
 import { useUser } from "@/hooks";
 import { useEffect, useState } from "react";
 
+export enum BillingCycle {
+  MONTHLY = 'monthly',
+  ANNUALLY = 'annually'
+}
+
 const SubscriptionTab = () => {
   const { user } = useUser();
   const subscriptionId = user?.subscribe_plan; // ID підписки користувача
 
   const [currentPlanId, setCurrentPlanId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>(BillingCycle.MONTHLY);
 
   useEffect(() => {
     const fetchCurrentPlan = async () => {
@@ -81,7 +87,7 @@ const SubscriptionTab = () => {
           </h3>
           <div className="mx-auto">
             {plan ? (
-              <CardSubscribePlan plan={plan as Plan} />
+              <CardSubscribePlan plan={plan as Plan} billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
             ) : (
               <div className="text-white">No plan found.</div>
             )}
