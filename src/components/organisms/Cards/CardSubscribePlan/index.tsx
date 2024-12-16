@@ -27,11 +27,11 @@ const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan, billingCycle, set
             </span>
           </div>}
 
-          <h2 className="text-3xl font-bold mb-2">{plan.name}</h2>
-          <p className="text-2xl font-semibold mb-1">
+          <h2 className="text-3xl font-bold mb-6">{plan.name}</h2>
+          <p className="text-2xl font-semibold mb-6">
             {plan.pricing.formattedPrice}
           </p>
-          <p className="text-sm text-gray-400 mb-4">{plan.description.short}</p>
+          <p className="text-sm text-gray-400 mb-6 italic">{plan.description.short}</p>
 
           <ul className="space-y-2 mb-6">
             {plan.features.highlighted.map((feature, index) => (
