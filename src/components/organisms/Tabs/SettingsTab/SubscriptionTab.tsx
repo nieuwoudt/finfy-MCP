@@ -38,6 +38,28 @@ const SubscriptionTab = () => {
     }
   }, [subscriptionId]);
 
+  useEffect(() => {
+    const fetchStripeProducts = async () => {
+      try {
+        const response = await fetch(
+          `/api/stripe-products?currency=usd`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch stripe products");
+        }
+
+        const products = await response.json();
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+      
+    fetchStripeProducts();
+  }, []);
+
   const plan = plans.find(({ id }) => id === currentPlanId);
 
   console.log(plan, currentPlanId, plans);
