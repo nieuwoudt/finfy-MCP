@@ -46,7 +46,7 @@ const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan, billingCycle, set
             className={`w-full py-3 rounded-lg font-semibold transition-colors ${
               plan.ctaButton.isDisabled
                 ? "bg-gray-500 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                : "bg-[#6870DA]"
             }`}
           >
             {plan.ctaButton.label}
