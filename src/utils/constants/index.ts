@@ -5,6 +5,7 @@ export const plans: Plan[] = [
     id: "prod_Qy3piK9enavVK3",
     name: "Plus",
     pricing: {
+      id: 'test_plan_id',
       amount: 20,
       currency: "USD",
       billingCycle: "monthly",
@@ -36,10 +37,11 @@ export const plans: Plan[] = [
     id: "prod_Qy6ifkcyqiKiwT",
     name: "Team",
     pricing: {
+      id: 'team_id',
       amount: 25,
       currency: "USD",
       billingCycle: "yearly",
-      formattedPrice: "$15 / month",
+      formattedPrice: "$25 / month",
     },
     description: {
       short:
