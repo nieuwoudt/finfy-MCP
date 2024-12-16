@@ -123,8 +123,12 @@ const SubscriptionTab = () => {
   }, []);
 
   const plan  = useMemo(() => {
-      return stripePlans.find((stripePlan) => stripePlan.pricing.billingCycle === billingCycle)
-  },[billingCycle, stripePlans])
+    if (planType === PlanType.PERSONAL) {
+      return stripePlans.find((stripePlan) => stripePlan.pricing.billingCycle === billingCycle);
+    } else {
+      return plans[1];
+    }
+  },[billingCycle, stripePlans, planType])
 
 
   console.log(plan, currentPlanId, plans);
@@ -165,7 +169,7 @@ const SubscriptionTab = () => {
           </div>
           <div className="mx-auto">
             {plan ? (
-              <CardSubscribePlan plan={plan as Plan} billingCycle={billingCycle} setBillingCycle={setBillingCycle} />
+              <CardSubscribePlan plan={plan as Plan} billingCycle={planType === PlanType.PERSONAL ? billingCycle : undefined} setBillingCycle={planType === PlanType.PERSONAL ? setBillingCycle : undefined} />
             ) : (
               <div className="text-white">No plan found.</div>
             )}
