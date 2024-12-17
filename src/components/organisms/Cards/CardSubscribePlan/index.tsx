@@ -6,6 +6,9 @@ import { Plan } from "@/types";
 import { FC } from "react";
 import { BillingCycle } from "../../Tabs/SettingsTab/SubscriptionTab";
 import clsx from "clsx";
+import { useUser } from "@/hooks";
+import { redirectToStripeCheckout, StripeCheckoutMode } from "@/lib/stripe";
+import { useRouter } from "next/navigation";
 
 interface CardSubscribePlanProps {
   plan: Plan;
@@ -14,6 +17,29 @@ interface CardSubscribePlanProps {
 }
 
 const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan, billingCycle, setBillingCycle }) => {
+  const { user } = useUser();
+  const router = useRouter();
+
+  const handleCTAButton = async () => {
+    if (billingCycle) {
+      if (user) {
+        const stripeCheckoutRedirectUrl = await redirectToStripeCheckout({
+          customer: user.customer_id,
+          supabaseUserId: user.id,
+          mode: StripeCheckoutMode.SUBSCRIPTION,
+          email: user.email,
+          currency: plan.pricing.currency,
+          path: window.location.href,
+          cancelUrl: window.location.href,
+          priceId: plan.pricing.id
+        })
+        window.location.assign(stripeCheckoutRedirectUrl as string);
+      }
+    } else {
+      router.push(plan.ctaButton.link as string);
+    }
+  }
+
   return (
     <CardTemplate className="mx-auto">
       <CardTemplate.Content className="relative">
@@ -48,6 +74,7 @@ const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan, billingCycle, set
                 ? "bg-gray-500 cursor-not-allowed"
                 : "bg-[#6870DA]"
             }`}
+            onClick={handleCTAButton}
           >
             {plan.ctaButton.label}
           </button>

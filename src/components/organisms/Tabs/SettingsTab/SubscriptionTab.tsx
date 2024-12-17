@@ -29,7 +29,7 @@ function transformStripeProduct(stripeProduct: any): Plan[] {
       pricing: {
         id: priceId,
         amount: unit_amount / 100,
-        currency: currency.toUpperCase(),
+        currency: currency,
         billingCycle,
         formattedPrice: `$${(unit_amount / 100).toLocaleString()} / ${
           billingCycle === "monthly" ? "month" : "year"
@@ -131,7 +131,7 @@ const SubscriptionTab = () => {
   },[billingCycle, stripePlans, planType])
 
 
-  console.log(plan, currentPlanId, plans);
+  // console.log(plan, currentPlanId, plans);
 
   if (loading) {
     return <div className="text-white">Loading...</div>;
