@@ -70,7 +70,7 @@ const ManageProfileTab = () => {
           <div className="w-full">
             <p className="text-white mb-2">Language</p>
             <p className="text-xs">
-              Set your preferred language for Perplexity&apos;s interface
+              Set your preferred language for Finfy&apos;s interface
             </p>
           </div>
           <div className="text-white">
@@ -138,7 +138,7 @@ const ManageProfileTab = () => {
             <div className="w-full">
               <p>AI Data Retention</p>
               <p className="text-xs my-5 text-grey-15">
-                AI Data Retention allows Perplexity to use your searches to
+                AI Data Retention allows Finfy to use your searches to
                 improve AI models. <br /> Turn this setting off if you wish to
                 exclude your data this process.
               </p>
