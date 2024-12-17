@@ -48,7 +48,7 @@ function transformStripeProduct(stripeProduct: any, billingCycleSubscribed: Bill
           .map((key) => metadata[key]),
       },
       ctaButton: {
-        label: billingCycleSubscribed && billingCycleSubscribed === billingCycle ? "Your current plan" : `Choose ${billingCycle} plan`,
+        label: billingCycleSubscribed && billingCycleSubscribed === billingCycle ? "Your current plan" : `Start now`,
         isDisabled: billingCycleSubscribed ? billingCycleSubscribed === billingCycle : false,
         type: "primary",
         link: null,
