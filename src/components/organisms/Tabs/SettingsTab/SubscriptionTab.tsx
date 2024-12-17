@@ -16,7 +16,7 @@ export enum PlanType {
   BUSINESS = 'business'
 }
 
-function transformStripeProduct(stripeProduct: any): Plan[] {
+function transformStripeProduct(stripeProduct: any, billingCycleSubscribed: BillingCycle | null | undefined): Plan[] {
   const { id, name, prices } = stripeProduct;
 
   const transformedPrices = prices.map((price: any) => {
@@ -48,8 +48,8 @@ function transformStripeProduct(stripeProduct: any): Plan[] {
           .map((key) => metadata[key]),
       },
       ctaButton: {
-        label: `Choose ${billingCycle} plan`,
-        isDisabled: false,
+        label: billingCycleSubscribed && billingCycleSubscribed === billingCycle ? "Your current plan" : `Choose ${billingCycle} plan`,
+        isDisabled: billingCycleSubscribed ? billingCycleSubscribed === billingCycle : false,
         type: "primary",
         link: null,
       },
@@ -63,7 +63,7 @@ const SubscriptionTab = () => {
   const { user } = useUser();
   const subscriptionId = user?.subscribe_plan; // ID підписки користувача
 
-  const [currentPlanId, setCurrentPlanId] = useState<string | null>(null);
+  const [currentPlan, setCurrentPlan] = useState<{ id: string | null, billingCycle: BillingCycle | null } | null>(null);
   const [loading, setLoading] = useState(true);
   const [billingCycle, setBillingCycle] = useState<BillingCycle>(BillingCycle.MONTHLY);
   const [stripePlans, setStripePlans] = useState<Plan[]>([]);
@@ -81,17 +81,18 @@ const SubscriptionTab = () => {
         }
 
         const subscription = await response.json();
-        const planId = subscription.items.data[0]?.price.product;
-        setCurrentPlanId(planId);
+        const planId = subscription.items.data[0]?.price.product || null;
+        const planBillingCycle = subscription.items.data[0] ? subscription.items.data[0]?.plan.interval === 'month' ? BillingCycle.MONTHLY : BillingCycle.ANNUALLY : null;
+        setCurrentPlan({ id: planId, billingCycle: planBillingCycle });
       } catch (error) {
         console.error("Error fetching subscription:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     if (subscriptionId) {
       fetchCurrentPlan();
+    } else {
+      setCurrentPlan({ id: null, billingCycle: null })
     }
   }, [subscriptionId]);
 
@@ -109,7 +110,7 @@ const SubscriptionTab = () => {
         const products = await response.json();
 
         if (products.length > 0) {
-          const formattedProducts = transformStripeProduct(products[0]);
+          const formattedProducts = transformStripeProduct(products[0], currentPlan?.billingCycle);
           setStripePlans(formattedProducts);
         }
       } catch (error) {
@@ -118,9 +119,10 @@ const SubscriptionTab = () => {
         setLoading(false);
       }
     };
-      
-    fetchStripeProducts();
-  }, []);
+    if (currentPlan) {
+      fetchStripeProducts();
+    }
+  }, [currentPlan]);
 
   const plan  = useMemo(() => {
     if (planType === PlanType.PERSONAL) {
@@ -129,9 +131,6 @@ const SubscriptionTab = () => {
       return plans[1];
     }
   },[billingCycle, stripePlans, planType])
-
-
-  // console.log(plan, currentPlanId, plans);
 
   if (loading) {
     return <div className="text-white">Loading...</div>;
