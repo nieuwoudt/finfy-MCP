@@ -8,11 +8,14 @@ import { ActionButton } from "../ActionButton";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { UserAvatar } from "../UserAvatar";
+import { useAppSelector } from "@/lib/store/hooks";
+import { capitalizeWords } from "@/utils/helpers";
 
 export const HeaderFocus = () => {
   const [shouldRender, setShouldRender] = useState(false);
   const pathname = usePathname();
   const { user } = useUser();
+  const suggest = useAppSelector((state) => state.suggest.suggest);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,7 +45,7 @@ export const HeaderFocus = () => {
                 className={cn(" h-3.5 w-5 !text-[#515AD9] fill-[#515AD9]")}
               />
             }
-            text={"Focus"}
+            text={suggest&& suggest.length > 0 ? `${capitalizeWords(suggest[0].category.replace('_', ' '))}` : "Focus"}
             SecondIcon={<Icon
               type="ChrIcon"
               className={cn("group-hover:stroke-[#f3f9ed] transition-all duration-200 h-3.5 w-5", 0 ? "stroke-[#f3f9ed] -rotate-180 -translate-x-1" : "stroke-[#547A91]")}

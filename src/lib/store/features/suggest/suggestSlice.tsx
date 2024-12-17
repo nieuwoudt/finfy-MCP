@@ -1,4 +1,5 @@
 import { Icon } from "@/components/atoms";
+import { capitalizeWords } from "@/utils/helpers";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface SuggestState {
@@ -132,10 +133,6 @@ function adaptApiDataToMock(apiData: any) {
     icon: categoryIconTypes[category] ? <Icon type={categoryIconTypes[category]} /> : "",
     suggest: suggestQuestionsAdapted
   }});
-
-  function capitalizeWords(str: string) {
-    return str.replace(/\b\w/g, (char: string) => char.toUpperCase());
-  }
 }
 
 
