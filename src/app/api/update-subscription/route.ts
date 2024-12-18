@@ -32,6 +32,28 @@ export async function POST(req: Request) {
 
       console.log(`Plan updated successfully for customer: ${customerId}`);
       return NextResponse.json({ message: "Plan updated successfully" });
+    } else if (event.type === "customer.subscription.deleted") {
+      const subscription = event.data.object;
+      const customerId = subscription.customer as string;
+
+      console.log(`Subscription deleted for customer: ${customerId}`);
+
+      const { error } = await supabase
+        .from("users")
+        .update({ subscribe_plan: null })
+        .eq("customer_id", customerId)
+        .single();
+
+      if (error) {
+        console.error("Failed to delete plan in Supabase:", error);
+        return NextResponse.json(
+          { error: "Failed to delete plan" },
+          { status: 500 }
+        );
+      }
+
+      console.log(`Plan deleted successfully for customer: ${customerId}`);
+      return NextResponse.json({ message: "Plan deleted successfully" });
     } else {
       console.log(`Unhandled event type ${event.type}`);
       return NextResponse.json(

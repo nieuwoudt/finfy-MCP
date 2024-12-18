@@ -13,6 +13,13 @@ export enum StripeCheckoutMode {
   PAYMENT = "payment",
 }
 
+export enum StripeCustomerPortalFlowType {
+  PAYMENT_UPDATE = "payment_method_update",
+  SUBSCRIPTION_CANCEL = "subscription_cancel",
+  SUBSCRIPTION_UPDATE = "subscription_update",
+  SUBSCRIPTION_UPDATE_CONFIRM = "subscription_update_confirm",
+}
+
 export const createStripeCustomer = async (email: string) => {
   try {
     const customer = await stripe.customers.create({
@@ -68,6 +75,72 @@ export const redirectToStripeCheckout = async (props: {
     return session.url;
   } catch (error) {
     console.error("Failed to redirect to stripe checkout", error);
+    throw error;
+  }
+};
+
+export const redirectToStripeCustomerProtal = async (props: {
+  customerId: string;
+  subscriptionId: string;
+  path: string;
+  productToUpdate: {
+    product: string;
+    prices: string[];
+  };
+  stripeCustomerPortalFlowType?: StripeCustomerPortalFlowType;
+}) => {
+  try {
+    const session = await stripe.billingPortal.sessions.create({
+      customer: props.customerId,
+      return_url: `${props.path}`,
+      // ...(props.stripeCustomerPortalFlowType &&
+      //   props.stripeCustomerPortalFlowType ===
+      //     StripeCustomerPortalFlowType.SUBSCRIPTION_UPDATE && {
+      //     flow_data: {
+      //       type: StripeCustomerPortalFlowType.SUBSCRIPTION_UPDATE,
+      //       subscription_update: {
+      //         subscription: props.subscriptionId,
+      //       },
+      //       after_completion: {
+      //         type: "redirect",
+      //         redirect: {
+      //           return_url: `${props.path}`,
+      //         },
+      //       },
+      //     },
+      //   }),
+      // ...(props.stripeCustomerPortalFlowType &&
+      //   props.stripeCustomerPortalFlowType ===
+      //     StripeCustomerPortalFlowType.PAYMENT_UPDATE && {
+      //     flow_data: {
+      //       type: StripeCustomerPortalFlowType.PAYMENT_UPDATE,
+      //       after_completion: {
+      //         type: "redirect",
+      //         redirect: {
+      //           return_url: `${props.path}`,
+      //         },
+      //       },
+      //     },
+      //   }),
+    });
+    // const configuration = await stripe.billingPortal.configurations.update(
+    //   session.configuration as string,
+    //   {
+    //     features: {
+    //       subscription_cancel: {
+    //         cancellation_reason: {
+    //           enabled: false,
+    //         },
+    //         mode: "immediately",
+    //       },
+    //       subscription_update: { products: [props.productToUpdate] },
+    //     },
+    //   }
+    // );
+
+    return session.url;
+  } catch (error) {
+    console.error("Failed to redirect to stripe customer portal", error);
     throw error;
   }
 };
