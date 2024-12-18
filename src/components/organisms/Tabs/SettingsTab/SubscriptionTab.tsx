@@ -49,7 +49,7 @@ function transformStripeProduct(stripeProduct: any, billingCycleSubscribed: Bill
       },
       ctaButton: {
         label: billingCycleSubscribed ? billingCycleSubscribed === billingCycle ? "Manage your plan" : "Update your plan" : "Start now",
-        isDisabled: billingCycleSubscribed ? false : true,
+        isDisabled: false,
         type: "primary",
         link: null,
       },
