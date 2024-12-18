@@ -48,8 +48,8 @@ function transformStripeProduct(stripeProduct: any, billingCycleSubscribed: Bill
           .map((key) => metadata[key]),
       },
       ctaButton: {
-        label: billingCycleSubscribed && billingCycleSubscribed === billingCycle ? "Your current plan" : `Start now`,
-        isDisabled: billingCycleSubscribed ? billingCycleSubscribed === billingCycle : false,
+        label: billingCycleSubscribed ? billingCycleSubscribed === billingCycle ? "Manage your plan" : "Update your plan" : "Start now",
+        isDisabled: billingCycleSubscribed ? false : true,
         type: "primary",
         link: null,
       },
@@ -130,7 +130,15 @@ const SubscriptionTab = () => {
     } else {
       return plans[1];
     }
-  },[billingCycle, stripePlans, planType])
+  },[billingCycle, stripePlans, planType]);
+
+  const pricesForUpdate = useMemo(() => {
+    if (planType === PlanType.PERSONAL) {
+      return stripePlans.map((stripePlan) => stripePlan.pricing.id);
+    } else {
+      return;
+    }
+  },[plan])
 
   if (loading) {
     return <div className="text-white">Loading...</div>;
@@ -168,7 +176,7 @@ const SubscriptionTab = () => {
           </div>
           <div className="mx-auto rounded-xl !border !border-[#374061]">
             {plan ? (
-              <CardSubscribePlan plan={plan as Plan} billingCycle={planType === PlanType.PERSONAL ? billingCycle : undefined} setBillingCycle={planType === PlanType.PERSONAL ? setBillingCycle : undefined} />
+              <CardSubscribePlan subscription={subscriptionId} pricesForUpdate={pricesForUpdate} plan={plan as Plan} billingCycle={planType === PlanType.PERSONAL ? billingCycle : undefined} setBillingCycle={planType === PlanType.PERSONAL ? setBillingCycle : undefined} />
             ) : (
               <div className="text-white">No plan found.</div>
             )}
