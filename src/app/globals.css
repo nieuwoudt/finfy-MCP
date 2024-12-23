@@ -270,6 +270,11 @@ input:-webkit-autofill:active{
     }
 }
 
+hr {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
 .markdown-special table {
   width: 'max-content';
   border-collapse: collapse;

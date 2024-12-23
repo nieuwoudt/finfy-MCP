@@ -9,12 +9,14 @@ import { DesktopChartModal } from "../../molecules/DesktopChartModal/DesktopChar
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
+import clsx from "clsx";
 
 interface ConversationProps {
   handleOpenModal: (id: string, chart: any) => void;
+  isOpenChart: boolean;
 }
 
-const Conversation: FC<ConversationProps> = ({ handleOpenModal }) => {
+const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { messages, isLoading } = useChat();
   const suggests = useSelector((state: RootState) => state.chat.suggests);
@@ -24,7 +26,7 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal }) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-hidden relative flex flex-row gap-8 lg:px-40 lg:pt-20 lg:pb-12" >
+    <div className={clsx("flex-1 overflow-hidden relative flex flex-row gap-8 lg:pt-20 lg:pb-12", isOpenChart ? "" : "lg:px-40")} >
       <div className={`w-full relative pb-32`}>
         <div
           className={cn(

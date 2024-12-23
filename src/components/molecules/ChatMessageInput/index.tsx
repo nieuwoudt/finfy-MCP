@@ -137,9 +137,9 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
   return (
     <form
       action={onSubmit}
-      className="rounded-full mx-2 flex justify-between items-center lg:bg-navy-15 relative lg:border lg:border-[#374061]"
+      className="rounded-full mx-2 flex justify-between border-2 items-center lg:bg-navy-15 relative lg:border lg:border-[#374061]"
     >
-      <div className="relative">
+      <div className="absolute">
         <button
           type="button"
           className="w-10 h-10 pl-3 pt-2.5 pb-3 -mr-2 flex"
@@ -163,14 +163,14 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
         value={message}
         onChange={handleChange}
         className={cn(
-          "lg:pl-4 h-16 focus:outline-none text-base border-none resize-none text-white py-5 pr-24 lg:pr-48",
+          "lg:pl-4 h-16 focus:outline-none justify-center text-base border-none resize-none text-white py-5 pr-16 !pl-10",
           isDark ? "lg:bg-[#1F263D]" : "lg:bg-navy-15"
         )}
         placeholder="Ask anything..."
         name="message"
         onKeyDown={handleEnter}
       />
-      <div className="flex items-center gap-3 py-3 absolute right-4 top-1/2 -translate-y-1/2">
+      <div className="flex items-center justify-center gap-3 py-3 absolute right-4 top-1/2 -translate-y-1/2">
         <Button size="xl" type="submit" className="w-10 h-10 p-3">
           {isLoading ? (
             <Loader2 className="w-5 h-5 animate-spin" />

@@ -33,9 +33,10 @@ interface SpendingChartProps {
 }
 
 const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
-  const chartType = dataChart.chart_type;
+
+  const chartType = dataChart.chart_type || 'bar';
   const title = dataChart.name;
-  const rawData = dataChart.data;
+  const rawData = dataChart.data || dataChart;
 
   const processData = () => {
     let labels: string[] = [];
