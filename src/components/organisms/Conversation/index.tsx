@@ -18,15 +18,49 @@ interface ConversationProps {
 
 const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const stateRef = useRef<any>(false);
   const { messages, isLoading } = useChat();
   const suggests = useSelector((state: RootState) => state.chat.suggests);
 
+  const [streamText, setStreamText] = useState<string>("");
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollIntoView();
   }, [messages]);
 
+  useEffect(() => {
+    if (isLoading) {
+      stateRef.current = true;
+    }
+    if (!isLoading && messages.length > 0 && stateRef.current) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.message_type !== "user") {
+        const fullText = lastMessage.content;
+        const words = fullText.split(/(\s+)/);
+        const chunkSize = 15;
+        let index = 0;
+  
+        const interval = setInterval(() => {
+          index += chunkSize;
+          setStreamText(words.slice(0, index).join(""));
+  
+          if (index >= words.length) {
+            clearInterval(interval);
+            setStreamText("");
+            stateRef.current = false;
+          }
+        }, 100);
+      }
+    }
+  }, [isLoading, messages]);
+  
+
   return (
-    <div className={clsx("flex-1 overflow-hidden relative flex flex-row gap-8 lg:pt-20 lg:pb-12", isOpenChart ? "" : "lg:px-40")} >
+    <div
+      className={clsx(
+        "flex-1 overflow-hidden relative flex flex-row gap-8 lg:pt-20 lg:pb-12",
+        isOpenChart ? "" : "lg:px-40"
+      )}
+    >
       <div className={`w-full relative pb-32`}>
         <div
           className={cn(
@@ -46,13 +80,18 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
                   ? JSON.parse(message.calculations)
                   : null;
 
+                const isLastMessage = index === messages.length - 1;
                 return (
                   <Fragment key={message.id}>
                     <Message
-                      text={message.content}
+                      text={
+                        isLastMessage && !isLoading && message.message_type !== "user"
+                          ? (stateRef.current ? streamText : message.content)
+                          : message.content
+                      }
                       date={""}
                       isUser={message.message_type === "user"}
-                      isLastMessage={index === messages.length - 1}
+                      isLastMessage={isLastMessage}
                     />
                     {calculations && (
                       <ListChartVisualizeButton

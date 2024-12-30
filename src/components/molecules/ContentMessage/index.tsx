@@ -56,7 +56,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
 
       return (
         <div className="my-4 border border-[#374061] rounded-lg overflow-hidden">
-          {children.map((child: any) =>
+          {children?.map((child: any) =>
             child.type === "summary" ? (
               <button
                 key={index}
@@ -108,7 +108,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
       </div>
     ),
     li: ({ children }: any) => {
-      const hasIcon = typeof children[0] === "object" && children[0]?.props?.src;
+      const hasIcon = typeof children?.[0] === "object" && children?.[0]?.props?.src;
   
       return hasIcon ? (
         <li className="flex items-center gap-2 my-2">
