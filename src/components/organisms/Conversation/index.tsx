@@ -65,7 +65,7 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
         <div
           className={cn(
             "react-scroll-to-bottom--css-ikyem-79elbk absolute inset-0",
-            suggests ? "pb-52 md:pb-60" : "pb-24 md:pb-28"
+            suggests ? "pb-52 md:pb-60" : "pb-28"
           )}
         >
           <div className="react-scroll-to-bottom--css-ikyem-1n7m0yu custom-scrollbar flex flex-col items-center gap-2.5 md:gap-5 overflow-x-hidden pr-2">
