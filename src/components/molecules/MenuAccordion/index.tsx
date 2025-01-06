@@ -73,16 +73,16 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
   //   pathname === item.link || pathname.startsWith(`${item.link}/`);
 
   return (
-    <Accordion.Item className="flex flex-col gap-0.5" value={item.value}>
+    <Accordion.Item className="flex max-w-full flex-col gap-0.5" value={item.value}>
       <Accordion.Trigger
         isHideChevron={isHideChevron}
         disabled={isHideChevron}
         onClick={() => handleOpen()}
-        className={cn("p-2 rounded-sm group hover:text-white hover:bg-navy-5", {
+        className={cn("p-2 rounded-sm group max-w-full hover:text-white hover:bg-navy-5", {
           "bg-navy-25": isActive,
         })}
       >
-        <div className={"flex gap-3 w-full items-center"}>
+        <div className={"flex gap-3 w-full max-w-full items-center"}>
           <Link
             href={href}
             onClick={onClick}
@@ -107,7 +107,7 @@ const MenuAccordionItem: FC<MenuAccordionItemProps> = ({
                 {contents.map((content: any, index: number) => (
                   <div
                     key={index}
-                    className="flex justify-between max-w-[calc(90%-50px)] lg:max-w-full hover:bg-navy-25 p-2 rounded-sm"
+                    className="flex justify-between max-w-[calc(100%)] lg:max-w-full hover:bg-navy-25 p-2 rounded-sm"
                   >
                     <button
                       onClick={() => {
@@ -197,7 +197,7 @@ const MenuAccordion: FC = () => {
     <Accordion
       type="single"
       collapsible
-      className="flex flex-col gap-0.5 max-w-[calc(100%)]"
+      className="flex flex-col gap-0.5 max-w-[calc(274px)] lg:max-w-[calc(100%)]"
     >
       {menuItems.map((item) => (
         <MenuAccordionItem
