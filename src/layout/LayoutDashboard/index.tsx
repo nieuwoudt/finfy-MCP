@@ -80,7 +80,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
             </>}
             {!!suggest?.length && <HomeSuggestBoxes />}
           </div>
-          <div className="flex pl-4 absolute bottom-[156px] h-[154px] left-0 right-0 lg:hidden flex-col">
+          <div className="flex pl-4 absolute bottom-[168px] h-[154px] left-0 right-0 lg:hidden flex-col">
             {!!suggest?.length && <>
               <div className="flex items-center h-fit text-grey-15">
                 <Icon type="LightningBolt" className="text-grey-15" />
