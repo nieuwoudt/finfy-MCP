@@ -128,7 +128,7 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
   };
 
   const setTextareaRef = (element: HTMLTextAreaElement) => {
-    if (element) {
+    if (element && window.innerWidth > 1024) {
       element.focus();
       (textareaRef.current as any) = element;
     }
