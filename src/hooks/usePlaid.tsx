@@ -52,9 +52,9 @@ const usePlaid = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ public_token: publicToken }),
       });
-      const { access_token } = await response.json();
+      const { access_token, item_id  } = await response.json();
       setAccessToken(access_token);
-      return access_token;
+      return { access_token, item_id };
     } catch (error) {
       Sentry.captureException(error);
       toast.error(`Error exchanging public token: ${getErrorMessage(error)}`);
@@ -243,11 +243,13 @@ const usePlaid = () => {
   const onSuccess = useCallback(
     async (publicToken: string) => {
       setIsLoading(true);
-      const token = await exchangePublicToken(publicToken);
+      const { access_token, item_id } = await exchangePublicToken(publicToken) || { };
+      const token = access_token;
       if (token) {
         await dispatch(
           updateUser({
             plaid_access_token: token,
+            item_id: item_id
           })
         );
         await fetchUserIdentity(token);

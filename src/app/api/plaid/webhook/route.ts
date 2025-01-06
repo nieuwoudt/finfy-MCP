@@ -1,24 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
+import { saveTransactions } from "./supabaseClient";
+import { deleteTransactions } from "./deleteTransactions";
+import { fetchPlaidTransactions } from "./fetchPlaidTransactions";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  console.log(body, "body");
+
   if (body.webhook_type === "TRANSACTIONS") {
     switch (body.webhook_code) {
-      case "INITIAL_UPDATE":
-        console.log("Initial transactions update received");
-        break;
-      case "HISTORICAL_UPDATE":
-        console.log("Historical transactions update received");
-        break;
-      case "DEFAULT_UPDATE":
-        console.log("New transactions available");
-        break;
       case "TRANSACTIONS_REMOVED":
-        console.log("Transactions removed");
+        const removedTransactionIds = body.removed_transactions || [];
+        if (removedTransactionIds.length > 0) {
+          const { error } = await deleteTransactions(removedTransactionIds);
+          if (error) {
+            console.error("Error removing transactions:", error);
+          } else {
+            console.log("Transactions removed successfully");
+          }
+        }
         break;
+
       default:
-        console.log("Unknown webhook event received");
+        const { item_id, new_transactions } = body;
+        if (new_transactions > 0) {
+          const transactions = await fetchPlaidTransactions(item_id);
+          const { error } = await saveTransactions(transactions, "user-id");
+          if (error) {
+            console.error("Error saving transactions:", error);
+          } else {
+            console.log("Transactions saved successfully");
+          }
+        }
     }
   }
 

@@ -28,6 +28,7 @@ export interface User {
   phone: string;
   finished_onboarding: boolean;
   plaid_access_token: string;
+  item_id?: string;
   plaid_user_token: string;
   avatar_url?: string;
   customer_id: string;
