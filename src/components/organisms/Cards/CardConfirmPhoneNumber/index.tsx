@@ -8,17 +8,20 @@ import { verifyPhoneUser } from "@/lib/supabase/actions";
 import toast from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 const CardConfirmPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
-  const phone = searchParams.get("phone") as string;
+  const user = useSelector((state: RootState) => state.user.user);
+  const phone = searchParams.get("phone") || user?.phone ? user?.phone : "";
   const { nextStep, prevStep } = useNavigationOnboarding();
 
   const onSubmit = async (formData: FormData) => {
     startTransition(async () => {
       const code = formData.get("code") as string;
-      const { errorMessage } = await verifyPhoneUser(phone, code);
+      const { errorMessage } = await verifyPhoneUser(phone as string, code);
       if (errorMessage) {
         toast.error(errorMessage);
       } else {
@@ -55,7 +58,7 @@ const CardConfirmPhoneNumber = () => {
             >
               Back
             </Button>
-            <ResendCodeWithTimer initialSeconds={60} phone={phone} />
+            <ResendCodeWithTimer initialSeconds={60} phone={phone as string} />
           </div>
         </CardTemplate.Footer>
       </form>

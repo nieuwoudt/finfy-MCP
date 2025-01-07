@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigationOnboarding } from "@/hooks";
 import { signInWithOtp } from "@/lib/supabase/actions";
 import toast from "react-hot-toast";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
@@ -35,30 +35,66 @@ const CardVerifyPhoneNumber = () => {
     setValue("phoneNumber", phone);
   };
 
+  useEffect(() => {
+    async function handleSignInWithOtp() {
+      console.log(user?.phone);
+
+      if (user?.phone) {
+        try {
+          const { errorMessage } = await signInWithOtp(user?.phone.replace("+", ""));
+          console.log(errorMessage);
+          const RESEND_TIME = 60;
+          localStorage.setItem(
+            "resendTimer",
+            (Date.now() + RESEND_TIME * 1000).toString()
+          );
+          const params = new URLSearchParams(searchParams.toString());
+          nextStep(`?${params.toString()}`);
+        } catch (error) {
+          console.error("Error during OTP sign-in:", error);
+        }
+      }
+    }
+  
+    handleSignInWithOtp();
+  }, [nextStep, searchParams, user]);
+  
+
   const onSubmit = async (values: { phoneNumber: string }) => {
     startTransition(async () => {
-      const { errorMessage } = await signInWithOtp(values.phoneNumber);
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("phone", values.phoneNumber);
-        if (user?.id) {
-          await dispatch(
-            updateUser({
-              phone: `+${values.phoneNumber}`,
-            })
-          );
-        }
-
+      if (user?.phone) {
+        const { errorMessage } = await signInWithOtp(user?.phone.replace("+", ""));
         const RESEND_TIME = 60;
         localStorage.setItem(
           "resendTimer",
           (Date.now() + RESEND_TIME * 1000).toString()
         );
+        const params = new URLSearchParams(searchParams.toString());
         nextStep(`?${params.toString()}`);
-        toast.success("The confirmation code has been sent!");
+      } else {
+        const { errorMessage } = await signInWithOtp(values.phoneNumber);
+        if (errorMessage) {
+          toast.error(errorMessage);
+        } else {
+          const params = new URLSearchParams(searchParams.toString());
+          params.set("phone", values.phoneNumber);
+          if (user?.id) {
+            await dispatch(
+              updateUser({
+                phone: `+${values.phoneNumber}`,
+              })
+            );
+          }
+          const RESEND_TIME = 60;
+          localStorage.setItem(
+            "resendTimer",
+            (Date.now() + RESEND_TIME * 1000).toString()
+          );
+          nextStep(`?${params.toString()}`);
+          toast.success("The confirmation code has been sent!");
+        }
       }
+
     });
   };
   const phoneNumberError = errors.phoneNumber?.message as string;
