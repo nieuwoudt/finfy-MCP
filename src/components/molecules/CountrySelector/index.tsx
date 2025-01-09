@@ -39,7 +39,10 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ onChange }) => {
           "https://restcountries.com/v3.1/all"
         );
         const countryData = response.data;
-        const countryOptions = countryData.map((country) => ({
+        const filteredCountries = countryData.filter(
+          (country) => country.name.common === "United States" || country.name.common === "South Africa"
+        );
+        const countryOptions = filteredCountries.map((country) => ({
           value: country.cca2,
           label: country.name.common,
           content: country.name.common,
