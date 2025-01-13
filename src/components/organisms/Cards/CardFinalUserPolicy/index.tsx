@@ -37,8 +37,8 @@ const CardFinalUserPolicy = () => {
                 <Icon type="SwitchArrowsIcon" />
               </div>
               <p>
-                Finfy&apos;s may occasionally generate incorrect or misleading
-                information, or produce offensive or biased content.
+                <b>Accuracy Disclaimer:</b>
+                While I aim to be helpful, Finfy may occasionally generate incomplete, misleading, or biased information. Please verify critical details independently.
               </p>
             </div>
             <div className="flex gap-2">
@@ -46,9 +46,8 @@ const CardFinalUserPolicy = () => {
                 <Icon type="GradHatIcon" />
               </div>
               <p>
-                Finfy is not intended to give advice, including legal,
-                financial, & medical advice. Don&apos;t rely on our conversation
-                alone without doing your own independent research.
+              <b>Guidance, Not Advice:</b>
+                Finfy provides general assistance but does not offer professional legal, financial, or medical advice. Always consult a qualified expert for these matters.
               </p>
             </div>
             <div className="flex gap-2">
@@ -59,9 +58,8 @@ const CardFinalUserPolicy = () => {
                 />
               </div>
               <p>
-                Finfy may change usage limits, functionality, or policies as we
-                learn more. You cfv upgrade your plan to get more access to
-                Claude&apos;s features.
+              <b>Guidance, Not Advice:</b>
+                Finfy provides general assistance but does not offer professional legal, financial, or medical advice. Always consult a qualified expert for these matters.
               </p>
             </div>
           </div>

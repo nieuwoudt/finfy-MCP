@@ -19,7 +19,7 @@ const CardUserPolicy = () => {
   return (
     <CardTemplate
       title="Lovely to meet you, Nieuwoudt."
-      description="A few things to know before we start working together: Helper text"
+      description="A few things to know before we start working together"
       classes={{
         card: "max-w-xl",
       }}
@@ -28,21 +28,28 @@ const CardUserPolicy = () => {
         <CardTemplate.Content>
           <div className="my-3 text-sm space-y-3 rounded-xl border border-navy-5 p-3 text-grey-15">
             <div className="flex gap-2">
-              <div className="flex w-20 items-center">
+              <div className="flex flex-col w-20 items-center">
                 <Icon type="HandIcon" />
               </div>
-              <p>
-                Finfy&apos;s Acceptable Use Policy prohibits using Claude for
-                harm, like producing violent, abusive, or deceptive content.
-              </p>
+              <div className="flex flex-col  gap-2">
+                <p>
+                  <b>Acceptable Use Policy:</b>
+                  Finfy promotes a safe and respectful environment. Users must not use it to create, share, or promote harmful, abusive, or deceptive content.
+                </p>
+                <p>
+                  <b>Monitoring and Improvement:</b>
+                  To ensure quality and safety, Finfy may review conversations flagged by automated systems. These reviews help us improve while protecting user privacy.
+                </p>
+              </div>
             </div>
             <div className="flex gap-2">
               <div className="flex w-20 items-center">
                 <Icon type="ShieldIcon" />
               </div>
               <p>
-                Finfy&apos;s regularly reviews conversations flagged by our
-                automated abuse detection, and may use them to improve our.
+                <b>Advisory Disclaimer:</b>
+                Finfy offers general guidance and is not a substitute for professional advice (legal, financial, medical, etc.). Please consult a professional for critical decisions.
+
               </p>
             </div>
             <div className="flex gap-2">
@@ -50,9 +57,9 @@ const CardUserPolicy = () => {
                 <Icon type="GradHatIcon" />
               </div>
               <p>
-                Finfy is not intended to give advice, including legal,
-                financial, & medical advise. Don&apos;t rely on our conversation
-                alone without doing your own independent research.
+                <b>Advisory Disclaimer:</b>
+                Finfy offers general guidance and is not a substitute for professional advice (legal, financial, medical, etc.). Please consult a professional for critical decisions.
+
               </p>
             </div>
           </div>
