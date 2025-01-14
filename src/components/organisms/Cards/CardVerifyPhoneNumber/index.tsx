@@ -7,7 +7,7 @@ import { useNavigationOnboarding } from "@/hooks";
 import { signInWithOtp } from "@/lib/supabase/actions";
 import toast from "react-hot-toast";
 import { useEffect, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
@@ -34,11 +34,14 @@ const CardVerifyPhoneNumber = () => {
   const handlePhoneNumberChange = (phone: string) => {
     setValue("phoneNumber", phone);
   };
+  const router = useRouter();
 
   useEffect(() => {
     async function handleSignInWithOtp() {
-      console.log(user?.phone);
-
+      if (user?.finished_onboarding) {
+        router.push("/dashboard");
+        return null
+      }
       if (user?.phone) {
         try {
           const { errorMessage } = await signInWithOtp(user?.phone.replace("+", ""));
