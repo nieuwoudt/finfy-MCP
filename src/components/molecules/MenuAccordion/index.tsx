@@ -199,9 +199,9 @@ const MenuAccordion: FC = () => {
       collapsible
       className="flex flex-col gap-0.5 max-w-[calc(274px)] lg:max-w-[calc(100%)]"
     >
-      {menuItems.map((item) => (
+      {menuItems.map((item, i) => (
         <MenuAccordionItem
-          key={item.value}
+          key={item.value + i}
           item={item}
           contents={Object.keys(groupedChats).length > 0 && groupedChats.hasOwnProperty(item.value) ? groupedChats[item.value] : []}
           handleOpen={handleOpen}

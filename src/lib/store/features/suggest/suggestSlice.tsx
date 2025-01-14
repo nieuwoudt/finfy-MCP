@@ -144,7 +144,6 @@ export const fetchFocusSuggests = createAsyncThunk(
     );
     const data = await response.json();
     // console.log('CHECK data', data)
-    console.log(adaptApiDataToMock(data), "kghfghfghghjjfhg")
     return adaptApiDataToMock(data);
   }
 );

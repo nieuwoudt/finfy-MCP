@@ -24,8 +24,8 @@ const HomeSuggestBoxes = ({ isMobile = false }: { isMobile?: boolean }) => {
           }}
           modules={[Navigation]}
         >
-          {suggest.map((item: any) => (
-            <SwiperSlide key={item.label}>
+          {suggest.map((item: any, i: number) => (
+            <SwiperSlide key={item.label + i}>
               <SuggestedBox
                 content={item.content}
                 icon={item.icon}
@@ -63,8 +63,8 @@ const HomeSuggestBoxes = ({ isMobile = false }: { isMobile?: boolean }) => {
           maxHeight: isMobile ? "calc(100vh - 150px)" : undefined,
         }}
       >
-        {suggest.map((item: any) => (
-          <div key={item.label} className={cn("flex-shrink-0", isMobile ? "min-h-[136px]" : "")}>
+        {suggest.map((item: any, i: any) => (
+          <div key={item.label + i} className={cn("flex-shrink-0", isMobile ? "min-h-[136px]" : "")}>
             <SuggestedBox
               content={item.content}
               icon={item.icon}

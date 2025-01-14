@@ -36,8 +36,8 @@ const SuggestedQuestions = () => {
     <div className="absolute w-full px-3 bottom-[110%] md:bottom-[105%]">
       <h4 className="text-white font-semibold text-2xl mb-4">Related</h4>
       <div className="flex gap-2 md:gap-4 overflow-auto w-full scrollbar-hide">
-        {[...simple, ...open_ended].map((question) => {
-          return <SuggestedQuestion key={question} question={question} />;
+        {[...simple, ...open_ended].map((question, i) => {
+          return <SuggestedQuestion key={question + i} question={question} />;
         })}
       </div>
     </div>

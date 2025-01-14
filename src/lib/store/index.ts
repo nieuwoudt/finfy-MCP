@@ -20,6 +20,10 @@ export const makeStore = () => {
       accounts: accountsReducer,
       category: categoryReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
   });
 };
 

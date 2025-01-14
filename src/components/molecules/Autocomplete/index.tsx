@@ -215,10 +215,10 @@ const Autocomplete: FC<AutocompleteProps> = ({
                     <Loader2 className="w-5 h-5 animate-spin" />
                   </li>
                 ) : currentOptions?.length ? (
-                  currentOptions?.map((option) => {
+                  currentOptions?.map((option, i) => {
                     return (
                       <li
-                        key={option.value}
+                        key={option.value + i}
                         onClick={() => handleClick(option)}
                         className={cn(
                           "px-4 pl-10 py-2 flex gap-1 relative items-center text-white text-sm font-medium hover:bg-navy-15 cursor-pointer",

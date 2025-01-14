@@ -300,7 +300,7 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
           <ul className="text-white">
             {labels.map((label, index) => (
               <li
-                key={label}
+                key={label + index}
                 className="flex justify-between py-6 px-[18px] h-14 border-b border-[#374061]"
               >
                 <span>{formatLabel(label)}</span>
