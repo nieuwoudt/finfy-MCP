@@ -69,7 +69,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
       {messages.length ? (
         <Conversation handleOpenModal={handleOpenModal} isOpenChart={!!selectedChartId} />
       ) : (
-        <div className="lg:px-40 lg:pt-20 lg:pb-12">
+        <div className="xl:px-20 overflow-hidden 2xl:px-40 lg:pt-20 lg:pb-12">
           <HeaderText />
           <div className="hidden lg:flex flex-1 flex-col items-center">
             {!!suggest?.length && <>
@@ -80,7 +80,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
             </>}
             {!!suggest?.length && <HomeSuggestBoxes />}
           </div>
-          <div className="flex pl-4 absolute bottom-[168px] h-[154px] left-0 right-0 lg:hidden flex-col">
+          <div className="flex pl-4 overflow-hidden absolute bottom-[168px] h-[154px] left-0 right-0 lg:hidden flex-col">
             {!!suggest?.length && <>
               <div className="flex items-center h-fit text-grey-15">
                 <Icon type="LightningBolt" className="text-grey-15" />

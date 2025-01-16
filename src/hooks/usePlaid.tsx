@@ -7,6 +7,7 @@ import {
   saveLiabilities,
   saveBankIncome,
   saveAccounts,
+  saveAssetReport,
 } from "@/lib/supabase/actions";
 import * as Sentry from "@sentry/nextjs";
 import { getErrorMessage } from "@/utils/helpers";
@@ -40,10 +41,59 @@ const usePlaid = () => {
         console.error("Error creating link token", error);
       }
     };
-    if (user?.is_connected_bank === false && user.selected_country !== "ZA") {
-      createLinkToken();
+    createLinkToken();
+  }, []);
+
+  useEffect(() => {
+    const fetchAndSaveIncome = async () => {
+      if (user?.id) {
+        dispatch(
+          updateUser({
+            last_update: new Date().toISOString(),
+          })
+        );
+      }
+      try {
+        const response = await fetch("/api/plaid/income", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_token: user?.plaid_user_token }),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Failed to fetch income: ${response.statusText}`);
+        }
+  
+        const { income } = await response.json();
+        if (user?.id) {
+          await saveBankIncome(income, user.id);
+        };
+
+      } catch (error) {
+        console.error("Error fetching or saving income:", error);
+      }
+    };
+  
+    const today = new Date().toISOString().split("T")[0];
+    const lastUpdateDate = user?.last_update
+      ? new Date(user.last_update).toISOString().split("T")[0]
+      : null;
+  
+    if (user?.is_connected_bank && user?.plaid_user_token && lastUpdateDate !== today) {
+      fetchAndSaveIncome(); //bank_income
+      if (user?.is_connected_bank && user?.plaid_access_token && lastUpdateDate !== today) {
+        // fetchTransactions(user?.plaid_access_token);
+        fetchInvestments(user?.plaid_access_token); //investment_transactions
+        fetchLiabilities(user?.plaid_access_token); //liabilities
+        fetchBalances(user?.plaid_access_token); //balances
+        fetchAndSaveAssets(user?.plaid_access_token); //asset_reports
+      }
     }
-  }, [user?.is_connected_bank]);
+
+  }, [user, dispatch]);
+  
+  
+
 
   const exchangePublicToken = async (publicToken: string) => {
     try {
@@ -52,7 +102,7 @@ const usePlaid = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ public_token: publicToken }),
       });
-      const { access_token, item_id  } = await response.json();
+      const { access_token, item_id } = await response.json();
       setAccessToken(access_token);
       return { access_token, item_id };
     } catch (error) {
@@ -86,11 +136,9 @@ const usePlaid = () => {
 
       const institutionId = identity?.item?.institution_id;
       const institutionData = institutionId ? await fetchUserInstitution(institutionId) : undefined;
-  
       if (user?.id) {
         await saveAccounts(identity, user.id, institutionData);
       }
-  
       return identity;
     } catch (error) {
       Sentry.captureException(error);
@@ -104,11 +152,11 @@ const usePlaid = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ access_token: token }),
     });
-  
+
     if (!response.ok) {
       throw new Error(`Failed to fetch identity: ${response.statusText}`);
     }
-  
+
     const { identity } = await response.json();
 
     return identity;
@@ -123,7 +171,7 @@ const usePlaid = () => {
         body: JSON.stringify({ user_token: userToken }),
       });
       const { items } = await response.json();
-      
+
       return items;
     } catch (error) {
       Sentry.captureException(error);
@@ -132,19 +180,19 @@ const usePlaid = () => {
   };
 
   const fetchUserInstitution = async (institutionID: string): Promise<Institution | undefined> => {
-      const response = await fetch("/api/plaid/institution", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ institutionID }),
-      });
+    const response = await fetch("/api/plaid/institution", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ institutionID }),
+    });
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch institution: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      throw new Error(`Failed to fetch institution: ${response.statusText}`);
+    }
 
-      const { institution } = await response.json();
-      
-      return institution;
+    const { institution } = await response.json();
+
+    return institution;
   };
 
   const fetchBalances = async (token: string) => {
@@ -174,7 +222,6 @@ const usePlaid = () => {
         body: JSON.stringify({ user_token: userToken }),
       });
       const { income } = await response.json();
-      console.log(income, "income");
 
       if (user?.id) {
         await saveBankIncome(income, user.id);
@@ -202,6 +249,40 @@ const usePlaid = () => {
       toast.error(`Error fetching income: ${getErrorMessage(error)}`);
     }
   };
+
+  const fetchAndSaveAssets = async (token: string) => {
+    try {
+      const response = await fetch("/api/plaid/assets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_token: token }),
+      });
+  
+      const data = await response.json();
+      if (response.ok &&  user?.id) {
+         const assetReport =  (reportData: any) => {
+            return (
+              {
+                asset_report_id: reportData.asset_report_id,
+                client_report_id: reportData.client_report_id,
+                date_generated: reportData.date_generated,
+                days_requested: reportData.days_requested,
+                items: reportData.items,
+                user_info: reportData.user,
+                created_at: new Date().toISOString(),
+              }
+            );
+        };
+        await saveAssetReport(data.assets, user?.id);
+      } else {
+        // throw new Error(data.message || "Error fetching asset report");
+      }
+    } catch (error) {
+      Sentry.captureException(error);
+      toast.error(`Error fetching asset report: ${getErrorMessage(error)}`);
+    }
+  };
+  
 
   const fetchLiabilities = async (token: string) => {
     try {
@@ -234,16 +315,17 @@ const usePlaid = () => {
       dispatch(
         updateUser({
           plaid_user_token: data.user_token,
+          is_connected_bank: true,
         })
       );
       return data.user_token;
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const onSuccess = useCallback(
     async (publicToken: string) => {
       setIsLoading(true);
-      const { access_token, item_id } = await exchangePublicToken(publicToken) || { };
+      const { access_token, item_id } = await exchangePublicToken(publicToken) || {};
       const token = access_token;
       if (token) {
         await dispatch(
@@ -257,6 +339,7 @@ const usePlaid = () => {
         await fetchInvestments(token);
         await fetchLiabilities(token);
         await fetchBalances(token);
+        await fetchAndSaveAssets(token);
         let userToken = user?.plaid_user_token;
         if (!userToken) {
           userToken = await fetchCreateUser();

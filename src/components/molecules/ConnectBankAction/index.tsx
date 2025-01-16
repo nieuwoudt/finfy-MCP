@@ -18,14 +18,14 @@ const ConnectBankAction = ({ inputMenu }: { inputMenu?: boolean }) => {
         disabled={!isLinkReady}
         Icon={
           <>
-            {/* {!isLinkReady || isLoading ? (
+            {!isLinkReady || isLoading ? (
               <Loader2 className="animate-spin w-3 h-3" />
-            ) : ( */}
+            ) : (
               <Icon
                 type="UserSolidIcon"
                 className="fill-purple-15 group-hover:fill-white h-3.5 w-5"
               />
-            {/* )} */}
+            )}
           </>
         }
         text={"Link Accounts"}

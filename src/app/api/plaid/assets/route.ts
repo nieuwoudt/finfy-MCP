@@ -5,19 +5,28 @@ export async function POST(req: NextRequest) {
   try {
     const { access_token } = await req.json();
 
-    const assets = await plaidClient.assetReportGet({
-      asset_report_token: access_token,
+    const assetReportCreateResponse = await plaidClient.assetReportCreate({
+      access_tokens: [access_token],
+      days_requested: 30,
+    });
+
+    const assetReportToken = assetReportCreateResponse.data.asset_report_token;
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    const assetReportGetResponse = await plaidClient.assetReportGet({
+      asset_report_token: assetReportToken,
       include_insights: true,
     });
 
     return NextResponse.json({
-      assets: assets.data.report,
+      assets: assetReportGetResponse.data.report,
     });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error("Error fetching asset report:", error.response?.data || error.message);
     return NextResponse.json(
-      { message: "Error fetching transactions" },
-      { status: 500 }
+      { message: "Error fetching asset report", error: error.response?.data || error.message },
+      { status: 200 }
     );
   }
 }

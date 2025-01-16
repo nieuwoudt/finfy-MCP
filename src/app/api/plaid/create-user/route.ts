@@ -7,7 +7,6 @@ export async function POST(req: NextRequest) {
     const user = await plaidClient.userCreate({
       client_user_id: email || phone,
     });
-    console.log();
     return NextResponse.json({ user_token: user.data.user_token });
   } catch (error) {
     console.error(error);

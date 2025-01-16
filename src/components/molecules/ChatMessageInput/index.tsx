@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { ActionButton, ConnectBankAction, FocusAssistantPopover } from "@/components/molecules";
 import { ActionButtonsGroupMobile } from "@/components/organisms/ActionButtonsGroup";
 import { Category } from "@/lib/store/features/category/categorySlice";
+import clsx from "clsx";
 
 interface ChatMessageInputProps {
   handleClose?: () => void;
@@ -148,10 +149,10 @@ const ChatMessageInput: FC<ChatMessageInputProps> = ({ handleClose, isDark = fal
           <Icon type="PlusIcon" className={cn("w-5 h-5", isPopupOpen ? "stroke-purple-15" : " stroke-slate-400")} />
         </button>
 
-        {isPopupOpen && (
+        {(
           <div
             ref={popoverRef}
-            className="absolute w-max bg-[#272E48] rounded-md px-4 border-[#374061] border-[1px] py-2 bottom-16 left-0 z-50"
+            className={clsx(isPopupOpen ? "absolute w-max bg-[#272E48] rounded-md px-4 border-[#374061] border-[1px] py-2 bottom-16 left-0 z-50" : "overflow-hidden !w-0 !h-0")}
           >
             <ActionButtonsGroupMobile />
           </div>

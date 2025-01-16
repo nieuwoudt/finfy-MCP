@@ -80,7 +80,7 @@ export const signInWithOtp = async (phone: string) => {
 };
 
 export const getAppURL = () => {
-  const env = process.env.NEXT_PUBLIC_NODE_ENV ;
+  const env = process.env.NEXT_PUBLIC_NODE_ENV;
 
   // Set default URL for localhost
   let url = "http://localhost:3000/";
@@ -210,7 +210,7 @@ export const saveAccounts = async (identity: IdentityGetResponseExtended, userId
       errorMessage: getErrorMessage(error),
     };
   }
-} 
+}
 
 export const saveTransactionsAndAccounts = async (
   transactions: Transaction[],
@@ -272,7 +272,7 @@ export const saveBalances = async (accountData: any, userId: string) => {
     const { error } = await supabase.from("balances").insert(
       accountData.map((account: any) => ({
         account_id: account.account_id,
-        persistent_account_id: account.persistent_account_id,
+        persistent_account_id: account.persistent_account_id || "no",
         name: account.name,
         official_name: account.official_name,
         mask: account.mask,
@@ -420,23 +420,24 @@ export const saveInvestmentTransactions = async (
 
 export const saveBankIncome = async (bankIncomeData: any, userId: string) => {
   try {
-    const { error } = await supabase.from("bank_income").insert([
-      {
-        bank_income_id: bankIncomeData.bank_income_id,
-        bank_income_summary: bankIncomeData.bank_income_summary,
-        days_requested: bankIncomeData.days_requested,
-        generated_time: bankIncomeData.generated_time,
-        items: bankIncomeData.items,
-        request_id: bankIncomeData.request_id,
-        user_id: userId,
-        created_at: new Date().toISOString(),
-      },
-    ]);
-
-    if (error) {
-      Sentry.captureException(error);
-      throw error;
-    }
+    bankIncomeData.map(async (bankIncomeDataItem: any) => {
+      const { error } = await supabase.from("bank_income").insert([
+        {
+          bank_income_id: bankIncomeDataItem?.bank_income_id,
+          bank_income_summary: bankIncomeDataItem?.bank_income_summary,
+          days_requested: bankIncomeDataItem?.days_requested,
+          generated_time: bankIncomeDataItem?.generated_time,
+          items: bankIncomeDataItem?.items,
+          request_id: bankIncomeDataItem?.request_id || new Date().toISOString(),
+          user_id: userId,
+          created_at: new Date().toISOString(),
+        },
+      ]);
+      if (error) {
+        Sentry.captureException(error);
+        throw error;
+      }
+    });
 
     return { errorMessage: null };
   } catch (error) {
@@ -450,12 +451,12 @@ export const saveAssetReport = async (reportData: any, userId: string) => {
   try {
     const { error } = await supabase.from("asset_reports").insert([
       {
-        asset_report_id: reportData.report.asset_report_id,
-        client_report_id: reportData.report.client_report_id,
-        date_generated: reportData.report.date_generated,
-        days_requested: reportData.report.days_requested,
-        items: reportData.report.items,
-        user_info: reportData.report.user,
+        asset_report_id: reportData.asset_report_id,
+        client_report_id: reportData.client_report_id,
+        date_generated: reportData.date_generated,
+        days_requested: reportData.days_requested,
+        items: reportData.items,
+        user_info: reportData.user,
         created_at: new Date().toISOString(),
         user_id: userId,
       },

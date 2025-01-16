@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
         Products.Transactions,
         Products.Investments,
         Products.Liabilities,
+        Products.Assets
       ],
       webhook: `${currentUrl}/api/plaid/webhook`,
     });

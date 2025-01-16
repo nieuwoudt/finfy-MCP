@@ -12,10 +12,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       income: income.data.bank_income,
     });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error("Error fetching income:", error);
+
+    if (
+      error.response?.data?.error_code === "INCOME_VERIFICATION_NOT_FOUND" ||
+      error.response?.data?.error_message ===
+        "the requested data was not found. Please check the ID supplied."
+    ) {
+      return NextResponse.json({
+        income: [],
+      });
+    }
+
     return NextResponse.json(
-      { message: "Error fetching transactions" },
+      { message: "An error occurred while fetching income data." },
       { status: 500 }
     );
   }

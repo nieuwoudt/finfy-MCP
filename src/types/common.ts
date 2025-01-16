@@ -33,6 +33,8 @@ export interface User {
   avatar_url?: string;
   customer_id: string;
   is_connected_bank: boolean;
+  access_token?: string;
+  last_update?: string;
 }
 
 export interface Transaction {

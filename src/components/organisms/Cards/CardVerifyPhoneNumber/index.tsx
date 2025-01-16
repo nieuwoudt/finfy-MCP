@@ -66,12 +66,6 @@ const CardVerifyPhoneNumber = () => {
   const onSubmit = async (values: { phoneNumber: string }) => {
     startTransition(async () => {
       if (user?.phone) {
-        const { errorMessage } = await signInWithOtp(user?.phone.replace("+", ""));
-        const RESEND_TIME = 60;
-        localStorage.setItem(
-          "resendTimer",
-          (Date.now() + RESEND_TIME * 1000).toString()
-        );
         const params = new URLSearchParams(searchParams.toString());
         nextStep(`?${params.toString()}`);
       } else {
@@ -81,13 +75,6 @@ const CardVerifyPhoneNumber = () => {
         } else {
           const params = new URLSearchParams(searchParams.toString());
           params.set("phone", values.phoneNumber);
-          if (user?.id) {
-            await dispatch(
-              updateUser({
-                phone: `+${values.phoneNumber}`,
-              })
-            );
-          }
           const RESEND_TIME = 60;
           localStorage.setItem(
             "resendTimer",
