@@ -82,7 +82,6 @@ const CardLinkAccount: FC<HomePageProps> = ({ redirect, pathRedirect }) => {
               onClick={() => nextStep()}
               full
               variant="ghost"
-              // disabled={isLinkReady || isLoading}
               className="text-center text-sm font-medium text-grey-15"
             >
               Not ready to link an account?
