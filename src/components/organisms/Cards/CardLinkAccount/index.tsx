@@ -18,7 +18,7 @@ const CardLinkAccount: FC<HomePageProps> = ({ redirect, pathRedirect }) => {
     useConnectBank();
 
   useEffect(() => {
-    if (transactions?.length) {
+    if (transactions?.length && !isLoading) {
       toast.success("The bank connection was successful");
       if (pathRedirect) {
         redirect();
@@ -82,7 +82,7 @@ const CardLinkAccount: FC<HomePageProps> = ({ redirect, pathRedirect }) => {
               onClick={() => nextStep()}
               full
               variant="ghost"
-              disabled={isLinkReady}
+              disabled={isLinkReady || isLoading}
               className="text-center text-sm font-medium text-grey-15"
             >
               Not ready to link an account?
