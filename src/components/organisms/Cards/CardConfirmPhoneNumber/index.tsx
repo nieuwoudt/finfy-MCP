@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
+import { sendWelcomeEmail } from "./sendWelcomeEmail";
 
 const CardConfirmPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
@@ -37,6 +38,7 @@ const CardConfirmPhoneNumber = () => {
       } else {
         nextStep();
         toast.success("Phone number has been successfully verified!");
+        await sendWelcomeEmail(`${user?.email}`, `${user?.name}`);
       }
     });
   };
