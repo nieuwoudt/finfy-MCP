@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigationOnboarding, useUser } from "@/hooks";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { sendWelcomeEmail } from "./sendWelcomeEmail";
 
 const CardPersonalize = () => {
   const { updateUser, statusUpdate, error, user } = useUser();
@@ -20,6 +21,7 @@ const CardPersonalize = () => {
     if (user?.id) {
       await updateUser({ name: values.name });
       toast.success("The name was successfully saved!");
+      await sendWelcomeEmail(`${user?.email}`, `${values?.name || "new user"}`);
       nextStep();
     }
   };
