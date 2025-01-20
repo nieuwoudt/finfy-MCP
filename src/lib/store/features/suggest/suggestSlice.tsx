@@ -54,7 +54,7 @@ function adaptApiDataToMock(apiData: any) {
 
   const descriptions: any = {
     spending: "Monitor and analyze spending habits.",
-    budgeting: "Create and adjust financial budgets.",
+    budgeting: "Manege your finances efficiently.",
     goals: "Set and pursue financial targets.",
     cash_forcast: "Predict future financial status.",
     credit_card_usage: "Optimize and track card benefits.",
@@ -129,7 +129,7 @@ function adaptApiDataToMock(apiData: any) {
 
     return {
     title: `${capitalizeWords(category.replace('_', ' '))}`,
-    text: descriptions[category] || "Manage your finances efficiently.",
+    text: descriptions[category] || "Predict future financial status.",
     icon: categoryIconTypes[category] ? <Icon type={categoryIconTypes[category]} /> : "",
     suggest: suggestQuestionsAdapted
   }});
