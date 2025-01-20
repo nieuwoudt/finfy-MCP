@@ -91,7 +91,8 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
           </div>
         </div>
       )}
-      <div className={clsx("bg-[#1F263D] relative lg:px-40", {"lg:py-20": !messages.length })}>
+      <div className={clsx("w-full flex flex-col items-center justify-center ")}>
+      <div className={clsx("bg-[#1F263D] relative w-full max-w-[845px]  ", {"lg:py-20": !messages.length })}>
         <AssistInput 
           isDark={!!selectedChartId} 
           classes={{
@@ -99,6 +100,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
           }}
         />
 
+      </div>
       </div>
     </div>
       <div className={cn("flex", selectedChartId ? "w-full h-screen" : "")}>

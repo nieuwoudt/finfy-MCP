@@ -57,8 +57,8 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
   return (
     <div
       className={clsx(
-        "flex-1 overflow-hidden relative flex flex-row gap-8 lg:pt-20 lg:pb-12",
-        isOpenChart ? "" : "lg:px-40"
+        "flex-1 overflow-hidden  max-w-[845px] mx-auto w-full relative flex flex-row gap-8 lg:pt-20 lg:pb-12",
+        isOpenChart ? "" : ""
       )}
     >
       <div className={`w-full relative pb-32`}>
