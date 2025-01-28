@@ -84,7 +84,7 @@ const usePlaid = () => {
       if (user?.is_connected_bank && user?.plaid_access_token && lastUpdateDate !== today) {
         // fetchTransactions(user?.plaid_access_token);
         fetchInvestments(user?.plaid_access_token); //investment_transactions
-        fetchLiabilities(user?.plaid_access_token); //liabilities
+        // fetchLiabilities(user?.plaid_access_token); //liabilities TODO hide Liabilities
         fetchBalances(user?.plaid_access_token); //balances
         fetchAndSaveAssets(user?.plaid_access_token); //asset_reports
       }
@@ -337,7 +337,7 @@ const usePlaid = () => {
         await fetchUserIdentity(token);
         await fetchTransactions(token);
         await fetchInvestments(token);
-        await fetchLiabilities(token);
+        // await fetchLiabilities(token); TODO hide Liabilities
         await fetchBalances(token);
         await fetchAndSaveAssets(token);
         let userToken = user?.plaid_user_token;
