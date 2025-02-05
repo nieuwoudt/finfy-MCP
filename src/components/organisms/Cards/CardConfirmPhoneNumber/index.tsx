@@ -17,7 +17,7 @@ const CardConfirmPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const user = useSelector((state: RootState) => state.user.user);
-  const phone = searchParams.get("phone");
+  const phone = searchParams.get("phone") || user?.phone;
   const { nextStep, prevStep } = useNavigationOnboarding();
   const dispatch = useAppDispatch();
 
