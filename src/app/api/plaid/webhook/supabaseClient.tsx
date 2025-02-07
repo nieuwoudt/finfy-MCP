@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import axios from "axios";
 
 export const supabase = createClient(
   "https://bjavtuefglobpfbxvuau.supabase.co",
@@ -50,25 +51,36 @@ export async function saveTransactions(transactions: any[], userId: string) {
   } catch (err) {
     console.error("Unexpected error saving transactions:", err);
     return { error: err };
+  } finally {
+    // Call the API to trigger ingestion
+    const apiPayload = {
+      user_id: `${userId}`,
+      provider: "plaid",
+    };
+
+    const apiResponse = await axios.post(
+      "https://finify-ai-137495399237.us-central1.run.app/insert_data",
+      apiPayload
+    );
   }
 }
 
 export async function getAccessTokenByItemId(itemId: string): Promise<string | null> {
-    try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("plaid_access_token")
-        .eq("item_id", itemId)
-        .single();
-  
-      if (error) {
-        console.error("Error fetching access token from Supabase:", error);
-        return null;
-      }
-  
-      return data?.plaid_access_token || null;
-    } catch (err) {
-      console.error("Unexpected error fetching access token:", err);
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("plaid_access_token")
+      .eq("item_id", itemId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching access token from Supabase:", error);
       return null;
     }
+
+    return data?.plaid_access_token || null;
+  } catch (err) {
+    console.error("Unexpected error fetching access token:", err);
+    return null;
   }
+}
