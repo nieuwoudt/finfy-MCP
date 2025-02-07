@@ -50,8 +50,12 @@ export const createTransaction = createAsyncThunk<
 >("transactions/create", async (newTransaction) => {
   const { data, error } = await supabase
     .from("transactions")
-    .insert([newTransaction])
+    .upsert(
+      [{ ...newTransaction }],
+      { onConflict: "transaction_id" }
+    )
     .single();
+
   if (error) {
     Sentry.captureException(error);
     throw error;

@@ -19,6 +19,7 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
 import { IdentityGetResponseExtended } from "@/types";
 import { Institution } from "plaid";
+import axios from "axios";
 
 const usePlaid = () => {
   const { user } = useUser();
@@ -59,11 +60,11 @@ const usePlaid = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ user_token: user?.plaid_user_token }),
         });
-  
+
         if (!response.ok) {
           throw new Error(`Failed to fetch income: ${response.statusText}`);
         }
-  
+
         const { income } = await response.json();
         if (user?.id) {
           await saveBankIncome(income, user.id);
@@ -73,26 +74,55 @@ const usePlaid = () => {
         console.error("Error fetching or saving income:", error);
       }
     };
-  
-    const today = new Date().toISOString().split("T")[0];
-    const lastUpdateDate = user?.last_update
-      ? new Date(user.last_update).toISOString().split("T")[0]
-      : null;
-  
-    if (user?.is_connected_bank && user?.plaid_user_token && lastUpdateDate !== today) {
-      fetchAndSaveIncome(); //bank_income
-      if (user?.is_connected_bank && user?.plaid_access_token && lastUpdateDate !== today) {
-        // fetchTransactions(user?.plaid_access_token);
-        fetchInvestments(user?.plaid_access_token); //investment_transactions
-        // fetchLiabilities(user?.plaid_access_token); //liabilities TODO hide Liabilities
-        fetchBalances(user?.plaid_access_token); //balances
-        fetchAndSaveAssets(user?.plaid_access_token); //asset_reports
+
+    const reUp = async () => {
+      try {
+
+        const today = new Date().toISOString().split("T")[0];
+        const lastUpdateDate = user?.last_update
+          ? new Date(user.last_update).toISOString().split("T")[0]
+          : null;
+
+
+        if (user?.is_connected_bank && user?.plaid_user_token && lastUpdateDate !== today) {
+          fetchAndSaveIncome(); //bank_income
+          if (user?.is_connected_bank && user?.plaid_access_token && lastUpdateDate !== today) {
+            if (user?.id) {
+              dispatch(
+                updateUser({
+                  last_update: new Date().toISOString(),
+                })
+              );
+            }
+            fetchTransactions(user?.plaid_access_token);
+            fetchInvestments(user?.plaid_access_token); //investment_transactions
+            // fetchLiabilities(user?.plaid_access_token); //liabilities TODO hide Liabilities
+            fetchBalances(user?.plaid_access_token); //balances
+            fetchAndSaveAssets(user?.plaid_access_token); //asset_reports
+          }
+        }
+
+      } catch (err) {
+        console.log("transactionstransactions", err)
+
+      } finally {
+        const apiPayload = {
+          user_id: `${user?.id}`,
+          provider: "plaid",
+        };
+
+        const apiResponse = await axios.post(
+          "https://finify-ai-137495399237.us-central1.run.app/insert_data",
+          apiPayload
+        );
       }
     }
 
+    reUp();
+
   }, [user, dispatch]);
-  
-  
+
+
 
 
   const exchangePublicToken = async (publicToken: string) => {

@@ -10,6 +10,9 @@ export async function GET(req: NextRequest) {
       user: { client_user_id: process.env.PLAID_CLIENT_ID as string },
       client_name: "Finfy",
       language: "en",
+      transactions: {
+        days_requested: 730
+      },
       country_codes: [CountryCode.Us],
       products: [
         Products.Auth,

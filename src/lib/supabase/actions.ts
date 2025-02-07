@@ -252,8 +252,9 @@ export const saveTransactionsAndAccounts = async (
     }));
 
     const { error: transactionError } = await supabase
-      .from("transactions")
-      .insert(formattedTransactions);
+    .from("transactions")
+    .upsert(formattedTransactions, { onConflict: "transaction_id" }); 
+  
 
     if (transactionError) {
       throw transactionError;
@@ -451,7 +452,7 @@ export const saveAssetReport = async (reportData: any, userId: string) => {
   try {
     const { error } = await supabase.from("asset_reports").insert([
       {
-        asset_report_id: reportData.asset_report_id,
+        asset_report_id: reportData?.asset_report_id,
         client_report_id: reportData.client_report_id,
         date_generated: reportData.date_generated,
         days_requested: reportData.days_requested,

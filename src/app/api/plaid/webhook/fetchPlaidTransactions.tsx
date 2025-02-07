@@ -10,7 +10,7 @@ export async function fetchPlaidTransactions(itemId: string) {
     }
 
     const response = await axios.post(
-      "https://sandbox.plaid.com/transactions/get",
+      "https://production.plaid.com/transactions/get", //
       {
         client_id: process.env.PLAID_CLIENT_ID,
         secret: process.env.PLAID_SECRET,

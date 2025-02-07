@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     const { access_token } = await req.json();
     
     const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 1);
+    startDate.setMonth(startDate.getMonth() - 24);
     const formattedStartDate = startDate.toISOString().split('T')[0];
 
     const endDate = new Date();

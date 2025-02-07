@@ -39,8 +39,10 @@ export async function saveTransactions(transactions: any[], userId: string) {
   }));
 
   try {
-    const { error } = await supabase.from("transactions").insert(formattedTransactions);
-
+    const { error } = await supabase
+    .from("transactions")
+    .upsert(formattedTransactions, { onConflict: "transaction_id" }); 
+  
     if (error) {
       console.error("Error saving transactions:", error);
       return { error };
@@ -52,7 +54,6 @@ export async function saveTransactions(transactions: any[], userId: string) {
     console.error("Unexpected error saving transactions:", err);
     return { error: err };
   } finally {
-    // Call the API to trigger ingestion
     const apiPayload = {
       user_id: `${userId}`,
       provider: "plaid",
