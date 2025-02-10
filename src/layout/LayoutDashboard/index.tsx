@@ -46,7 +46,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    dispatch(fetchFocusSuggests());
+    // dispatch(fetchFocusSuggests()); //TODO un-hide suggests questions
   }, [dispatch]);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
       ) : (
         <div className="xl:px-20 overflow-hidden 2xl:px-40 lg:pt-20 lg:pb-12">
           <HeaderText />
-          <div className="hidden lg:flex flex-1 flex-col items-center">
+          {/* <div className="hidden lg:flex flex-1 flex-col items-center">  //TODO un-hide suggests questions
             {!!suggest?.length && <>
               <div className="w-full justify-start flex items-center h-fit text-grey-15">
                 <Icon type="LightningBolt" className="text-grey-15" />
@@ -79,8 +79,8 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
               </div>
             </>}
             {!!suggest?.length && <HomeSuggestBoxes />}
-          </div>
-          <div className="flex pl-4 overflow-hidden absolute bottom-[168px] h-[154px] left-0 right-0 lg:hidden flex-col">
+          </div> */}
+          {/* <div className="flex pl-4 overflow-hidden absolute bottom-[168px] h-[154px] left-0 right-0 lg:hidden flex-col">
             {!!suggest?.length && <>
               <div className="flex items-center h-fit text-grey-15">
                 <Icon type="LightningBolt" className="text-grey-15" />
@@ -88,7 +88,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
               </div>
             </>}
             <HomeSuggestBoxes isMobile={true} />
-          </div>
+          </div> */}
         </div>
       )}
       <div className={clsx("w-full flex flex-col items-center justify-center ")}>
