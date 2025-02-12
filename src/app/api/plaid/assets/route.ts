@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
 
     const assetReportCreateResponse = await plaidClient.assetReportCreate({
       access_tokens: [access_token],
-      days_requested: 30,
+      days_requested: 730,
     });
 
     const assetReportToken = assetReportCreateResponse.data.asset_report_token;

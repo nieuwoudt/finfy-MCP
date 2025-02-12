@@ -244,8 +244,8 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
       ctx.restore();
   
       // Get the total from chart data (replace with correct dataset if necessary)
-      const total = chart.data.datasets[0].data.reduce((sum: number, value: number) => sum + value, 0);
-      const formattedTotal = `$${total.toLocaleString()}`; // Format the total value
+      const total = Math.round(chart.data.datasets[0].data.reduce((sum: number, value: number) => sum + value, 0));
+      const formattedTotal = `${total.toLocaleString()}%`; // Format the total value
   
       // Set font properties
       ctx.textAlign = "center";
@@ -281,6 +281,8 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
     return null;
   };
 
+  const isPercentage = title.toLocaleLowerCase().includes("Percentage".toLocaleLowerCase())
+
   return (
     <div className="bg-[#272E48] rounded-lg">
       <div className="max-h-[340px] flex justify-center items-center mx-auto w-full">
@@ -304,7 +306,7 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
                 className="flex justify-between py-6 px-[18px] h-14 border-b border-[#374061]"
               >
                 <span>{formatLabel(label)}</span>
-                <span>${amounts[index].toFixed(2)}</span>
+                <span>{isPercentage ? "" : "$"}{amounts[index].toFixed(2)}{isPercentage ? "%" : ""}</span>
               </li>
             ))}
           </ul>

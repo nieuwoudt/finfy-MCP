@@ -85,7 +85,11 @@ const usePlaid = () => {
 
 
         if (user?.is_connected_bank && user?.plaid_user_token && lastUpdateDate !== today) {
-          fetchAndSaveIncome(); //bank_income
+          try {
+            fetchAndSaveIncome(); //bank_income
+          } catch (err) {
+            console.log("bank_income", { err })
+          }
           if (user?.is_connected_bank && user?.plaid_access_token && lastUpdateDate !== today) {
             if (user?.id) {
               dispatch(
@@ -94,16 +98,36 @@ const usePlaid = () => {
                 })
               );
             }
-            fetchTransactions(user?.plaid_access_token);
-            fetchInvestments(user?.plaid_access_token); //investment_transactions
-            // fetchLiabilities(user?.plaid_access_token); //liabilities TODO hide Liabilities
-            fetchBalances(user?.plaid_access_token); //balances
-            fetchAndSaveAssets(user?.plaid_access_token); //asset_reports
+            try {
+              fetchTransactions(user?.plaid_access_token); //bank_transactions
+            } catch (err) {
+              console.log("bank_transactions", { err })
+            };
+            try {
+              fetchInvestments(user?.plaid_access_token); //investment_transactions
+            } catch (err) {
+              console.log("investment_transactions", { err })
+            };
+            try {
+              // fetchLiabilities(user?.plaid_access_token); //liabilities TODO hide Liabilities bank_liabilities
+            } catch (err) {
+              console.log("bank_liabilities", { err })
+            };
+            try {
+              fetchBalances(user?.plaid_access_token); //bank_balances
+            } catch (err) {
+              console.log("bank_balances", { err })
+            };
+            try {
+              fetchAndSaveAssets(user?.plaid_access_token); //asset_reports
+            } catch (err) {
+              console.log("asset_reports", { err })
+            };
           }
         }
 
       } catch (err) {
-        console.log("transactionstransactions", err)
+        console.log("all_delly_upd_err", {err})
 
       } finally {
         const apiPayload = {
@@ -287,21 +311,21 @@ const usePlaid = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ access_token: token }),
       });
-  
+
       const data = await response.json();
-      if (response.ok &&  user?.id) {
-         const assetReport =  (reportData: any) => {
-            return (
-              {
-                asset_report_id: reportData.asset_report_id,
-                client_report_id: reportData.client_report_id,
-                date_generated: reportData.date_generated,
-                days_requested: reportData.days_requested,
-                items: reportData.items,
-                user_info: reportData.user,
-                created_at: new Date().toISOString(),
-              }
-            );
+      if (response.ok && user?.id) {
+        const assetReport = (reportData: any) => {
+          return (
+            {
+              asset_report_id: reportData.asset_report_id,
+              client_report_id: reportData.client_report_id,
+              date_generated: reportData.date_generated,
+              days_requested: reportData.days_requested,
+              items: reportData.items,
+              user_info: reportData.user,
+              created_at: new Date().toISOString(),
+            }
+          );
         };
         await saveAssetReport(data.assets, user?.id);
       } else {
@@ -312,7 +336,7 @@ const usePlaid = () => {
       toast.error(`Error fetching asset report: ${getErrorMessage(error)}`);
     }
   };
-  
+
 
   const fetchLiabilities = async (token: string) => {
     try {

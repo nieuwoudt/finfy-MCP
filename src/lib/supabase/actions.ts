@@ -453,11 +453,11 @@ export const saveAssetReport = async (reportData: any, userId: string) => {
     const { error } = await supabase.from("asset_reports").insert([
       {
         asset_report_id: reportData?.asset_report_id,
-        client_report_id: reportData.client_report_id,
-        date_generated: reportData.date_generated,
-        days_requested: reportData.days_requested,
-        items: reportData.items,
-        user_info: reportData.user,
+        client_report_id: reportData?.client_report_id,
+        date_generated: reportData?.date_generated,
+        days_requested: reportData?.days_requested,
+        items: reportData?.items,
+        user_info: reportData?.user,
         created_at: new Date().toISOString(),
         user_id: userId,
       },

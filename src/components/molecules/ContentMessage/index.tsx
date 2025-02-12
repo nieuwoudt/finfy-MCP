@@ -55,7 +55,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
       const isOpen = openDropdowns[index] || false;
 
       return (
-        <div className="my-4 border border-[#374061] max-w-[calc(100vw-110px)] md:max-w-[calc(100%-80px)] rounded-lg overflow-hidden">
+        <div className="my-4 border border-[#374061] max-w-[calc(100vw-110px)] md:w-[calc(100%-40px)] lg:w-[calc(100%)] lg:max-w-[745px] rounded-lg overflow-hidden">
           {children?.map((child: any) =>
             child.type === "summary" ? (
               <button
@@ -153,7 +153,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
           text
         ) : (
           <Markdown
-            className={"markdown !whitespace-normal markdown-special"}
+            className={"markdown max-w-[845px] w-full !whitespace-normal markdown-special"}
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
             components={renderers}
