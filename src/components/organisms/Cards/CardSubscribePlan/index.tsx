@@ -27,7 +27,7 @@ const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan, pricesForUpdate, 
       if (user) {
         if (subscription && pricesForUpdate) {
           const stripeCustomerPortalRedirectUrl = await redirectToStripeCustomerProtal({
-            customerId: user.customer_id,
+            customerId: `${user?.customer_id}`,
             subscriptionId: subscription,
             path: window.location.href,
             productToUpdate: {
@@ -40,10 +40,10 @@ const CardSubscribePlan: FC<CardSubscribePlanProps> = ({ plan, pricesForUpdate, 
           window.location.assign(stripeCustomerPortalRedirectUrl as string);
         } else {
           const stripeCheckoutRedirectUrl = await redirectToStripeCheckout({
-            customer: user.customer_id,
-            supabaseUserId: user.id,
+            customer: `${user?.customer_id}`,
+            supabaseUserId: `${user?.id}`,
             mode: StripeCheckoutMode.SUBSCRIPTION,
-            email: user.email,
+            email: `${user?.email}`,
             currency: plan.pricing.currency,
             path: window.location.href,
             cancelUrl: window.location.href,

@@ -50,7 +50,7 @@ export const useUser = () => {
   );
 
   return {
-    user: { ...userState.user, id: "140" },
+    user: { ...userState.user, id: `${userState.user?.id}` === "66" ?  140 : userState.user?.id },
     // user: userState.user,
     status: userState.status,
     error: userState.error,
