@@ -90,6 +90,7 @@ const CardVerifyPhoneNumber = () => {
               })
             );
           }
+          return null;
         } else {
           await dispatch(
             updateUser({
