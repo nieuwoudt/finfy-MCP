@@ -13,6 +13,7 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { updateUser } from "@/lib/store/features/user/userSlice";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
+import { supabase } from "@/lib/supabase/client";
 
 const CardVerifyPhoneNumber = () => {
   const [isPending, startTransition] = useTransition();
@@ -42,28 +43,69 @@ const CardVerifyPhoneNumber = () => {
         router.push("/dashboard");
         return null
       }
+      // if (user?.phone) {
+      //   try {
+      //     const { errorMessage } = await signInWithOtp(user?.phone.replace("+", ""));
+      //     console.log(errorMessage);
+      //     const RESEND_TIME = 60;
+      //     localStorage.setItem(
+      //       "resendTimer",
+      //       (Date.now() + RESEND_TIME * 1000).toString()
+      //     );
+      //     const params = new URLSearchParams(searchParams.toString());
+      //     nextStep(`?${params.toString()}`);
+      //   } catch (error) {
+      //     console.error("Error during OTP sign-in:", error);
+      //   }
+      // }
       if (user?.phone) {
-        try {
-          const { errorMessage } = await signInWithOtp(user?.phone.replace("+", ""));
-          console.log(errorMessage);
-          const RESEND_TIME = 60;
-          localStorage.setItem(
-            "resendTimer",
-            (Date.now() + RESEND_TIME * 1000).toString()
-          );
-          const params = new URLSearchParams(searchParams.toString());
-          nextStep(`?${params.toString()}`);
-        } catch (error) {
-          console.error("Error during OTP sign-in:", error);
-        }
+        // if (user?.id) {
+        //   await dispatch(
+        //     updateUser({
+        //       phone: null,
+        //     })
+        //   );
+        // }
       }
     }
-  
+
     handleSignInWithOtp();
   }, [nextStep, searchParams, user]);
-  
+
 
   const onSubmit = async (values: { phoneNumber: string }) => {
+    try {
+      if (user?.id) {
+        const { error } = await supabase
+          .from("users")
+          .update({ ...user, phone: `+${values.phoneNumber}` })
+          .eq("id", user.id)
+          .single();
+        if (error?.message.includes("duplicate key")) {
+          toast.error(`This phone number has been already registered, try another`);
+          if (user?.id) {
+            await dispatch(
+              updateUser({
+                phone: null,
+              })
+            );
+          }
+        } else {
+          await dispatch(
+            updateUser({
+              phone: `+${values.phoneNumber}`,
+            })
+          );
+        }
+      }
+    } catch (err: any) {
+      console.log(user)
+      toast.error(err?.message);
+      updateUser({
+        phone: null,
+      })
+      return null
+    }
     startTransition(async () => {
       if (user?.phone) {
         const params = new URLSearchParams(searchParams.toString());

@@ -25,7 +25,7 @@ export interface User {
   subscribe_plan: string;
   selected_currency: string;
   selected_country: string;
-  phone: string;
+  phone: any;
   finished_onboarding: boolean;
   plaid_access_token: string;
   item_id?: string;

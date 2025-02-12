@@ -62,6 +62,7 @@ const CardConfirmPhoneNumber = () => {
             </Button>
             <Button
               size="xl"
+              type="button"
               onClick={prevStep}
               variant="destructive"
               full
