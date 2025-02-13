@@ -41,7 +41,7 @@ const Message: FC<MessageProps> = (props) => {
               isLastMessage={isLastMessage}
             />
             <div className="flex w-full gap-3">
-              {detailed && <div onClick={() => showHideDetailed()} className=" hover:cursor-pointer text-[#525ED1]">Detailed Breakdown</div>}
+              {!!detailed && <div onClick={() => showHideDetailed()} className=" hover:cursor-pointer text-[#525ED1]">Detailed Breakdown</div>}
               {calculations && <div onClick={() => showHideCalculation()} className=" hover:cursor-pointer text-[#525ED1]" >Visualise Breakdown</div>}
             </div>
           </div>
