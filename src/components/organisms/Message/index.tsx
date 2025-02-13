@@ -11,10 +11,15 @@ interface MessageProps {
   date?: string;
   isLoading?: boolean;
   isLastMessage?: boolean;
+  detailed?: any;
+  calculations?: any;
+  showHideDetailed?: any;
+  showHideCalculation?: any;
+  showDetailed?: any;
 }
 
 const Message: FC<MessageProps> = (props) => {
-  const { text, isUser, isLoading, isLastMessage } = props;
+  const { text, isUser, isLoading, isLastMessage, detailed, calculations, showHideDetailed, showHideCalculation, showDetailed } = props;
 
   return (
     <>
@@ -25,7 +30,7 @@ const Message: FC<MessageProps> = (props) => {
         )}>
           <div
             className={cn(
-              "message relative inline-block text-white rounded-md px-4 py-1 md:px-5 md:py-2",
+              "message relative inline-block text-white w-full rounded-md px-4 py-1 md:px-5 md:py-2",
               "md:w-auto"
             )}
           >
@@ -35,6 +40,10 @@ const Message: FC<MessageProps> = (props) => {
               isLoading={isLoading}
               isLastMessage={isLastMessage}
             />
+            <div className="flex w-full gap-3">
+              {detailed && <div onClick={() => showHideDetailed()} className=" hover:cursor-pointer text-[#525ED1]">Detailed Breakdown</div>}
+              {calculations && <div onClick={() => showHideCalculation()} className=" hover:cursor-pointer text-[#525ED1]" >Visualise Breakdown</div>}
+            </div>
           </div>
         </div>
       </article>

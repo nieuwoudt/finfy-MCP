@@ -128,7 +128,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
   };
 
   return (
-    <div className={clsx("flex items-start gap-6 max-w-[100%] h-full", {"bg-[#272E48] rounded-lg p-8 w-fit": isUser})}>
+    <div className={clsx("flex items-start w-full gap-6 max-w-[100%] h-full", {"bg-[#272E48] rounded-lg p-8 w-fit": isUser})}>
       {!isUser && !isLoading && (
         <div className="flex items-end gap-4 mt-1">
           <span className="w-4 h-4">
