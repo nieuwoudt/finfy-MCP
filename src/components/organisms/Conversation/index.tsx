@@ -43,7 +43,26 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
     if (!isLoading && messages.length > 0 && stateRef.current) {
       const lastMessage = messages[messages.length - 1];
       if (lastMessage.message_type !== "user") {
-        const fullText = lastMessage.content;
+        let output = null;
+
+        if (
+          lastMessage.content &&
+          lastMessage.message_type !== "user" &&
+          typeof lastMessage.content === "string"
+        ) {
+          try {
+            output = JSON.parse(lastMessage.content);
+          } catch (error) {
+            // console.error("messagemessage Invalid JSON:", error);
+            output = {
+              answer: lastMessage.content,
+              breakdown: "",
+              table: "",
+              text: ""
+            }
+          }
+        }
+        const fullText = output?.answer;
         const words = fullText.split(/(\s+)/);
         const chunkSize = 15;
         let index = 0;
