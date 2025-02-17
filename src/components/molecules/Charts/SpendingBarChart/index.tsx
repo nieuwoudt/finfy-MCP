@@ -34,6 +34,7 @@ interface SpendingChartProps {
 
 const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
 
+
   const chartType = dataChart.chart_type || 'bar';
   const title = dataChart.name;
   const rawData = dataChart.data || dataChart;
@@ -45,7 +46,9 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
     if (chartType === 'bar' || chartType === 'pie') {
       if (typeof rawData === 'object' && !Array.isArray(rawData)) {
         // Store accumulated amounts for categories
+
         const categoryAmounts: { [key: string]: number } = {};
+
 
         // Iterate over each primary category and the corresponding subcategories
         Object.entries(rawData).forEach(([primaryCategory, value]: [string, any]) => {
@@ -89,7 +92,9 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
 
     // 4. Handle line charts (unchanged)
     else if (chartType === 'line') {
-      const groupedData = groupByMonth(rawData); // Assuming groupByMonth is defined elsewhere
+
+      const groupedData = groupByDay(rawData); // Assuming groupByMonth is defined elsewhere
+
       labels = Object.keys(groupedData);
       amounts = Object.values(groupedData);
     }
@@ -104,28 +109,50 @@ const SpendingChart: FC<SpendingChartProps> = ({ data: dataChart }) => {
 
   const groupByMonth = (data: { [key: string]: number }) => {
     const groupedData: { [key: string]: number } = {};
-
+  
     Object.keys(data).forEach((key) => {
-      const parsedDate = new Date(key);
+      const [year, month, day] = key.split("-").map(Number);
+      
+      const parsedDate = new Date(Date.UTC(year, month - 1, day));
+  
       if (!isNaN(parsedDate.getTime())) {
-        const month = parsedDate.toLocaleString("en-US", {
+        const monthLabel = parsedDate.toLocaleString("en-US", {
           month: "short",
           year: "2-digit",
+          timeZone: "UTC",
         });
-
-        if (groupedData[month]) {
-          groupedData[month] += data[key];
-        } else {
-          groupedData[month] = data[key];
-        }
-      } else {
-        groupedData[formatLabel(key)] = data[key];
+  
+        groupedData[monthLabel] = (groupedData[monthLabel] || 0) + data[key];
       }
-    });
-
+    }); 
     return groupedData;
   };
 
+  const groupByDay = (data: { [key: string]: number }) => {
+    const groupedData: { [key: string]: number } = {};
+  
+    Object.keys(data).forEach((key) => {
+      const [year, month, day] = key.split("-").map(Number);
+      
+      // Використовуємо UTC, щоб уникнути проблем із часовими поясами
+      const parsedDate = new Date(Date.UTC(year, month - 1, day));
+  
+      if (!isNaN(parsedDate.getTime())) {
+        const dayLabel = parsedDate.toLocaleString("en-US", {
+          day: "2-digit",
+          month: "short",
+          year: "2-digit",
+          timeZone: "UTC",
+        });
+  
+        groupedData[dayLabel] = (groupedData[dayLabel] || 0) + data[key];
+      }
+    });
+  
+    return groupedData;
+  };
+  
+  
   const formatLabel = (label: string) => {
     return label
       .replace(/_/g, ' ')
