@@ -53,16 +53,17 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
           try {
             output = JSON.parse(lastMessage.content);
           } catch (error) {
-            // console.error("messagemessage Invalid JSON:", error);
+            console.error("messagemessage Invalid JSON:", error);
             output = {
-              answer: lastMessage.content,
+              answer: lastMessage?.content || lastMessage,
               breakdown: "",
               table: "",
               text: ""
             }
           }
         }
-        const fullText = output?.answer;
+
+        const fullText = output?.answer || output;
         const words = fullText.split(/(\s+)/);
         const chunkSize = 15;
         let index = 0;
@@ -142,6 +143,16 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
                         text: ""
                       }
                     }
+
+                    if (!output?.answer) {
+                      output = {
+                        answer: message.content || JSON.parse(message.content),
+                        breakdown: "",
+                        table: "",
+                        text: ""
+                      }
+                    }
+
                   }
                   
                 const isLastMessage = index === messages.length - 1;
@@ -151,8 +162,13 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
                       text={
                         isLastMessage && !isLoading && message.message_type !== "user"
                           ? (stateRef.current ? streamText : (showDetailed ? output?.text : output?.answer))
-                          // ? (stateRef.current ? streamText : (showDetailed ? output?.answer + ("\n\n\n<details>\n<summary>Detailed breakdown</summary>" + output?.breakdown + "\n</details>" +  "\n\n\n<details>\n<summary>Table breakdown</summary>" + output?.table + "\n</details>") : output?.answer))
-                          : message.message_type !== "user" ? (showDetailed ? output?.answer + ("\n\n\n<details>\n<summary>Detailed breakdown</summary>" + output?.breakdown + "\n</details>" +  "\n\n\n<details>\n<summary>Table breakdown</summary>" + output?.table + "\n</details>") : output?.answer) : message?.content
+                          : message.message_type !== "user" 
+                          ? (
+                              showDetailed 
+                              ? output?.answer + ("\n\n\n<details>\n<summary>Detailed breakdown</summary>" + output?.breakdown + "\n</details>" +  "\n\n\n<details>\n<summary>Table breakdown</summary>" + output?.table + "\n</details>") 
+                              : output?.answer
+                            ) 
+                          : message?.content
                       }
                       date={""}
                       isUser={message.message_type === "user"}
