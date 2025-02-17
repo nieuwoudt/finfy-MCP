@@ -127,23 +127,26 @@ const usePlaid = () => {
         }
 
       } catch (err) {
-        console.log("all_delly_upd_err", {err})
+        console.log("all_delly_upd_err", { err })
 
       } finally {
         const apiPayload = {
           user_id: `${user?.id}`,
           provider: "plaid",
         };
-
         const apiResponse = await axios.post(
           "https://finify-ai-137495399237.us-central1.run.app/insert_data",
           apiPayload
         );
       }
     }
-
-    reUp();
-
+    const today = new Date().toISOString().split("T")[0];
+    const lastUpdateDate = user?.last_update
+      ? new Date(user.last_update).toISOString().split("T")[0]
+      : null;
+    if (lastUpdateDate !== today) {
+      reUp();
+    }
   }, [user, dispatch]);
 
 
