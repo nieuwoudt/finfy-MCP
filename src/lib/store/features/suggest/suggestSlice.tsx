@@ -1,6 +1,7 @@
 import { Icon } from "@/components/atoms";
 import { capitalizeWords } from "@/utils/helpers";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../..";
 
 interface SuggestState {
   suggest: any;
@@ -78,42 +79,42 @@ function adaptApiDataToMock(apiData: any) {
 
   const budgetSuggestData = [
     {
-        "label": "Set Up Budget:",
-        "content": "Can you help me set up my budget for this month using the 70/20/10 rule?",
-        "icon": "",
-        "category": "budgeting"
+      "label": "Set Up Budget:",
+      "content": "Can you help me set up my budget for this month using the 70/20/10 rule?",
+      "icon": "",
+      "category": "budgeting"
     },
     {
-        "label": "Income Allocation:",
-        "content": "How much of my income should go towards 'Needs,' 'Wants,' and 'Savings'?",
-        "icon": "",
-        "category": "budgeting"
+      "label": "Income Allocation:",
+      "content": "How much of my income should go towards 'Needs,' 'Wants,' and 'Savings'?",
+      "icon": "",
+      "category": "budgeting"
     },
     {
-        "label": "How 70/20/10 Works:",
-        "content": "How does the 70/20/10 rule work for my spending?",
-        "icon": "",
-        "category": "budgeting"
+      "label": "How 70/20/10 Works:",
+      "content": "How does the 70/20/10 rule work for my spending?",
+      "icon": "",
+      "category": "budgeting"
     },
     {
-        "label": "Allocate Income:",
-        "content": "What’s the best way to allocate my income using the 70/20/10 budget?",
-        "icon": "",
-        "category": "budgeting"
+      "label": "Allocate Income:",
+      "content": "What’s the best way to allocate my income using the 70/20/10 budget?",
+      "icon": "",
+      "category": "budgeting"
     },
     {
-        "label": "Increase Savings:",
-        "content": "How can I adjust my budget to start saving more?",
-        "icon": "",
-        "category": "budgeting"
+      "label": "Increase Savings:",
+      "content": "How can I adjust my budget to start saving more?",
+      "icon": "",
+      "category": "budgeting"
     },
     {
-        "label": "Wants Budget:",
-        "content": "What’s my recommended budget for 'Wants' based on my income?",
-        "icon": "",
-        "category": "budgeting"
+      "label": "Wants Budget:",
+      "content": "What’s my recommended budget for 'Wants' based on my income?",
+      "icon": "",
+      "category": "budgeting"
     }
-]
+  ]
 
   return Object.entries(apiData).map(([category, questions]: any) => {
     let suggestQuestionsAdapted = Object.values(questions).map(question => ({
@@ -128,25 +129,54 @@ function adaptApiDataToMock(apiData: any) {
     }
 
     return {
-    title: `${capitalizeWords(category.replace('_', ' '))}`,
-    text: descriptions[category] || "Predict future financial status.",
-    icon: categoryIconTypes[category] ? <Icon type={categoryIconTypes[category]} /> : "",
-    suggest: suggestQuestionsAdapted
-  }});
+      title: `${capitalizeWords(category.replace('_', ' '))}`,
+      text: descriptions[category] || "Predict future financial status.",
+      icon: categoryIconTypes[category] ? <Icon type={categoryIconTypes[category]} /> : "",
+      suggest: suggestQuestionsAdapted
+    }
+  });
 }
 
 
-export const fetchFocusSuggests = createAsyncThunk(
+export const fetchFocusSuggests = createAsyncThunk<
+  any,
+  { userId: string; provider: string },
+  { rejectValue: string }
+>(
   "suggested/fetchFocusSuggests",
-  async () => {
-    const response = await fetch(
-      "https://finify-ai-137495399237.us-central1.run.app/get_suggested_question_bank"
-    );
-    const data = await response.json();
-    // console.log('CHECK data', data)
-    return adaptApiDataToMock(data);
+  async ({ userId, provider }, { rejectWithValue }) => {
+    try {
+      if (!userId) {
+        throw new Error("User ID is missing");
+      }
+
+      const response = await fetch(
+        "https://finify-ai-137495399237.us-central1.run.app/personalized_questions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: userId, provider }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("CHECK data", data);
+
+      return adaptApiDataToMock(data?.personalized_questions);
+    } catch (error: any) {
+      console.error("Error fetching personalized questions:", error);
+      return rejectWithValue(error.message);
+    }
   }
 );
+
+
 
 export const suggestSlice = createSlice({
   name: "suggested",

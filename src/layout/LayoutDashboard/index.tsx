@@ -4,7 +4,7 @@ import { AssistInput, Conversation } from "@/components/organisms";
 import { Button, Icon } from "@/components/atoms";
 import { DynamicChart, Header, HeaderText, HomeSuggestBoxes } from "@/components/molecules";
 import { FC, PropsWithChildren, useEffect, useState } from "react";
-import { useCategory, useChat, useDynamicChart } from "@/hooks";
+import { useCategory, useChat, useDynamicChart, useUser } from "@/hooks";
 import { DesktopChartModal } from "@/components/molecules/DesktopChartModal/DesktopChartModal";
 import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   const focusData = useAppSelector((state) => state.suggest.focusSuggests);
   const dispatch = useAppDispatch();
   const { category } = useCategory();
+  const { user } = useUser();
 
   const { addChart, deleteChart, charts } = useDynamicChart();
 
@@ -46,8 +47,11 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    // dispatch(fetchFocusSuggests()); //TODO un-hide suggests questions
-  }, [dispatch]);
+    if (user?.id) {
+      console.log("user.id", user.id)
+      dispatch(fetchFocusSuggests({ userId: user.id, provider: "plaid" })); //TODO un-hide suggests questions
+    }
+  }, []);
 
   useEffect(() => {
     if (focusData.length) {
@@ -60,7 +64,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
         dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
       }
     }
-  },[focusData, category])
+  }, [focusData, category])
 
   return (
     <><div className={cn("bg-navy-25  w-full p-4 pt-16 lg:p-6 flex flex-col ", selectedChartId ? "bg-[#272E48] rounded-lg m-10" : "h-screen max-w-[1280px] mx-auto")}>
@@ -71,7 +75,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
       ) : (
         <div className="xl:px-20 overflow-hidden 2xl:px-40 lg:pt-20 lg:pb-12">
           <HeaderText />
-          {/* <div className="hidden lg:flex flex-1 flex-col items-center">  //TODO un-hide suggests questions
+          <div className="hidden lg:flex flex-1 flex-col items-center">
             {!!suggest?.length && <>
               <div className="w-full justify-start flex items-center h-fit text-grey-15">
                 <Icon type="LightningBolt" className="text-grey-15" />
@@ -79,8 +83,8 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
               </div>
             </>}
             {!!suggest?.length && <HomeSuggestBoxes />}
-          </div> */}
-          {/* <div className="flex pl-4 overflow-hidden absolute bottom-[168px] h-[154px] left-0 right-0 lg:hidden flex-col">
+          </div>
+          <div className="flex pl-4 overflow-hidden absolute bottom-[168px] h-[154px] left-0 right-0 lg:hidden flex-col">
             {!!suggest?.length && <>
               <div className="flex items-center h-fit text-grey-15">
                 <Icon type="LightningBolt" className="text-grey-15" />
@@ -88,19 +92,19 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
               </div>
             </>}
             <HomeSuggestBoxes isMobile={true} />
-          </div> */}
+          </div>
         </div>
       )}
       <div className={clsx("w-full flex flex-col items-center justify-center ")}>
-      <div className={clsx("bg-[#1F263D] relative w-full max-w-[845px]  ", {"lg:py-20": !messages.length })}>
-        <AssistInput 
-          isDark={!!selectedChartId} 
-          classes={{
-            container: messages.length ? "xl:bottom-0": "",
-          }}
-        />
+        <div className={clsx("bg-[#1F263D] relative w-full max-w-[845px]  ", { "lg:py-20": !messages.length })}>
+          <AssistInput
+            isDark={!!selectedChartId}
+            classes={{
+              container: messages.length ? "xl:bottom-0" : "",
+            }}
+          />
 
-      </div>
+        </div>
       </div>
     </div>
       <div className={cn("flex", selectedChartId ? "w-full h-screen" : "")}>
