@@ -6,6 +6,7 @@ import { FocusAssistantOption } from "@/components/molecules";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchFocusSuggests } from "@/lib/store/features/suggest/suggestSlice";
 import { Loader2 } from "lucide-react";
+import { useUser } from "@/hooks";
 
 interface FocusAssistantPopoverProps extends PropsWithChildren {}
 
@@ -16,9 +17,12 @@ const FocusAssistantPopover: FC<FocusAssistantPopoverProps> = ({
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.suggest.loading);
   const error = useAppSelector((state) => state.suggest.error);
+  const { user } = useUser();
+
   useEffect(() => {
-    dispatch(fetchFocusSuggests());
-  }, [dispatch]);
+    if (user?.id) {
+      dispatch(fetchFocusSuggests({ userId: user.id, provider: "plaid" })); //TODO un-hide suggests questions
+    }  }, []);
 
   // if (loading) return <div><Loader2 className="animate-spin w-3 h-3" />Focus</div>;
   if (error) return <div></div>;
