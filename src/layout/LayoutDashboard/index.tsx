@@ -51,7 +51,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
       console.log("user.id", user.id)
       dispatch(fetchFocusSuggests({ userId: user.id, provider: "plaid" })); //TODO un-hide suggests questions
     }
-  }, []);
+  }, [dispatch, user.id]);
 
   useEffect(() => {
     if (focusData.length) {

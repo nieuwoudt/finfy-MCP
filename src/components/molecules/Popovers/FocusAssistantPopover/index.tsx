@@ -22,7 +22,7 @@ const FocusAssistantPopover: FC<FocusAssistantPopoverProps> = ({
   useEffect(() => {
     if (user?.id) {
       dispatch(fetchFocusSuggests({ userId: user.id, provider: "plaid" })); //TODO un-hide suggests questions
-    }  }, []);
+    }  }, [dispatch, user.id]);
 
   // if (loading) return <div><Loader2 className="animate-spin w-3 h-3" />Focus</div>;
   if (error) return <div></div>;
