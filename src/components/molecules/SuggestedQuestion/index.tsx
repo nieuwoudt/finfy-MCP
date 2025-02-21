@@ -63,10 +63,11 @@ const SuggestedQuestion: FC<SuggestedQuestionProps> = ({ question }) => {
             createMessage({
               chat_id: currentChatId,
               user_id: userId,
-              content: JSON.stringify(data.payload.output),
-              // content: data.payload.output.text || data.payload.output,
+              // content: JSON.stringify(data.payload.output),
+              content: data.payload.output.text || data.payload.output,
               message_type: "bot",
               is_processed: true,
+              calculations: JSON.stringify(data.payload.calculations),
             });
           }
         }

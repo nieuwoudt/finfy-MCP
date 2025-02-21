@@ -55,22 +55,23 @@ const ContentMessage: FC<ContentMessageProps> = ({
       const isOpen = openDropdowns[index] || false;
 
       return (
-        <div className="my-4 border border-[#374061] max-w-[calc(100vw-110px)] md:w-[calc(100%-40px)] lg:w-[calc(100%)] lg:max-w-[745px] rounded-lg overflow-hidden">
+        <div className="my-4 max-w-[calc(100vw-110px)] md:w-[calc(100%-40px)] lg:w-[calc(100%)] lg:max-w-[745px] rounded-lg overflow-hidden">
           {children?.map((child: any) =>
             child.type === "summary" ? (
-              <button
-                key={index}
-                onClick={() => toggleDropdown(index)}
-                className={cn(
-                  "w-full flex justify-between hover:bg-white hover:bg-opacity-5 duration-300 items-center px-4 py-3 text-lg font-semibold text-white  rounded-lg transition-all", isOpen ? " mb-4" : ""
-                )}
-              >
-                <div className="flex items-center gap-4">
-                  <IconStart />
-                  <span>{child.props.children}</span>
-                </div>
-                {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-              </button>
+              // <button
+              //   key={index}
+              //   onClick={() => toggleDropdown(index)}
+              //   className={cn(
+              //     "w-full flex justify-between hover:bg-white hover:bg-opacity-5 duration-300 items-center px-4 py-3 text-lg font-semibold text-white  rounded-lg transition-all", isOpen ? " mb-4" : ""
+              //   )}
+              // >
+              //   <div className="flex items-center gap-4">
+              //     <IconStart />
+              //     <span>{child.props.children}</span>
+              //   </div>
+              //   {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              // </button>
+              <div onClick={() => toggleDropdown(index)} key={index} className=" hover:cursor-pointer text-[#525ED1]">{child.props.children}</div>
             ) : (
               <div
                 key={`${index}-content`}
@@ -83,7 +84,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
                   overflow: isOpen ? "visible" : "hidden",
                 }}
               >
-                <div className="px-4">
+                <div className="px-4 pt-4">
                   <div
                     className="overflow-x-auto"
                     style={{ maxWidth: "100%" }}
@@ -128,7 +129,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
   };
 
   return (
-    <div className={clsx("flex items-start w-full gap-6 max-w-[100%] h-full", {"bg-[#272E48] rounded-lg p-8 w-fit": isUser})}>
+    <div className={clsx("flex items-start w-full gap-6 max-w-[100%]", {"bg-[#272E48] rounded-lg p-8 w-fit": isUser})}>
       {!isUser && !isLoading && (
         <div className="flex items-end gap-4 mt-1">
           <span className="w-4 h-4">
