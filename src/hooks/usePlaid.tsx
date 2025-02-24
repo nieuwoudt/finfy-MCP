@@ -134,20 +134,24 @@ const usePlaid = () => {
           user_id: `${user?.id}`,
           provider: "plaid",
         };
-        const apiResponse = await axios.post(
-          "https://finify-ai-137495399237.us-central1.run.app/insert_data",
-          apiPayload
-        );
+        // const apiResponse = await axios.post(
+        //   "https://finify-ai-137495399237.us-central1.run.app/insert_data",
+        //   apiPayload
+        // ); ///here
       }
     }
     const today = new Date().toISOString().split("T")[0];
     const lastUpdateDate = user?.last_update
-      ? new Date(user.last_update).toISOString().split("T")[0]
-      : null;
-    if (lastUpdateDate !== today) {
+
+    if (lastUpdateDate !== today && user?.last_update) {
+      dispatch(
+        updateUser({
+          last_update: today,
+        })
+      );
       reUp();
     }
-  }, [user, dispatch]);
+  }, [user?.last_update]);
 
 
 
