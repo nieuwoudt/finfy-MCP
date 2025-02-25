@@ -18,7 +18,7 @@ interface ContentMessageProps {
 }
 
 const ContentMessage: FC<ContentMessageProps> = ({
-  text: oooo,
+  text,
   isUser,
   isLoading,
   isLastMessage,
@@ -26,87 +26,29 @@ const ContentMessage: FC<ContentMessageProps> = ({
 }) => {
   const [openDropdowns, setOpenDropdowns] = useState<Record<number, boolean>>({});
 
-  console.log("texttexttext", oooo)
-
-  const text = isUser ? oooo :  `
-  In the last month, you spent a total of **$23,275.16**. This includes various categories such as **loan payments, general merchandise, food and drink, and more**. The largest portion of your spending was on **loan payments ($12,055.09)**. 
-  
-  To save money, consider reviewing your **loan payment plans** and exploring options for **refinancing or consolidating debts**. Additionally, tracking your spending in categories like **food and drink** can help identify areas for potential savings.
-  
-  <div class="details-container">
-  <details>
-  <summary >Visualise Breakdown</summary>
-  </details>
-  <details>
-  <summary >Detailed breakdown</summary>
-  
-  **January 2025:**  
-  - **January 2:** General Services (Insurance) at **Prudential**: $101.94, Loan Payments (Credit Card Payment) at **Apple Card**: $133.57, Loan Payments (Credit Card Payment) at **Barclays**: $6,405.09, Loan Payments (Other Payment) at **Small Business Administration**: $120.00  
-  - **January 13:** Loan Payments (Credit Card Payment) at **Apple Card**: $5,021.43  
-  - **January 15:** General Merchandise (Other) at **FUN**: $89.40  
-  - **January 16:** Food and Drink (Coffee) at **Starbucks**: $4.33, Food and Drink (Fast Food) at **McDonald's**: $12.00  
-  - **January 17:** Personal Care (Gyms and Fitness Centers) at **Touchstone Climbing**: $78.50, Travel (Flights) at **United Airlines**: $500.00  
-  - **January 18:** General Merchandise (Other) at **CD DEPOSIT .INITIAL.**: $1,000.00, General Services (Accounting and Financial Planning) at **ACH Electronic CreditGUSTO PAY 123456**: $5,850.00  
-  - **January 19:** Loan Payments (Credit Card Payment) at **CREDIT CARD 3333 PAYMENT**: $25.00, Transportation (Taxis and Ride Shares) at **Uber**: $5.40  
-  - **January 21:** Loan Payments (Credit Card Payment) at **BK OF AMER VISA ONLINE PMT**: $200.00  
-  - **January 23:** Loan Payments (Credit Card Payment) at **BK OF AMER VISA ONLINE PMT**: $150.00  
-  - **January 28:** Food and Drink (Fast Food) at **KFC**: $500.00, General Merchandise (Other) at **AUTOMATIC PAYMENT - THANK**: $2,078.50, General Merchandise (Sporting Goods) at **Madison Bicycle Shop**: $500.00  
-  - **January 29:** Entertainment (Sporting Events, Amusement Parks, and Museums) at **Tectra Inc**: $500.00  
-  
-  </details>
-  
-  <details>
-  <summary >Detailed Table</summary>
-  
-  | Date       | Category       | Merchant                                          | Amount  |
-  |------------|----------------|---------------------------------------------------|---------|
-  | 2025-01-02 | Insurance      | Prudential                                       | $101.94 |
-  | 2025-01-02 | Credit Card Payment | Apple Card                               | $133.57 |
-  | 2025-01-02 | Credit Card Payment | Barclays                                 | $6,405.09 |
-  | 2025-01-02 | Other Payment  | Small Business Administration                    | $120.00 |
-  | 2025-01-13 | Credit Card Payment | Apple Card                               | $5,021.43 |
-  | 2025-01-15 | Other          | FUN                                             | $89.40  |
-  | 2025-01-16 | Coffee         | Starbucks                                       | $4.33   |
-  | 2025-01-16 | Fast Food      | McDonald's                                      | $12.00  |
-  | 2025-01-17 | Gyms and Fitness Centers | Touchstone Climbing               | $78.50  |
-  | 2025-01-17 | Flights        | United Airlines                                 | $500.00 |
-  | 2025-01-18 | Other          | CD DEPOSIT .INITIAL.                           | $1,000.00 |
-  | 2025-01-18 | Accounting and Financial Planning | ACH Electronic CreditGUSTO PAY 123456 | $5,850.00 |
-  | 2025-01-19 | Credit Card Payment | CREDIT CARD 3333 PAYMENT *//           | $25.00  |
-  | 2025-01-19 | Taxis and Ride Shares | Uber                                | $5.40   |
-  | 2025-01-21 | Credit Card Payment | BK OF AMER VISA ONLINE PMT           | $200.00 |
-  | 2025-01-23 | Credit Card Payment | BK OF AMER VISA ONLINE PMT           | $150.00 |
-  | 2025-01-28 | Fast Food      | KFC                                             | $500.00 |
-  | 2025-01-28 | Other          | AUTOMATIC PAYMENT - THANK                      | $2,078.50 |
-  | 2025-01-28 | Sporting Goods | Madison Bicycle Shop                            | $500.00 |
-  | 2025-01-29 | Sporting Events, Amusement Parks, and Museums | Tectra Inc | $500.00 |
-  
-  </details>
-  </div>`;
-
   const toggleDropdown = (index: number) => {
     setOpenDropdowns((prev) => {
       const updatedDropdowns = {
         ...prev,
         [index]: !prev[index],
       };
-  
+
       const container: any = document.querySelector(".details-container");
-  
+
       if (container && container?.style) {
         const anyOpen = Object.values(updatedDropdowns).some((isOpen) => isOpen);
-  
+
         if (window.matchMedia("(min-width: 1024px)").matches) {
           container.style.flexDirection = anyOpen ? "column" : "row";
         } else {
           container.style.flexDirection = "column";
         }
       }
-  
+
       return updatedDropdowns;
     });
   };
-  
+
 
 
   const IconStart = () => (
@@ -139,6 +81,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
           {children?.map((child: any) => {
             const isVisualiseBreakdown = `${child?.props?.children}`?.includes("Visualise Breakdown");
             const isTableBreakdown = `${child?.props?.children}`?.includes("Table");
+            const isDetailed = !isVisualiseBreakdown && !isTableBreakdown;
             console.log("summarysummary", isVisualiseBreakdown)
 
             return child.type === "summary" ? (
@@ -155,7 +98,11 @@ const ContentMessage: FC<ContentMessageProps> = ({
               //   </div>
               //   {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
               // </button>
-              <div style={{ width: isVisualiseBreakdown ? "180px" : "", marginTop: (isTableBreakdown && isOpen) ? "-8px" : "" }}
+              <div style={
+                { width: (isDetailed && !isOpen) ? "160px" : isVisualiseBreakdown ? "180px" : "", marginTop: (isTableBreakdown && isOpen) ? "-8px" : "", 
+                  marginLeft: (isDetailed && ! Object.keys(openDropdowns).some((key: any) =>  openDropdowns[key] === true)) ? "8px" : ""
+                }
+              }
                 onClick={() => {
                   if (isVisualiseBreakdown) {
                     showHideCalculation();

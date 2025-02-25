@@ -157,7 +157,7 @@ export const fetchFocusSuggests = createAsyncThunk<
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ user_id: userId, provider }),
+          body: JSON.stringify({ user_id: `${userId}`, provider }),
         }
       );
 
