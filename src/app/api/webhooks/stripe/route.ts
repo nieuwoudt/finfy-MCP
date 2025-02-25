@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       case "checkout.session.completed":
         const supabase = createSupabaseClient();
         const session = await stripe.checkout.sessions.retrieve(
-          (event.data.object as Stripe.Checkout.Session).id,
+          (event.data.object as Stripe.Checkout.Session)?.id,
           {
             expand: ["line_items"],
           }
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
               .update({
                 customer_id: customerId,
               })
-              .eq("id", data.id)
+              .eq("id", data?.id)
               .single();
             if (error) throw new Error("Oops!");
           }
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
                         : "monthly",
                     start_date: new Date(),
                     end_date: endDate,
-                    user_id: data.id,
+                    user_id: data?.id,
                     created_at: new Date(),
                   },
                 ])
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
                 .update({
                   subscribe_plan: "premium",
                 })
-                .eq("id", data.id)
+                .eq("id", data?.id)
                 .single();
             } else {
               // one_time_purchase
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
         break;
       case "customer.subscription.deleted": {
         const subscription = await stripe.subscriptions.retrieve(
-          (event.data.object as Stripe.Subscription).id
+          (event.data.object as Stripe.Subscription)?.id
         );
         // const user = await prisma.user.findUnique({
         // 	where: { customerId: subscription.customer as string },

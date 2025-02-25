@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       throw new Error(`No prices found for product: ${productId}`);
     }
 
-    const priceId = prices.data[0].id;
+    const priceId = prices.data[0]?.id;
 
     console.log("Using price:", priceId);
 
@@ -42,9 +42,9 @@ export async function POST(req: NextRequest) {
       cancel_url: isOnboardingReturn ? `${process.env.NEXT_PUBLIC_BASE_URL}onboarding/setup-complete` : `${process.env.NEXT_PUBLIC_BASE_URL}dashboard`,
     });
 
-    console.log("Checkout session created:", session.id);
+    console.log("Checkout session created:", session?.id);
 
-    return NextResponse.json({ sessionId: session.id });
+    return NextResponse.json({ sessionId: session?.id });
   } catch (error) {
     console.error("Error creating checkout session:", error);
     return NextResponse.json(

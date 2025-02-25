@@ -142,6 +142,7 @@ const usePlaid = () => {
     }
     const today = new Date().toISOString().split("T")[0];
     const lastUpdateDate = user?.last_update
+    console.log("lastUpdateDate !== today && user?.last_update", lastUpdateDate !== today && user?.last_update)
 
     if (lastUpdateDate !== today && user?.last_update) {
       dispatch(
@@ -149,7 +150,7 @@ const usePlaid = () => {
           last_update: today,
         })
       );
-      reUp();
+      // reUp();
     }
   }, [user?.last_update]);
 

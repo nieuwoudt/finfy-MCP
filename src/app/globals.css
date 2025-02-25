@@ -234,13 +234,7 @@ input:-webkit-autofill:active{
   -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
 }
 
-.markdown-special th,
-.markdown-special td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-  white-space: nowrap; /* Prevent text wrapping */
-}
+
 
 /* For larger screens, no scroll needed */
 @media (min-width: 768px) {
@@ -421,4 +415,21 @@ hr {
 .scroll-hidden::-webkit-scrollbar {
   width: 0; 
   height: 0;
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .details-container {
+    flex-direction: row;
+  }
+}
+
+
+.summary-visualise-breakdown {
+  min-width: "150px";
+  max-width: max-content;
 }

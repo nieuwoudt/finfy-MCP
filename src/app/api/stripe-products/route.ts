@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
     const productsWithPrices = await Promise.all(
       products.data.map(async (product) => {
         const prices = await stripe.prices.list({
-          product: product.id,
+          product: product?.id,
           currency, // Filter by currency
         });
 

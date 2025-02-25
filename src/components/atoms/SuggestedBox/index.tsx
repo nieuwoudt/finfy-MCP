@@ -34,7 +34,7 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
         let chatCategory = undefined;
         if (!currentChatId) {
           const chat = await createChat(userId, value, category ? category : Category.ASSISTANT);
-          currentChatId = chat.payload.id;
+          currentChatId = chat.payload?.id;
           chatCategory = chat.payload.category;
           router.push(`/dashboard/chat/${currentChatId}`, undefined);
         }
