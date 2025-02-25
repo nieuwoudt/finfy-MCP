@@ -76,7 +76,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
 
       return (
         <div style={{
-          maxWidth: isOpen ? "" : "min-content"
+          maxWidth: isOpen ? "" : "180px"
         }} className="mt-2 max-w-[calc(100vw-110px)] md:w-[calc(100%-40px)] lg:w-[calc(100%)] lg:max-w-[745px] rounded-lg overflow-hidden">
           {children?.map((child: any) => {
             const isVisualiseBreakdown = `${child?.props?.children}`?.includes("Visualise Breakdown");
