@@ -3,10 +3,11 @@
 import { Button, Field, Icon } from "@/components/atoms";
 import { CardTemplate } from "@/components/molecules";
 import { useForm } from "react-hook-form";
-import { useNavigationOnboarding } from "@/hooks";
+import { useNavigationOnboarding, useUser } from "@/hooks";
 
 const CardUserPolicy = () => {
   const { nextStep, prevStep } = useNavigationOnboarding();
+  const { user } = useUser();
   const {
     formState: { errors },
     handleSubmit,
@@ -18,7 +19,7 @@ const CardUserPolicy = () => {
 
   return (
     <CardTemplate
-      title="Lovely to meet you, Nieuwoudt."
+      title={`Lovely to meet you, ${user.name || "new user"}.`}
       description="A few things to know before we start working together"
       classes={{
         card: "max-w-xl",
@@ -36,11 +37,16 @@ const CardUserPolicy = () => {
                   <b>Acceptable Use Policy:</b>
                   Finfy promotes a safe and respectful environment. Users must not use it to create, share, or promote harmful, abusive, or deceptive content.
                 </p>
-                <p>
-                  <b>Monitoring and Improvement:</b>
-                  To ensure quality and safety, Finfy may review conversations flagged by automated systems. These reviews help us improve while protecting user privacy.
-                </p>
               </div>
+            </div>
+            <div className="flex gap-2">
+              <div className="flex w-20 items-center">
+                <Icon type="ShieldIcon" />
+              </div>
+              <p>
+                <b>Monitoring and Improvement:</b>
+                To ensure quality and safety, Finfy may review conversations flagged by automated systems. These reviews help us improve while protecting user privacy.
+              </p>
             </div>
             <div className="flex gap-2">
               <div className="flex w-20 items-center">
