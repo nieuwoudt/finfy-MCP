@@ -24,6 +24,7 @@ import axios from "axios";
 const usePlaid = () => {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const [isFinishConnection, setIsFinishConnection] = useState(false);
   const [linkToken, setLinkToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const dispatch = useAppDispatch();
@@ -386,29 +387,36 @@ const usePlaid = () => {
 
   const onSuccess = useCallback(
     async (publicToken: string) => {
-      setIsLoading(true);
-      const { access_token, item_id } = await exchangePublicToken(publicToken) || {};
-      const token = access_token;
-      if (token) {
-        await dispatch(
-          updateUser({
-            plaid_access_token: token,
-            item_id: item_id
-          })
-        );
-        await fetchUserIdentity(token);
-        await fetchTransactions(token);
-        await fetchInvestments(token);
-        // await fetchLiabilities(token); TODO hide Liabilities
-        await fetchBalances(token);
-        await fetchAndSaveAssets(token);
-        let userToken = user?.plaid_user_token;
-        if (!userToken) {
-          userToken = await fetchCreateUser();
+      try {
+        setIsLoading(true);
+        const { access_token, item_id } = await exchangePublicToken(publicToken) || {};
+        const token = access_token;
+        if (token) {
+          await dispatch(
+            updateUser({
+              plaid_access_token: token,
+              item_id: item_id
+            })
+          );
+          await fetchUserIdentity(token);
+          await fetchTransactions(token);
+          await fetchInvestments(token);
+          // await fetchLiabilities(token); TODO hide Liabilities
+          await fetchBalances(token);
+          await fetchAndSaveAssets(token);
+          let userToken = user?.plaid_user_token;
+          if (!userToken) {
+            userToken = await fetchCreateUser();
+          }
+          await fetchIncome(userToken as string);
         }
-        await fetchIncome(userToken as string);
+        setIsLoading(false);
+      } catch {
+        setIsFinishConnection(true)
+      } finally {
+        setIsFinishConnection(true)
       }
-      setIsLoading(false);
+
     },
     [user?.id]
   );
@@ -428,6 +436,7 @@ const usePlaid = () => {
     income,
     isLoading,
     isAlreadyConnected: user?.is_connected_bank,
+    isFinishConnection
   };
 };
 

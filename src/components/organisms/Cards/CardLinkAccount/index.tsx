@@ -14,19 +14,20 @@ interface HomePageProps extends WithRedirectProps {}
 
 const CardLinkAccount: FC<HomePageProps> = ({ redirect, pathRedirect }) => {
   const { nextStep, prevStep } = useNavigationOnboarding();
-  const { isLinkReady, open, transactions, openModal, isLoading } =
+  const { isLinkReady, open, transactions, openModal, isLoading, isFinishConnection } =
     useConnectBank();
 
   useEffect(() => {
-    if (transactions?.length && !isLoading) {
+    if (isFinishConnection) {
       toast.success("The bank connection was successful");
       if (pathRedirect) {
-        redirect();
+        // redirect(); //TODO keep this logic
+        nextStep();
       } else {
         nextStep();
       }
     }
-  }, [transactions?.length]);
+  }, [isFinishConnection]);
 
   return (
     <>

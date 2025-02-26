@@ -40,6 +40,7 @@ const useYodlee = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLinkReady, setIsLinkReady] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isFinishConnection, setIsFinishConnection] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
   const dispatch = useAppDispatch();
 
@@ -108,11 +109,11 @@ const useYodlee = () => {
 
       if (user?.id) {
         await saveAccountYodlee(accounts.accounts, user.id, provider.provider[0]);
-        // await dispatch(
-        //   updateUser({
-        //     is_connected_bank: true,
-        //   })
-        // );
+        await dispatch(
+          updateUser({
+            is_connected_bank: true,
+          })
+        );
       }
       return accounts.accounts;
     } catch (error) {
@@ -121,19 +122,27 @@ const useYodlee = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onSuccess = async (data: any) => {
-    setIsLoading(true);
-    if (accessToken) {
-      const accounts = await fetchAccounts(
-        accessToken,
-        data.providerAccountId,
-        data.requestId,
-        data.providerId
-      );
-      const accountIds = accounts.map((item: any) => item.id).join();
-      await fetchTransactions(accessToken, accountIds);
+    try {
+      setIsLoading(true);
+      if (accessToken) {
+        const accounts = await fetchAccounts(
+          accessToken,
+          data.providerAccountId,
+          data.requestId,
+          data.providerId
+        );
+        const accountIds = accounts.map((item: any) => item.id).join();
+        await fetchTransactions(accessToken, accountIds);
+      }
+      setIsLoading(false);
+    } catch {
+      setIsFinishConnection(true)
+    } finally {
+      setIsFinishConnection(true)
     }
-    setIsLoading(false);
+
   };
 
   const handleOpenYodlee = useCallback(async () => {
@@ -221,6 +230,7 @@ const useYodlee = () => {
     isAlreadyConnected: user?.is_connected_bank,
     openModal,
     isLoading,
+    isFinishConnection
   };
 };
 

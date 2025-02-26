@@ -13,7 +13,8 @@ const useConnectBank = () => {
     transactions,
     openModal = false,
     isLoading = false,
-    isAlreadyConnected
+    isAlreadyConnected,
+    isFinishConnection
   }: any = hookData;
 
   return {
@@ -23,6 +24,7 @@ const useConnectBank = () => {
     openModal,
     isLoading,
     isAlreadyConnected,
+    isFinishConnection
   };
 };
 
