@@ -134,7 +134,7 @@ const LayoutLogin: FC<LayoutLoginProps> = ({ children, classes }) => {
               <Icon type="FullLogoWhiteIcon" className="w-28 h-8" />
               {<div className={clsx("w-[400px] text-center text-white hidden lg:flex text-[28px] font-bold ", isAuthentication ? " opacity-0 h-[256px]" : "")}>Expense Insights: Ask and Understand Your Finances in Plain Language</div>}
               <>{children}</>
-              {isDisplayCarousel && <button type="button" className="h-9 px-4 py-2 w-[133px] bg-[#686fda] rounded-lg border text-gray-300 text-sm font-medium leading-tight border-gray-300 justify-start items-center gap-1 inline-flex">
+              {isDisplayCarousel && <button type="button" className="h-9 px-4 hidden md:inline-flex py-2 w-[133px] bg-[#686fda] rounded-lg border text-gray-300 text-sm font-medium leading-tight border-gray-300 justify-start items-center gap-1">
                 Learn more
               <>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -143,10 +143,10 @@ const LayoutLogin: FC<LayoutLoginProps> = ({ children, classes }) => {
               </>
             </button>}
           </div>
-          {isDisplayCarousel && <div className="flex mx-auto lg:hidden flex-col gap-6 items-start max-w-xl">
+          {isDisplayCarousel && <div className="mx-auto hidden md:flex lg:hidden flex-col gap-6 items-start max-h-[150px] max-w-xl">
         <LoginSlidersBoxes/>
         </div>}
-          {/* <FooterAuth /> */}
+          <FooterAuth />
         </div>
       </div>
     </RootMain>

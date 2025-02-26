@@ -433,3 +433,25 @@ hr {
   min-width: "150px";
   max-width: max-content;
 }
+
+.getterms-document-embed::-webkit-scrollbar {
+  width: 4px;
+}
+
+.getterms-document-embed::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.getterms-document-embed::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.5); 
+  border-radius: 8px;
+}
+
+.getterms-document-embed::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.8); 
+}
+
+.getterms-document-embed {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 100, 100, 0.5) transparent; 
+}
