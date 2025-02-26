@@ -75,9 +75,9 @@ const SuggestedBox: FC<SuggestBoxProps> = ({ content, label, icon }) => {
   };
   return (
     <button onClick={handleClick} className="suggest-box h-[116px] flex flex-col gap-1 items-start block-suggest overflow-hidden truncate">
-      <p className="text-white text-start w-full ">
+      {/* <p className="text-white text-start w-full ">
         {icon} {label}
-      </p>
+      </p> */}
       <div className="relative text-grey-15 w-full h-full ">
         <p className="text-wrap text-start w-full text-sm">
           {content}
