@@ -96,7 +96,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
         </div>
       )}
       <div className={clsx("w-full flex flex-col items-center justify-center ")}>
-        <div className={clsx("bg-[#1F263D] relative w-full max-w-[845px]  ", { "lg:py-20": !messages.length })}>
+        <div className={clsx("bg-[#1F263D] relative w-full max-w-[845px]  ", { "": !messages.length })}>
           <AssistInput
             isDark={!!selectedChartId}
             classes={{
