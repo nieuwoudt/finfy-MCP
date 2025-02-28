@@ -181,7 +181,7 @@ const ContentMessage: FC<ContentMessageProps> = ({
         </li>
       ) : (
         <ul>
-          <li>...</li>
+          <li>{children}</li>
         </ul>
 
       );
