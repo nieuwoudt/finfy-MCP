@@ -10,6 +10,7 @@ import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
 import clsx from "clsx";
+import * as Sentry from "@sentry/nextjs";
 
 interface ConversationProps {
   handleOpenModal: (id: string, chart: any) => void;
@@ -40,26 +41,39 @@ const Conversation: FC<ConversationProps> = ({ handleOpenModal, isOpenChart }) =
     if (isLoading) {
       stateRef.current = true;
     }
-    if (!isLoading && messages.length > 0 && stateRef.current) {
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.message_type !== "user") {
-        const fullText = lastMessage.content;
-        const words = fullText.split(/(\s+)/);
-        const chunkSize = 15;
-        let index = 0;
+    try {
+      if (!isLoading && messages.length > 0 && stateRef.current) {
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage.message_type !== "user") {
+          const fullText = lastMessage.content;
+          const words = fullText.split(/(\s+)/);
+          const chunkSize = 15;
+          let index = 0;
 
-        const interval = setInterval(() => {
-          index += chunkSize;
-          setStreamText(words.slice(0, index).join(""));
+          const interval = setInterval(() => {
+            index += chunkSize;
+            setStreamText(words.slice(0, index).join(""));
 
-          if (index >= words.length) {
-            clearInterval(interval);
-            setStreamText("");
-            stateRef.current = false;
-          }
-        }, 100);
+            if (index >= words.length) {
+              clearInterval(interval);
+              setStreamText("");
+              stateRef.current = false;
+            }
+          }, 100);
+        }
+      }
+    } catch (err) {
+      console.log("shift_err", err)
+      Sentry.captureException(err)
+      if (!isLoading && messages.length > 0 && stateRef.current) {
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage.message_type !== "user") {
+          const fullText = lastMessage.content;
+          setStreamText(fullText);
+        }
       }
     }
+
   }, [isLoading, messages]);
 
   // const objM = {
