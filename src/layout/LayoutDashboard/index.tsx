@@ -3,7 +3,7 @@
 import { AssistInput, Conversation } from "@/components/organisms";
 import { Button, Icon } from "@/components/atoms";
 import { DynamicChart, Header, HeaderText, HomeSuggestBoxes } from "@/components/molecules";
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useCategory, useChat, useDynamicChart, useUser } from "@/hooks";
 import { DesktopChartModal } from "@/components/molecules/DesktopChartModal/DesktopChartModal";
 import { MobileChartModal } from "@/components/molecules/MobileChartModal/MobileChartModal";
@@ -21,6 +21,7 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   const [selectedChartId, setSelectedChartId] = useState<string | null>(null);
   const suggest = useAppSelector((state) => state.suggest.suggest);
   const focusData = useAppSelector((state) => state.suggest.focusSuggests);
+  const isFetching = useRef();
   const dispatch = useAppDispatch();
   const { category } = useCategory();
   const { user } = useUser();
@@ -47,22 +48,24 @@ const LayoutDashboard: FC<LayoutDashboardProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user?.id) {
-      console.log("user.id", user.id)
-      dispatch(fetchFocusSuggests({ userId: user.id, provider: "plaid" })); //TODO un-hide suggests questions
+    if (user?.id && !focusData?.[0]?.length && !isFetching.current) {
+      isFetching?.current == true;
+      // dispatch(fetchFocusSuggests({ userId: user.id, provider: "plaid" })); //TODO un-hide suggests questions
     }
-  }, [dispatch, user?.id]);
+  }, [user?.id]);
 
   useEffect(() => {
     if (focusData.length) {
       if (!category) {
         dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
       }
-      if (category === 'budget') {
-        dispatch(setSuggest(focusData[1].suggest.slice(0, 6)));
-      } else {
-        dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
-      }
+      // if (category === 'budget') {
+      //   console.log(focusData, "focusData")
+      //   return
+      //   dispatch(setSuggest(focusData[1].suggest.slice(0, 6)));
+      // } else {
+      //   dispatch(setSuggest(focusData[0].suggest.slice(0, 6)));
+      // }
     }
   }, [focusData, category])
 

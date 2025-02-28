@@ -138,6 +138,8 @@ function adaptApiDataToMock(apiData: any) {
 }
 
 
+const cache = new Map<string, any>();
+
 export const fetchFocusSuggests = createAsyncThunk<
   any,
   { userId: string; provider: string },
@@ -150,6 +152,13 @@ export const fetchFocusSuggests = createAsyncThunk<
         throw new Error("User ID is missing");
       }
 
+      const cacheKey = `${userId}-${provider}`;
+
+      if (cache.has(cacheKey)) {
+        console.log("Returning cached data");
+        return cache.get(cacheKey);
+      }
+
       const response = await fetch(
         "https://finify-ai-137495399237.us-central1.run.app/personalized_questions",
         {
@@ -157,7 +166,7 @@ export const fetchFocusSuggests = createAsyncThunk<
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ user_id: `${userId}`, provider }),
+          body: JSON.stringify({ user_id: userId, provider }),
         }
       );
 
@@ -168,7 +177,11 @@ export const fetchFocusSuggests = createAsyncThunk<
       const data = await response.json();
       console.log("CHECK data", data);
 
-      return adaptApiDataToMock(data?.personalized_questions);
+      const adaptedData = adaptApiDataToMock(data?.personalized_questions);
+
+      cache.set(cacheKey, adaptedData);
+
+      return adaptedData;
     } catch (error: any) {
       console.error("Error fetching personalized questions:", error);
       return rejectWithValue(error.message);

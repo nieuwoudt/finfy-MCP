@@ -1,7 +1,7 @@
 "use client";
 
 import { Popover } from "@/components/atoms";
-import { FC, PropsWithChildren, useEffect } from "react";
+import { FC, PropsWithChildren, useEffect, useRef } from "react";
 import { FocusAssistantOption } from "@/components/molecules";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { fetchFocusSuggests } from "@/lib/store/features/suggest/suggestSlice";
@@ -18,11 +18,13 @@ const FocusAssistantPopover: FC<FocusAssistantPopoverProps> = ({
   const loading = useAppSelector((state) => state.suggest.loading);
   const error = useAppSelector((state) => state.suggest.error);
   const { user } = useUser();
+  const isFetching = useRef<any>();
 
   useEffect(() => {
-    if (user?.id) {
+    if (user?.id && !isFetching.current) {
+      isFetching.current = true
       dispatch(fetchFocusSuggests({ userId: user.id, provider: "plaid" })); //TODO un-hide suggests questions
-    }  }, [dispatch, user?.id]);
+    }  }, [user?.id]);
 
   // if (loading) return <div><Loader2 className="animate-spin w-3 h-3" />Focus</div>;
   if (error) return <div></div>;
