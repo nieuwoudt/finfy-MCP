@@ -13,9 +13,9 @@ import { getErrorMessage, resetCookies } from "@/utils/helpers";
 
 const CardSignUp = () => {
   const router = useRouter();
-
   const dispatch = useAppDispatch();
   const [isPending, startTransition] = useTransition();
+
   const handleClickSignUpButton = (formData: FormData) => {
     startTransition(async () => {
       const email = formData.get("email") as string;
@@ -39,6 +39,7 @@ const CardSignUp = () => {
       }
     });
   };
+
   return (
     <CardTemplate title="Sign Up">
       <form action={handleClickSignUpButton}>

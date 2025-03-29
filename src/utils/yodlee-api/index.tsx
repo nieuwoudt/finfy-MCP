@@ -3,20 +3,17 @@ import { config } from "@/config/env";
 import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "../helpers";
 import { AccountYodlee } from "@/types";
+import { getApiBaseUrl, getSiteUrl } from "../environment";
 
 const getBaseURL = (isExternal: boolean): string => {
-  if (typeof window !== "undefined") {
-    if (isExternal) {
-      return config.YOADLEE_API as string;
-    } else {
-      return `${window.location.origin}`;
-    }
-  }
-
   if (isExternal) {
-    return config.YOADLEE_API as string;
+    return getApiBaseUrl('yodlee');
   } else {
-    return config.BASE_URL as string;
+    if (typeof window !== "undefined") {
+      return `${window.location.origin}`;
+    } else {
+      return getSiteUrl();
+    }
   }
 };
 

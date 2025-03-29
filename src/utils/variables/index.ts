@@ -22,6 +22,7 @@ export const routesOnboarding = {
   userPolicy: "user-policy",
   finalUserPolicy: "final-user-policy",
   selectCountry: "select-country",
+  selectDataProvider: "select-data-provider",
   connectBank: "connect-bank",
   selectCurrency: "select-currency",
   addStripe: "add-stripe",

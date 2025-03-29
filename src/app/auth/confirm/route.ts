@@ -1,28 +1,42 @@
-import { type EmailOtpType } from "@supabase/supabase-js";
-import { type NextRequest } from "next/server";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-import { createSupabaseClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import { stepsOnboarding } from "@/utils/variables";
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const token_hash = searchParams.get("token_hash");
+    const type = searchParams.get("type");
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const token_hash = searchParams.get("token_hash");
-  const type = searchParams.get("type") as EmailOtpType | null;
-  const next =
-    searchParams.get("next") ?? `/onboarding/${stepsOnboarding.at(0)}`;
-  if (token_hash && type) {
-    const supabase = createSupabaseClient();
-
-    const { error } = await supabase.auth.verifyOtp({
-      type,
-      token_hash,
-    });
-    console.log(error, "error");
-    if (!error) {
-      redirect(next);
+    if (!token_hash || !type) {
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_APP_URL}/authentication?error=Invalid confirmation link`
+      );
     }
-  }
 
-  redirect("/error");
+    const supabase = createRouteHandlerClient({ cookies });
+
+    // Verify the token
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash,
+      type: type as "signup",
+    });
+
+    if (error) {
+      console.error("Error verifying token:", error);
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_APP_URL}/authentication?error=${error.message}`
+      );
+    }
+
+    // If successful, redirect to onboarding
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_APP_URL}/onboarding`
+    );
+  } catch (error) {
+    console.error("Error in confirm route:", error);
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_APP_URL}/authentication?error=An unexpected error occurred`
+    );
+  }
 }

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup-yodlee": "node ./scripts/setup-yodlee.js",
+    "deploy-staging": "node ./scripts/deploy-staging.js"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.0",
@@ -23,20 +25,24 @@
     "@sendgrid/mail": "^8.1.4",
     "@sentry/nextjs": "^8",
     "@stripe/stripe-js": "^1.54.2",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
     "@svgr/webpack": "^8.1.0",
     "axios": "^1.7.7",
     "browser-image-compression": "^2.0.2",
+    "chalk": "^4.1.2",
     "chart.js": "^4.4.4",
     "chartjs-plugin-annotation": "^3.0.1",
     "clsx": "^2.1.1",
     "cookies-next": "^4.2.1",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "lucide-react": "^0.439.0",
     "next": "14.1.0",
     "next-nprogress-bar": "^2.3.13",
     "nextjs-progressbar": "^0.0.16",
+    "node-fetch": "^2.7.0",
     "plaid": "^27.0.0",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
@@ -66,6 +72,7 @@
     "eslint-config-next": "14.1.0",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^41.4.1"
   }
 }

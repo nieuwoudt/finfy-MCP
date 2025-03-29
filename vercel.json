@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "VERCEL_ENV": "staging",
+    "NEXT_PUBLIC_SITE_URL": "https://finfy-staging.vercel.app"
+  },
+  "github": {
+    "enabled": true,
+    "silent": true
+  }
+} 
