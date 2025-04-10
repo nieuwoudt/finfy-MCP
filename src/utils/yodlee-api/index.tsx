@@ -4,6 +4,8 @@ import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "../helpers";
 import { AccountYodlee } from "@/types";
 import { getApiBaseUrl, getSiteUrl } from "../environment";
+import { FinifyMcpServer } from "@/utils/mcp/server";
+import { FinifyMcpClient } from "@/utils/mcp/client";
 
 const getBaseURL = (isExternal: boolean): string => {
   if (isExternal) {
@@ -172,3 +174,51 @@ export const saveAccountYodlee = async (
 
 export const axiosYodleeExternal = createAxiosInstance(true);
 export const axiosYodleeInternal = createAxiosInstance(false);
+
+async function testMcp() {
+  // Start the server
+  const server = new FinifyMcpServer();
+  await server.initialize();
+  console.log("MCP Server initialized");
+  
+  // Initialize the client (pointing to our server)
+  const client = new FinifyMcpClient(
+    "node", 
+    ["./server-script.js"], // This would need to be the actual path to your server script
+    process.env.ANTHROPIC_API_KEY || ""
+  );
+  await client.initialize();
+  console.log("MCP Client initialized");
+  
+  // Test getting a context block for a known user ID
+  try {
+    const userId = "YOUR_TEST_USER_ID"; // Replace with an actual user ID from your database
+    const contextBlock = await client.getContextBlock(userId);
+    console.log("Context block successfully retrieved:");
+    console.log(contextBlock.substring(0, 500) + "..."); // Print first 500 chars
+  } catch (error) {
+    console.error("Error getting context block:", error);
+  }
+  
+  // Clean up
+  await client.close();
+  await server.close();
+}
+
+testMcp().catch(console.error);
+
+async function testServer() {
+  const server = new FinifyMcpServer();
+  await server.initialize();
+  
+  // Manually test the get_context_block tool
+  const result = await server.callToolDirectly("get_context_block", {
+    user_id: "YOUR_TEST_USER_ID"
+  });
+  
+  console.log("Tool result:", result);
+  
+  await server.close();
+}
+
+testServer().catch(console.error);

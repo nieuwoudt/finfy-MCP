@@ -7,42 +7,27 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+/**
+ * NOTICE: This feature is temporarily disabled based on recommendation from FinGoal.
+ * They are working on a more powerful version of savings recommendations that will be released later this year.
+ */
+
 // GET handler for retrieving all savings recommendations
 export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = req.nextUrl;
-    const startAt = searchParams.get("startAt") || undefined;
-    const endAt = searchParams.get("endAt") || undefined;
-    
-    const response = await getAllSavingsRecommendations(startAt, endAt);
-    
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("Failed to get savings recommendations:", error);
-    return NextResponse.json(
-      { message: "Error getting savings recommendations" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(
+    { 
+      message: "Savings recommendations feature is temporarily disabled. FinGoal is working on a more powerful version that will be released later this year." 
+    },
+    { status: 503 }
+  );
 }
 
 // POST handler for submitting transactions to get savings recommendations
 export async function POST(req: NextRequest) {
-  try {
-    const { transactions, type = "fingoal" } = await req.json();
-    
-    // Send transactions to FinGoal for savings recommendations
-    const response = await getSavingsRecommendations(
-      transactions,
-      type as "fingoal" | "plaid" | "mx"
-    );
-    
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error("Failed to get savings recommendations:", error);
-    return NextResponse.json(
-      { message: "Error getting savings recommendations" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(
+    { 
+      message: "Savings recommendations feature is temporarily disabled. FinGoal is working on a more powerful version that will be released later this year." 
+    },
+    { status: 503 }
+  );
 } 

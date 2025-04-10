@@ -1,0 +1,11 @@
+{
+  "name": "finfy-mcp",
+  "version": "1.0.0",
+  "description": "Finfy Model Context Protocol implementation",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.3.0",
+    "axios": "^1.6.0",
+    "typescript": "^5.0.0"
+  }
+} 
