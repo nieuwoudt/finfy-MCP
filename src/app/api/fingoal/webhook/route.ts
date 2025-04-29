@@ -4,6 +4,7 @@ import * as crypto from "crypto";
 import { config } from "@/config/env";
 import * as Sentry from "@sentry/nextjs";
 import { FingoalWebhookHandler } from "@/utils/mcp/fingoal-webhook";
+import { WebhookMonitor, WebhookEventType, WebhookSource } from "@/utils/mcp/webhook-monitor";
 
 // Initialize Supabase client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -55,14 +56,39 @@ const handleEnrichmentWebhook = async (payload: { batch_request_id: string }) =>
 
     if (error) {
       console.error("Error storing batch request ID:", error);
+      
+      // Log the error in our monitoring system
+      await WebhookMonitor.logEvent({
+        source: WebhookSource.FINGOAL,
+        event_type: WebhookEventType.FAILED,
+        error_message: `Error storing batch request ID: ${error.message}`,
+        batch_id: payload.batch_request_id
+      });
+      
       return false;
     }
+
+    // Log successful enrichment completion
+    await WebhookMonitor.logEvent({
+      source: WebhookSource.FINGOAL,
+      event_type: WebhookEventType.ENRICHMENT_COMPLETED,
+      batch_id: payload.batch_request_id
+    });
 
     // TODO: Fetch the enriched transactions from FinGoal
     // This could be done here or by a separate process
     return true;
   } catch (error) {
     console.error("Error handling enrichment webhook:", error);
+    
+    // Log the error in our monitoring system
+    await WebhookMonitor.logEvent({
+      source: WebhookSource.FINGOAL,
+      event_type: WebhookEventType.FAILED,
+      error_message: `Error handling enrichment webhook: ${error instanceof Error ? error.message : String(error)}`,
+      batch_id: payload.batch_request_id
+    });
+    
     return false;
   }
 };
@@ -112,9 +138,11 @@ const handleUserTagsWebhook = async (payload: { userTags?: { created: any[], del
     if (payload.userTags) {
       // Direct userTags webhook
       const { created = [], deleted = [] } = payload.userTags;
+      let userId = '';
       
       // Process created tags
       for (const tag of created) {
+        userId = tag.user_id;
         const { error } = await supabase
           .from("fingoal_user_tags")
           .insert({
@@ -126,11 +154,20 @@ const handleUserTagsWebhook = async (payload: { userTags?: { created: any[], del
 
         if (error) {
           console.error("Error storing user tag:", error);
+          
+          // Log the error
+          await WebhookMonitor.logEvent({
+            source: WebhookSource.FINGOAL,
+            event_type: WebhookEventType.FAILED,
+            error_message: `Error storing user tag: ${error.message}`,
+            user_id: tag.user_id
+          });
         }
       }
       
       // Process deleted tags
       for (const tag of deleted) {
+        userId = tag.user_id;
         const { error } = await supabase
           .from("fingoal_user_tags")
           .delete()
@@ -141,7 +178,25 @@ const handleUserTagsWebhook = async (payload: { userTags?: { created: any[], del
 
         if (error) {
           console.error("Error deleting user tag:", error);
+          
+          // Log the error
+          await WebhookMonitor.logEvent({
+            source: WebhookSource.FINGOAL,
+            event_type: WebhookEventType.FAILED,
+            error_message: `Error deleting user tag: ${error.message}`,
+            user_id: tag.user_id
+          });
         }
+      }
+      
+      // Log successful user tags update
+      if (userId) {
+        await WebhookMonitor.logEvent({
+          source: WebhookSource.FINGOAL,
+          event_type: WebhookEventType.USER_TAGS_UPDATED,
+          user_id: userId,
+          payload_preview: `Created: ${created.length}, Deleted: ${deleted.length}`
+        });
       }
     } else if (payload.guid) {
       // Tag status webhook with guid
@@ -155,12 +210,36 @@ const handleUserTagsWebhook = async (payload: { userTags?: { created: any[], del
 
       if (error) {
         console.error("Error storing tag update guid:", error);
+        
+        // Log the error
+        await WebhookMonitor.logEvent({
+          source: WebhookSource.FINGOAL,
+          event_type: WebhookEventType.FAILED,
+          error_message: `Error storing tag update guid: ${error.message}`,
+          batch_id: payload.guid
+        });
+      } else {
+        // Log successful guid registration
+        await WebhookMonitor.logEvent({
+          source: WebhookSource.FINGOAL,
+          event_type: WebhookEventType.RECEIVED,
+          batch_id: payload.guid,
+          payload_preview: `Tag update guid registered`
+        });
       }
     }
     
     return true;
   } catch (error) {
     console.error("Error handling user tags webhook:", error);
+    
+    // Log the error
+    await WebhookMonitor.logEvent({
+      source: WebhookSource.FINGOAL,
+      event_type: WebhookEventType.FAILED,
+      error_message: `Error handling user tags webhook: ${error instanceof Error ? error.message : String(error)}`
+    });
+    
     return false;
   }
 };
@@ -169,13 +248,32 @@ const handleUserTagsWebhook = async (payload: { userTags?: { created: any[], del
  * Webhook POST handler
  */
 export async function POST(req: NextRequest) {
+  const startTime = Date.now();
+  let payloadPreview = '';
+  
   try {
     // Get the raw body for signature verification
     const rawBody = await req.text();
+    payloadPreview = rawBody.substring(0, 100); // Store a preview for logging
+    
+    // Log webhook received
+    await WebhookMonitor.logEvent({
+      source: WebhookSource.FINGOAL,
+      event_type: WebhookEventType.RECEIVED,
+      payload_preview: payloadPreview
+    });
     
     // Get the signature from headers
     const signature = req.headers.get("x-fingoal-signature");
     if (!signature) {
+      // Log signature missing error
+      await WebhookMonitor.logEvent({
+        source: WebhookSource.FINGOAL,
+        event_type: WebhookEventType.INVALID_SIGNATURE,
+        error_message: "Missing webhook signature",
+        payload_preview: payloadPreview
+      });
+      
       return NextResponse.json(
         { error: "Missing webhook signature" },
         { status: 401 }
@@ -184,6 +282,14 @@ export async function POST(req: NextRequest) {
 
     // Verify signature
     if (!webhookHandler.verifySignature(rawBody, signature)) {
+      // Log invalid signature error
+      await WebhookMonitor.logEvent({
+        source: WebhookSource.FINGOAL,
+        event_type: WebhookEventType.INVALID_SIGNATURE,
+        error_message: "Invalid webhook signature",
+        payload_preview: payloadPreview
+      });
+      
       return NextResponse.json(
         { error: "Invalid webhook signature" },
         { status: 401 }
@@ -195,11 +301,36 @@ export async function POST(req: NextRequest) {
 
     // Handle the webhook
     await webhookHandler.handleWebhook(payload);
+    
+    // Calculate processing time
+    const processingTime = Date.now() - startTime;
+    
+    // Log successful webhook processing
+    await WebhookMonitor.logEvent({
+      source: WebhookSource.FINGOAL,
+      event_type: WebhookEventType.PROCESSED,
+      processing_time_ms: processingTime,
+      payload_preview: payloadPreview,
+      batch_id: payload.data?.batch_request_id || payload.guid
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error processing webhook:", error);
     Sentry.captureException(error);
+    
+    // Calculate processing time even for errors
+    const processingTime = Date.now() - startTime;
+    
+    // Log processing error
+    await WebhookMonitor.logEvent({
+      source: WebhookSource.FINGOAL,
+      event_type: WebhookEventType.FAILED,
+      error_message: `Error processing webhook: ${error instanceof Error ? error.message : String(error)}`,
+      processing_time_ms: processingTime,
+      payload_preview: payloadPreview
+    });
+    
     return NextResponse.json(
       { error: "Failed to process webhook" },
       { status: 500 }

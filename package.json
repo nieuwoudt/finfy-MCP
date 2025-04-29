@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "setup-yodlee": "node ./scripts/setup-yodlee.js",
-    "deploy-staging": "node ./scripts/deploy-staging.js"
+    "deploy-staging": "node ./scripts/deploy-staging.js",
+    "setup-webhook-monitor": "node ./scripts/setup-webhook-monitor.js",
+    "schedule-fingoal": "node ./scripts/schedule-fingoal-batches.js"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "1.2.0",
