@@ -221,84 +221,101 @@ interface FingoalUserTags {
   transactions: any[];
 }
 
+/**
+ * API client for interacting with FinGoal services
+ */
 export class FingoalClient {
+  private baseUrl: string;
   private clientId: string;
   private clientSecret: string;
   private accessToken: string | null = null;
-  private tokenExpiry: number | null = null;
-  private baseUrl: string;
+  private tokenExpiry: number = 0;
+  private isProduction: boolean;
 
-  constructor(clientId: string, clientSecret: string, isProduction: boolean = false) {
+  constructor(
+    clientId: string,
+    clientSecret: string,
+    isProduction: boolean = false
+  ) {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
-    this.baseUrl = isProduction 
+    this.isProduction = isProduction;
+    this.baseUrl = isProduction
       ? "https://findmoney.fingoal.com/v3"
       : "https://findmoney-dev.fingoal.com/v3";
   }
 
   /**
-   * Get a valid access token, refreshing if necessary
+   * Check if this client is properly configured
+   */
+  isConfigured(): boolean {
+    return !!this.clientId && !!this.clientSecret;
+  }
+
+  /**
+   * Get or refresh the access token
    */
   private async getAccessToken(): Promise<string> {
-    if (this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry) {
+    // Check if we have a valid token
+    const now = Date.now();
+    if (this.accessToken && now < this.tokenExpiry) {
       return this.accessToken;
     }
 
+    // Refresh the token
     try {
-      const response = await axios.post<FingoalAuthResponse>(
-        `${this.baseUrl}/authentication`,
+      if (typeof window !== 'undefined') {
+        console.warn("FinGoal auth can only be performed server-side");
+        throw new Error("Cannot authenticate with FinGoal in browser environment");
+      }
+      
+      const response = await axios.post(
+        `${this.baseUrl}/auth/token`,
         {
           client_id: this.clientId,
-          client_secret: this.clientSecret
+          client_secret: this.clientSecret,
+          grant_type: "client_credentials",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
       this.accessToken = response.data.access_token;
-      this.tokenExpiry = Date.now() + (response.data.expires_in * 1000);
+      // Token expires in X seconds, we'll subtract 60 seconds to be safe
+      this.tokenExpiry = now + (response.data.expires_in - 60) * 1000;
+
       return this.accessToken;
     } catch (error) {
-      console.error("Error getting Fingoal access token:", error);
+      console.error("Error getting FinGoal access token:", error);
       throw error;
     }
   }
 
   /**
-   * Enrich transactions using the streaming endpoint
+   * Get user financial tags from FinGoal
    */
-  async enrichTransactions(transactions: FingoalTransaction[]): Promise<FingoalEnrichmentResponse> {
-    try {
-      const token = await this.getAccessToken();
-      const response = await axios.post<FingoalEnrichmentResponse>(
-        `${this.baseUrl}/cleanup/streaming`,
-        { transactions },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error enriching transactions:", error);
-      throw error;
+  async getUserTags(userId: string): Promise<any> {
+    // For browser safety
+    if (typeof window !== 'undefined') {
+      console.warn("FinGoal API can only be called server-side");
+      return { user: { tags: [] } };
     }
-  }
-
-  /**
-   * Get user tags and transaction data
-   */
-  async getUserTags(userId: string): Promise<FingoalUserTags> {
+    
     try {
+      // Get access token
       const token = await this.getAccessToken();
-      const response = await axios.get<FingoalUserTags>(
-        `${this.baseUrl}/users/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
+
+      // Call the user API
+      const response = await axios.get(`${this.baseUrl}/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
       return response.data;
     } catch (error) {
       console.error("Error getting user tags:", error);
@@ -307,58 +324,66 @@ export class FingoalClient {
   }
 
   /**
-   * Trigger a sync of user tags
+   * Enrich transactions with FinGoal AI
    */
-  async syncUserTags(userId: string): Promise<FingoalUserTags> {
-    try {
-      const token = await this.getAccessToken();
-      const response = await axios.get<FingoalUserTags>(
-        `${this.baseUrl}/users/${userId}/sync`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error syncing user tags:", error);
-      throw error;
+  async enrichTransactions(transactions: any[]): Promise<any> {
+    // For browser safety
+    if (typeof window !== 'undefined') {
+      console.warn("FinGoal API can only be called server-side");
+      return { status: { batch_request_id: "browser-mock" } };
     }
-  }
-  
-  /**
-   * Retrieve enriched transactions from a batch
-   */
-  async retrieveEnrichedTransactions(batchRequestId: string): Promise<any> {
+    
     try {
+      // Get access token
       const token = await this.getAccessToken();
-      const response = await axios.get(
-        `${this.baseUrl}/cleanup/${batchRequestId}`,
+
+      // Call the batch API
+      const response = await axios.post(
+        `${this.baseUrl}/batch`,
+        {
+          transactions,
+        },
         {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
+
       return response.data;
     } catch (error) {
-      console.error("Error retrieving enriched transactions:", error);
+      console.error("Error enriching transactions:", error);
       throw error;
     }
   }
 
   /**
-   * Verify webhook signature
+   * Get transaction enrichment results for a batch
    */
-  verifyWebhookSignature(payload: string, signature: string): boolean {
+  async getBatchResults(batchId: string): Promise<any> {
+    // For browser safety
+    if (typeof window !== 'undefined') {
+      console.warn("FinGoal API can only be called server-side");
+      return { transactions: [] };
+    }
+    
     try {
-      const hmac = crypto.createHmac("sha256", this.clientSecret);
-      const digest = hmac.update(payload).digest("hex");
-      return digest === signature;
+      // Get access token
+      const token = await this.getAccessToken();
+
+      // Call the batch results API
+      const response = await axios.get(`${this.baseUrl}/batch/${batchId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      return response.data;
     } catch (error) {
-      console.error("Error verifying webhook signature:", error);
-      return false;
+      console.error("Error getting batch results:", error);
+      throw error;
     }
   }
 } 

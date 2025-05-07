@@ -11,6 +11,9 @@ import { axiosYodleeInternal } from "@/utils/yodlee-api";
 import { axiosInternal } from "@/utils/axios";
 import { updateUser } from "@/lib/store/features/user/userSlice";
 
+// Import dynamically only when needed (avoid import errors)
+// We'll handle MCP separately on server side
+
 declare global {
   interface Window {
     fastlink: any;

@@ -1,7 +1,9 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import axios from "axios";
-import { ChildProcess } from "child_process";
+
+// Use type-only import for Node.js specific modules
+type ChildProcess = any;
 
 interface ToolResult {
   content: Array<{
@@ -45,15 +47,25 @@ export class FinifyMcpClient {
     llmApiKey: string,
     llmModel: string = "claude-3-sonnet-20240229"
   ) {
-    this.transport = new StdioClientTransport({
-      command: serverCommand,
-      args: serverArgs
-    });
+    // Check if running in browser environment
+    const isBrowser = typeof window !== 'undefined';
     
-    this.client = new Client({
-      name: "finfy-client",
-      version: "1.0.0"
-    });
+    if (isBrowser) {
+      console.warn('MCP client initialized in browser environment - some features may be limited');
+      // Create a minimal implementation for browser compatibility
+      this.transport = {} as StdioClientTransport;
+      this.client = {} as Client;
+    } else {
+      this.transport = new StdioClientTransport({
+        command: serverCommand,
+        args: serverArgs
+      });
+      
+      this.client = new Client({
+        name: "finfy-client",
+        version: "1.0.0"
+      });
+    }
 
     this.llmApiKey = llmApiKey;
     this.llmModel = llmModel;
@@ -64,8 +76,13 @@ export class FinifyMcpClient {
    * Initialize the MCP client and connect to the server
    */
   async initialize(): Promise<this> {
-    await this.client.connect(this.transport);
-    console.log("Finfy MCP client initialized");
+    // Skip connection in browser environment
+    if (typeof window === 'undefined') {
+      await this.client.connect(this.transport);
+      console.log("Finfy MCP client initialized");
+    } else {
+      console.log("Finfy MCP client initialization skipped in browser");
+    }
     return this;
   }
 
@@ -155,10 +172,12 @@ ${contextBlock}`
    * Close the MCP client connection
    */
   async close(): Promise<void> {
-    await this.client.close();
-    if (this.serverProcess) {
-      this.serverProcess.kill();
-      this.serverProcess = null;
+    if (typeof window === 'undefined') {
+      await this.client.close();
+      if (this.serverProcess) {
+        this.serverProcess.kill();
+        this.serverProcess = null;
+      }
     }
   }
 } 

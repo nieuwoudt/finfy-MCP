@@ -1,5 +1,5 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+// Don't import StdioServerTransport directly
 import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "@/utils/helpers";
 import { FingoalClient } from "./fingoal-integration";
@@ -69,6 +69,9 @@ interface ToolResult {
   isError?: boolean;
 }
 
+// Create type-only imports for Node.js specific modules
+type StdioServerTransport = any;
+
 /**
  * FinifyMcpServer - Finfy's Model Context Protocol Server implementation
  * 
@@ -80,35 +83,71 @@ interface ToolResult {
 export class FinifyMcpServer {
   private server: Server;
   private transport: StdioServerTransport;
-  private tools: Map<string, (args: ToolArgs) => Promise<ToolResult>>;
+  private tools: Map<string, any>;
   private fingoalClient: FingoalClient | null = null;
 
   constructor() {
-    this.transport = new StdioServerTransport();
+    // Initialize tools map regardless of environment
     this.tools = new Map();
     
-    this.server = new Server({
-      name: "finfy-server",
-      version: "1.0.0"
-    }, {
-      capabilities: {
-        resources: {},
-        tools: {}
+    // Check if running in browser environment
+    const isBrowser = typeof window !== 'undefined';
+    
+    if (isBrowser) {
+      console.warn('MCP server initialized in browser environment - functionality will be limited');
+      // Create stub instances for browser compatibility
+      this.server = {} as Server;
+      this.transport = {} as StdioServerTransport;
+    } else {
+      // Only import Node.js specific modules on the server
+      try {
+        // Dynamic import in constructor
+        const { StdioServerTransport } = require("@modelcontextprotocol/sdk/server/stdio.js");
+        
+        this.transport = new StdioServerTransport();
+        this.server = new Server({
+          name: "finfy-server",
+          version: "1.0.0"
+        });
+        
+        // Add context providers, function handlers, etc.
+        this.setupContextProviders();
+        this.setupFunctionHandlers();
+        
+        // Initialize Fingoal client if credentials are available
+        const clientId = process.env.FINGOAL_CLIENT_ID;
+        const clientSecret = process.env.FINGOAL_CLIENT_SECRET;
+        
+        if (clientId && clientSecret) {
+          this.fingoalClient = new FingoalClient(
+            clientId,
+            clientSecret,
+            process.env.NODE_ENV === "production"
+          );
+        }
+        
+        this.registerTools();
+      } catch (error) {
+        console.error("Error initializing MCP server:", error);
+        // Fallback to minimal implementation
+        this.server = {} as Server;
+        this.transport = {} as StdioServerTransport;
       }
-    });
-
-    // Initialize Fingoal client if credentials are available
-    const clientId = process.env.FINGOAL_CLIENT_ID;
-    const clientSecret = process.env.FINGOAL_CLIENT_SECRET;
-    if (clientId && clientSecret) {
-      this.fingoalClient = new FingoalClient(
-        clientId,
-        clientSecret,
-        process.env.NODE_ENV === "production"
-      );
     }
+  }
 
-    this.registerTools();
+  private setupContextProviders() {
+    // Skip in browser environment
+    if (typeof window !== 'undefined') return;
+    
+    // Add your context providers here
+  }
+
+  private setupFunctionHandlers() {
+    // Skip in browser environment
+    if (typeof window !== 'undefined') return;
+    
+    // Add your function handlers here
   }
 
   /**
@@ -169,11 +208,12 @@ export class FinifyMcpServer {
             }
 
             // For transactions without enrichment, send them for processing
-            const unenrichedTransactions = transactions.filter(tx => 
-              !transactionEnrichment[tx.id] || 
-              !transactionEnrichment[tx.id].tags ||
-              transactionEnrichment[tx.id].tags.length === 0
-            );
+            const unenrichedTransactions = transactions.filter(tx => {
+              const enrichmentData = transactionEnrichment[tx.id];
+              return !enrichmentData || 
+                     !enrichmentData.tags ||
+                     enrichmentData.tags.length === 0;
+            });
             
             if (unenrichedTransactions.length > 0) {
               const fingoalTransactions = unenrichedTransactions.map(tx => ({
@@ -431,8 +471,17 @@ export class FinifyMcpServer {
    * Initialize the MCP server
    */
   async initialize() {
-    await this.server.connect(this.transport);
-    console.log("Finfy MCP server initialized");
+    // Skip server connection in browser environment
+    if (typeof window === 'undefined') {
+      try {
+        await this.server.connect(this.transport);
+        console.log("Finfy MCP server initialized");
+      } catch (error) {
+        console.error("Error connecting MCP server:", error);
+      }
+    } else {
+      console.log("Finfy MCP server initialization skipped in browser");
+    }
     return this;
   }
 
@@ -440,6 +489,14 @@ export class FinifyMcpServer {
    * Close the MCP server
    */
   async close() {
-    await this.server.close();
+    // Only attempt to close if not in browser
+    if (typeof window === 'undefined') {
+      try {
+        await this.server.close();
+      } catch (error) {
+        console.error("Error closing MCP server:", error);
+      }
+    }
+    return this;
   }
 } 

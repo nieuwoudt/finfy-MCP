@@ -1,72 +1,36 @@
-import clsx from "clsx";
-import { Ref, forwardRef } from "react";
+import React from "react";
+import { cn } from "@/utils/cn";
 
-import Link from "next/link";
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  size?: 'default' | 'sm' | 'lg' | 'icon';
+}
 
-import {
-  sizeClassesWithText,
-  sizeClassesWithIconOnly,
-  variantClasses,
-} from "./index.constants";
-import type { ButtonProps } from "./index.types";
-import { cn } from "@/lib/utils";
-
-const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-  (
-    {
-      children,
-      variant = "default",
-      className,
-      full = false,
-      icons,
-      size = "base",
-      ...props
-    },
-    ref
-  ) => {
-    const IconLeft = icons?.iconLeft;
-    const IconRight = icons?.iconRight;
-
-    const isIconOnly = (IconLeft || IconRight) && !children;
-
-    const commonClassName = cn(
-      "flex justify-center group items-center cursor-pointer transition-all rounded-full text-center font-semibold text-base",
-      full ? "w-full" : "w-fit",
-      variantClasses[variant],
-      isIconOnly ? sizeClassesWithIconOnly[size] : sizeClassesWithText[size],
-      className
-    );
-    if (props.as === "link") {
-      const { as, disabled, ...rest } = props;
-      return (
-        <Link
-          ref={ref as Ref<HTMLAnchorElement>}
-          className={cn(commonClassName, {
-            "pointer-events-none": Boolean(disabled),
-          })}
-          {...rest}
-          scroll={false}
-        >
-          {IconLeft && IconLeft}
-          {children}
-          {IconRight && IconRight}
-        </Link>
-      );
-    }
-    return (
-      <button
-        ref={ref as Ref<HTMLButtonElement>}
-        className={cn(commonClassName)}
-        {...props}
-      >
-        {IconLeft && IconLeft}
-        {children}
-        {IconRight && IconRight}
-      </button>
-    );
-  }
-);
-
-Button.displayName = "Button";
-
-export { Button };
+export function Button({
+  className,
+  variant = 'default',
+  size = 'default',
+  ...props
+}: ButtonProps) {
+  return (
+    <button
+      className={cn(
+        "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
+        {
+          'bg-primary text-white hover:bg-primary/90': variant === 'default',
+          'bg-destructive text-white hover:bg-destructive/90': variant === 'destructive',
+          'border border-input bg-background hover:bg-accent hover:text-accent-foreground': variant === 'outline',
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80': variant === 'secondary',
+          'hover:bg-accent hover:text-accent-foreground': variant === 'ghost',
+          'underline-offset-4 hover:underline text-primary': variant === 'link',
+          'h-10 py-2 px-4': size === 'default',
+          'h-9 px-3 rounded-md text-sm': size === 'sm',
+          'h-11 px-8 rounded-md': size === 'lg',
+          'h-10 w-10 p-0': size === 'icon',
+        },
+        className
+      )}
+      {...props}
+    />
+  );
+}

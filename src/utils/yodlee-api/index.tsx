@@ -4,8 +4,24 @@ import { supabase } from "@/lib/supabase/client";
 import { getErrorMessage } from "../helpers";
 import { AccountYodlee } from "@/types";
 import { getApiBaseUrl, getSiteUrl } from "../environment";
-import { FinifyMcpServer } from "@/utils/mcp/server";
-import { FinifyMcpClient } from "@/utils/mcp/client";
+
+// Conditionally import MCP-related modules
+// This prevents errors when these modules try to use Node.js features in the browser
+let FinifyMcpServer: any;
+let FinifyMcpClient: any;
+
+// Only import MCP modules on the server side
+if (typeof window === 'undefined') {
+  try {
+    const serverModule = require("@/utils/mcp/server");
+    const clientModule = require("@/utils/mcp/client");
+    
+    FinifyMcpServer = serverModule.FinifyMcpServer;
+    FinifyMcpClient = clientModule.FinifyMcpClient;
+  } catch (error) {
+    console.error("Error importing MCP modules:", error);
+  }
+}
 
 const getBaseURL = (isExternal: boolean): string => {
   if (isExternal) {
@@ -175,7 +191,12 @@ export const saveAccountYodlee = async (
 export const axiosYodleeExternal = createAxiosInstance(true);
 export const axiosYodleeInternal = createAxiosInstance(false);
 
+// MCP testing functions - commented out to prevent automatic execution
+/*
 async function testMcp() {
+  // Only run on server side
+  if (typeof window !== 'undefined') return;
+  
   // Start the server
   const server = new FinifyMcpServer();
   await server.initialize();
@@ -205,9 +226,9 @@ async function testMcp() {
   await server.close();
 }
 
-testMcp().catch(console.error);
-
 async function testServer() {
+  if (typeof window !== 'undefined') return;
+  
   const server = new FinifyMcpServer();
   await server.initialize();
   
@@ -220,5 +241,4 @@ async function testServer() {
   
   await server.close();
 }
-
-testServer().catch(console.error);
+*/

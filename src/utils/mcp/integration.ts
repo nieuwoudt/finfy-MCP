@@ -1,6 +1,18 @@
 import { FinifyMcpClient } from "./client";
 import { FinifyMcpServer } from "./server";
-import path from "path";
+
+// Safe path reference
+let pathModule: any = null;
+
+// Only try to load path in server environment
+if (typeof window === 'undefined') {
+  try {
+    // Dynamic import, but avoid Next.js error
+    pathModule = require('path');
+  } catch (error) {
+    console.error("Error loading path module:", error);
+  }
+}
 
 interface McpComponents {
   server: FinifyMcpServer;
@@ -16,27 +28,75 @@ let mcpClient: FinifyMcpClient | null = null;
  * This should be called during application startup
  */
 export async function initializeMcp(anthropicApiKey: string): Promise<McpComponents> {
-  // Initialize the server if not already running
-  if (!mcpServer) {
-    mcpServer = new FinifyMcpServer();
-    await mcpServer.initialize();
-    console.log("MCP Server initialized");
-  }
+  // Check if we're in a browser environment
+  const isBrowser = typeof window !== 'undefined';
   
-  // Initialize the client if not already running
-  if (!mcpClient) {
-    // In a real deployment, you'd have a standalone server process
-    // Here we're using the server-script.js to spawn a child process
-    const serverScriptPath = path.resolve(__dirname, "./server-script.js");
+  if (isBrowser) {
+    console.log("Browser environment detected - using limited MCP implementation");
     
-    mcpClient = new FinifyMcpClient(
-      "node",
-      [serverScriptPath],
-      anthropicApiKey
-    );
+    // Create stub instances for browser environment
+    if (!mcpServer) {
+      mcpServer = {} as FinifyMcpServer;
+      console.log("MCP Server stub created for browser");
+    }
     
-    await mcpClient.initialize();
-    console.log("MCP Client initialized");
+    if (!mcpClient) {
+      mcpClient = new FinifyMcpClient(
+        "browser-stub",
+        [],
+        anthropicApiKey
+      );
+      
+      await mcpClient.initialize();
+      console.log("MCP Client initialized for browser");
+    }
+  } else {
+    // Server-side initialization
+    try {
+      // Initialize the server if not already running
+      if (!mcpServer) {
+        mcpServer = new FinifyMcpServer();
+        await mcpServer.initialize();
+        console.log("MCP Server initialized");
+      }
+      
+      // Initialize the client if not already running
+      if (!mcpClient) {
+        // In a real deployment, you'd have a standalone server process
+        // Here we're using the server-script.js to spawn a child process
+        let serverScriptPath = "./server-script.js";
+        
+        // Use path module if available
+        if (pathModule) {
+          serverScriptPath = pathModule.resolve(__dirname, "./server-script.js");
+        }
+        
+        mcpClient = new FinifyMcpClient(
+          "node",
+          [serverScriptPath],
+          anthropicApiKey
+        );
+        
+        await mcpClient.initialize();
+        console.log("MCP Client initialized");
+      }
+    } catch (error) {
+      console.error("Error initializing MCP:", error);
+      
+      // Create stub instances as fallback
+      if (!mcpServer) {
+        mcpServer = {} as FinifyMcpServer;
+      }
+      
+      if (!mcpClient) {
+        mcpClient = new FinifyMcpClient(
+          "fallback",
+          [],
+          anthropicApiKey
+        );
+        await mcpClient.initialize();
+      }
+    }
   }
   
   return {

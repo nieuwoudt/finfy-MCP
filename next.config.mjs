@@ -1,6 +1,16 @@
 import {withSentryConfig} from "@sentry/nextjs";
+import webpack from 'webpack';
+import path from 'path';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Add transpiler options to handle Supabase packages
+  transpilePackages: [
+    '@supabase/supabase-js',
+    '@supabase/ssr',
+    '@supabase/auth-helpers-nextjs',
+    '@supabase/storage-js'
+  ],
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")
@@ -20,6 +30,53 @@ const nextConfig = {
     );
 
     fileLoaderRule.exclude = /\.svg$/i;
+
+    // Add Node.js polyfills and provide empty implementations
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      "child_process": false,
+      "fs": false,
+      "net": false,
+      "tls": false,
+      "os": false,
+      "path": false,
+      "process": false,
+      "buffer": false,
+      "util": false,
+      "stream": false,
+      "crypto": false,
+      "querystring": false,
+    };
+
+    // Handle node: scheme imports
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "node:process": false,
+      "node:buffer": false,
+      "node:util": false,
+      "node:stream": false,
+      "node:crypto": false,
+      "node:querystring": false,
+    };
+
+    // Explicitly ignore Node.js specific imports
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^child_process$|^fs$|^net$|^tls$|^os$|^path$|^process$|^buffer$|^util$|^stream$|^crypto$|^querystring$/,
+      }),
+      new webpack.NormalModuleReplacementPlugin(
+        /node:/,
+        (resource) => {
+          const mod = resource.request.replace(/^node:/, '');
+          resource.request = mod;
+        }
+      ),
+      // Fix Supabase Storage module error
+      new webpack.DefinePlugin({
+        'globalThis.SUPABASE_URL': JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_URL),
+        'globalThis.SUPABASE_ANON_KEY': JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+      })
+    );
 
     return config;
   },
